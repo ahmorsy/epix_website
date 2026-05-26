@@ -1,0 +1,102 @@
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { AccessibleImageModal } from '../components/AccessibleImageModal'
+import { ArrowRight, BadgeCheck, CheckCircle2 } from 'lucide-react'
+
+type Lang = 'en' | 'fr' | 'ar'
+type Localized = { en: string; fr: string; ar: string }
+type Shot = { src: string; title: Localized; caption: Localized }
+
+const copy = {
+  en: {
+    backToHome: 'Back To Home',
+    title: 'Fixed Assets Governance Across The Full Asset Lifecycle',
+    desc: 'EPIX Fixed Assets controls acquisition, categorization, depreciation, transfers, retirement, and reconciliation against accounting books.',
+    capabilitiesTitle: 'Fixed Assets Capabilities',
+    capabilities: [
+      'Asset category, location, and method setup.',
+      'Depreciation schedule and execution controls.',
+      'Acquisition and transaction lifecycle tracking.',
+      'Transfer, retirement, and disposal workflows.',
+      'Asset-to-account reconciliation and reporting.',
+    ],
+    flowTitle: 'Asset Lifecycle Flow',
+    flow: ['Register and classify asset', 'Assign location and depreciation rules', 'Run periodic depreciation', 'Execute transfer or retirement actions', 'Reconcile with accounting records'],
+    galleryTitle: 'Fixed Assets Screens',
+    outcomesTitle: 'Business Outcomes',
+    outcomes: ['Accurate asset valuation', 'Stronger compliance evidence', 'Better capital planning decisions'],
+    close: 'Close',
+  },
+  fr: {
+    backToHome: 'Retour Accueil',
+    title: 'Gouvernance Des Immobilisations Sur Tout Le Cycle De Vie',
+    desc: 'EPIX Immobilisations pilote acquisition, classification, amortissement, transfert, sortie et rapprochement comptable.',
+    capabilitiesTitle: 'Capacites Immobilisations',
+    capabilities: [
+      'Parametrage categories, emplacements et methodes.',
+      'Controle des calendriers et executions d amortissement.',
+      'Suivi du cycle transactions et acquisitions.',
+      'Workflows de transfert, sortie et cession.',
+      'Rapprochement actif-vers-comptabilite et reporting.',
+    ],
+    flowTitle: 'Flux Cycle Actif',
+    flow: ['Enregistrer et classifier actif', 'Affecter emplacement et regles amortissement', 'Executer amortissement periodique', 'Traiter transfert ou sortie', 'Rapprocher avec comptabilite'],
+    galleryTitle: 'Ecrans Immobilisations',
+    outcomesTitle: 'Resultats Metier',
+    outcomes: ['Valorisation fiable des actifs', 'Conformite renforcee', 'Meilleure planification du capital'],
+    close: 'Fermer',
+  },
+  ar: {
+    backToHome: 'ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ط±ط¦ظٹط³ظٹط©',
+    title: 'ط­ظˆظƒظ…ط© ط§ظ„ط£طµظˆظ„ ط§ظ„ط«ط§ط¨طھط© ط¹ط¨ط± ظƒط§ظ…ظ„ ط¯ظˆط±ط© ط§ظ„ط­ظٹط§ط©',
+    desc: 'طھطھط­ظƒظ… ظˆط­ط¯ط© ط§ظ„ط£طµظˆظ„ ط§ظ„ط«ط§ط¨طھط© ظپظٹ EPIX ط¨ط¹ظ…ظ„ظٹط§طھ ط§ظ„ط§ظ‚طھظ†ط§ط، ظˆط§ظ„طھطµظ†ظٹظپ ظˆط§ظ„ط¥ظ‡ظ„ط§ظƒ ظˆط§ظ„ظ†ظ‚ظ„ ظˆط§ظ„ط§ط³طھط¨ط¹ط§ط¯ ظˆط§ظ„ظ…ط·ط§ط¨ظ‚ط© ظ…ط¹ ط§ظ„ط¯ظپط§طھط± ط§ظ„ظ…ط­ط§ط³ط¨ظٹط©.',
+    capabilitiesTitle: 'ظ‚ط¯ط±ط§طھ ط§ظ„ط£طµظˆظ„ ط§ظ„ط«ط§ط¨طھط©',
+    capabilities: [
+      'طھظ‡ظٹط¦ط© ظپط¦ط§طھ ط§ظ„ط£طµظˆظ„ ظˆط§ظ„ظ…ظˆط§ظ‚ط¹ ظˆط·ط±ظ‚ ط§ظ„ط¥ظ‡ظ„ط§ظƒ.',
+      'ط¶ط¨ط· ط¬ط¯ط§ظˆظ„ ط§ظ„ط¥ظ‡ظ„ط§ظƒ ظˆطھط´ط؛ظٹظ„ظ‡ط§ ط¯ظˆط±ظٹط§.',
+      'طھطھط¨ط¹ ط¯ظˆط±ط© ظ…ط¹ط§ظ…ظ„ط§طھ ط§ظ„ط£طµظ„ ظˆط§ظ„ط§ظ‚طھظ†ط§ط،.',
+      'طھط¯ظپظ‚ط§طھ ط§ظ„ظ†ظ‚ظ„ ظˆط§ظ„ط§ط³طھط¨ط¹ط§ط¯ ظˆط§ظ„طھطµط±ظپ.',
+      'ظ…ط·ط§ط¨ظ‚ط© ط³ط¬ظ„ط§طھ ط§ظ„ط£طµظ„ ظ…ط¹ ط§ظ„ط­ط³ط§ط¨ط§طھ ظˆط§ظ„طھظ‚ط§ط±ظٹط±.',
+    ],
+    flowTitle: 'طھط¯ظپظ‚ ط¯ظˆط±ط© ط­ظٹط§ط© ط§ظ„ط£طµظ„',
+    flow: ['طھط³ط¬ظٹظ„ ط§ظ„ط£طµظ„ ظˆطھطµظ†ظٹظپظ‡', 'طھط­ط¯ظٹط¯ ط§ظ„ظ…ظˆظ‚ط¹ ظˆظ‚ظˆط§ط¹ط¯ ط§ظ„ط¥ظ‡ظ„ط§ظƒ', 'طھط´ط؛ظٹظ„ ط§ظ„ط¥ظ‡ظ„ط§ظƒ ط§ظ„ط¯ظˆط±ظٹ', 'طھظ†ظپظٹط° ط§ظ„ظ†ظ‚ظ„ ط£ظˆ ط§ظ„ط§ط³طھط¨ط¹ط§ط¯', 'ظ…ط·ط§ط¨ظ‚ط© ط§ظ„ط¨ظٹط§ظ†ط§طھ ظ…ط¹ ط§ظ„ط³ط¬ظ„ط§طھ ط§ظ„ظ…ط­ط§ط³ط¨ظٹط©'],
+    galleryTitle: 'ط´ط§ط´ط§طھ ط§ظ„ط£طµظˆظ„ ط§ظ„ط«ط§ط¨طھط©',
+    outcomesTitle: 'ظ†طھط§ط¦ط¬ ط§ظ„ط£ط¹ظ…ط§ظ„',
+    outcomes: ['طھظ‚ظٹظٹظ… ط£ط¯ظ‚ ظ„ظ„ط£طµظˆظ„', 'ط¯ظ„ط§ط¦ظ„ ط§ظ…طھط«ط§ظ„ ط£ظ‚ظˆظ‰', 'ظ‚ط±ط§ط±ط§طھ ط£ظپط¶ظ„ ظ„ظ„طھط®ط·ظٹط· ط§ظ„ط±ط£ط³ظ…ط§ظ„ظٹ'],
+    close: 'ط¥ط؛ظ„ط§ظ‚',
+  },
+} as const
+
+const shots: Shot[] = [
+  { src: '/screenshots/5-FA_Dashboard_2026-05-03.png', title: { en: 'Fixed Assets Dashboard', fr: 'Tableau immobilisations', ar: 'ظ„ظˆط­ط© ط§ظ„ط£طµظˆظ„ ط§ظ„ط«ط§ط¨طھط©' }, caption: { en: 'Executive indicators for asset lifecycle governance.', fr: 'Indicateurs executifs de gouvernance du cycle des actifs.', ar: 'ظ…ط¤ط´ط±ط§طھ طھظ†ظپظٹط°ظٹط© ظ„ط­ظˆظƒظ…ط© ط¯ظˆط±ط© ط­ظٹط§ط© ط§ظ„ط£طµظˆظ„.' } },
+  { src: '/screenshots/9-GL-Journals.PNG', title: { en: 'Asset Accounting Linkage', fr: 'Lien comptable des actifs', ar: 'ط§ظ„ط±ط¨ط· ط§ظ„ظ…ط­ط§ط³ط¨ظٹ ظ„ظ„ط£طµظˆظ„' }, caption: { en: 'Posting and reconciliation continuity with GL.', fr: 'Continuite comptabilisation et rapprochement avec GL.', ar: 'ط§ط³طھظ…ط±ط§ط±ظٹط© ط§ظ„طھط±ط­ظٹظ„ ظˆط§ظ„ظ…ط·ط§ط¨ظ‚ط© ظ…ط¹ ط¯ظپطھط± ط§ظ„ط£ط³طھط§ط°.' } },
+  { src: '/screenshots/4-chart-builder2.PNG', title: { en: 'Depreciation Analytics', fr: 'Analytique amortissement', ar: 'طھط­ظ„ظٹظ„ط§طھ ط§ظ„ط¥ظ‡ظ„ط§ظƒ' }, caption: { en: 'Visualization of depreciation and book-value trends.', fr: 'Visualisation des tendances amortissement et valeur nette.', ar: 'طھطµظˆط± ط§طھط¬ط§ظ‡ط§طھ ط§ظ„ط¥ظ‡ظ„ط§ظƒ ظˆط§ظ„ظ‚ظٹظ…ط© ط§ظ„ط¯ظپطھط±ظٹط©.' } },
+]
+
+export function FixedAssetsPage({ lang = 'en' }: { lang?: Lang }) {
+  const [selected, setSelected] = useState<Shot | null>(null)
+  const t = copy[lang]
+
+  return (
+    <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
+      <main className="mx-auto w-full max-w-7xl px-5 pb-16 pt-10 md:px-8 md:pt-14">
+        <a href={`/?lang=${lang}#modules`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline"><ArrowRight size={14} className="rotate-180" />{t.backToHome}</a>
+        <section className="mt-6 rounded-3xl border border-[#d7e4ff] bg-gradient-to-br from-[#f6f9ff] via-white to-[#eef7ff] p-7 md:p-10"><p className="text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">Fixed Assets</p><h1 className="mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.title}</h1><p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.desc}</p></section>
+        <section className="mt-8 grid gap-5 lg:grid-cols-2"><div className="rounded-2xl border border-[var(--line)] bg-white p-6"><h2 className="font-display text-2xl font-bold">{t.capabilitiesTitle}</h2><ul className="mt-4 space-y-3">{t.capabilities.map((line) => <li key={line} className="flex items-start gap-2 text-sm text-[var(--text-muted)]"><CheckCircle2 size={16} className="mt-0.5 shrink-0 text-[var(--brand)]" /><span>{line}</span></li>)}</ul></div><div className="rounded-2xl border border-[var(--line)] bg-white p-6"><h2 className="font-display text-2xl font-bold">{t.flowTitle}</h2><ol className="mt-4 space-y-3">{t.flow.map((step, idx) => <li key={step} className="flex items-start gap-3 text-sm text-[var(--text-muted)]"><span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eef4ff] text-xs font-bold text-[#335fae]">{idx + 1}</span><span>{step}</span></li>)}</ol></div></section>
+        <section className="mt-8"><h2 className="font-display text-2xl font-bold">{t.galleryTitle}</h2><div className="mt-4 grid gap-4 md:grid-cols-3">{shots.map((shot, index) => <motion.article key={shot.src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white"><button type="button" onClick={() => setSelected(shot)} className="block w-full text-left"><div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={shot.title[lang]} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">FA</span></div></button><div className="p-4"><h3 className="font-display text-lg font-semibold">{shot.title[lang]}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{shot.caption[lang]}</p></div></motion.article>)}</div></section>
+        <section className="mt-8 rounded-2xl border border-[#d5e2ff] bg-gradient-to-r from-[#f7fbff] to-[#eef6ff] p-6"><div className="flex items-start gap-3"><BadgeCheck className="mt-1 text-[var(--brand)]" /><div><h2 className="font-display text-2xl font-bold">{t.outcomesTitle}</h2><div className="mt-3 grid gap-3 md:grid-cols-3">{t.outcomes.map((item) => <div key={item} className="rounded-xl border border-[#dbe7ff] bg-white px-4 py-3 text-sm text-[var(--text-muted)]">{item}</div>)}</div></div></div></section>
+      </main>
+      {selected && (
+        <AccessibleImageModal
+          open={Boolean(selected)}
+          onClose={() => setSelected(null)}
+          title={selected.title[lang]}
+          imageSrc={selected.src}
+          imageAlt={selected.title[lang]}
+          closeLabel={t.close}
+          subtitle={selected.caption[lang]}
+        />
+      )}
+    </div>
+  )
+}
