@@ -77,9 +77,26 @@ type ScreenshotItem = {
   caption: string
 }
 
+type SmartFlowStep = {
+  id: string
+  screenshotSrc: string
+  kpi: string
+  title: LocalizedText
+  detail: LocalizedText
+}
+
+type SmartFlow = {
+  id: string
+  title: LocalizedText
+  subtitle: LocalizedText
+  headline: LocalizedText
+  steps: SmartFlowStep[]
+}
+
 const navItems: NavItem[] = [
   { id: 'home', label: { en: 'Home', fr: 'Accueil', ar: 'الرئيسية' } },
   { id: 'about', label: { en: 'About', fr: 'À propos', ar: 'حول النظام' } },
+  { id: 'flows', label: { en: 'Flows', fr: 'Flux', ar: 'تدفقات' } },
   { id: 'modules', label: { en: 'Modules', fr: 'Modules', ar: 'الوحدات' } },
   { id: 'screens', label: { en: 'Screenshots', fr: 'Captures', ar: 'اللقطات' } },
   { id: 'ai', label: { en: 'AI', fr: 'IA', ar: 'الذكاء الاصطناعي' } },
@@ -102,6 +119,22 @@ const iconBySlug: Record<string, ComponentType<{ size?: string | number }>> = {
   'car-inspection': ShieldCheck,
   'human-resources': BarChart3,
   'cash-management': Wallet,
+}
+
+const moduleScreenshot: Record<string, string> = {
+  'business-masters': '/screenshots/3-grid-data.PNG',
+  'petty-cash': '/screenshots/6-petty-cash.PNG',
+  'procure-to-pay': '/screenshots/881-eta-top-customers.PNG',
+  'accounts-payable': '/screenshots/71-payable-volume-summary.PNG',
+  'accounts-receivable': '/screenshots/81-receivable-volume-summary.PNG',
+  'inventory-management': '/screenshots/91-inventory-executive-summary-1.PNG',
+  'shipment-management': '/screenshots/3-grid-data.PNG',
+  'discrete-manufacturing': '/screenshots/92-projects-gantt.PNG',
+  'general-ledger': '/screenshots/9-GL-Journals.PNG',
+  'fixed-assets': '/screenshots/5-FA_Dashboard_2026-05-03.png',
+  'car-inspection': '/screenshots/3-grid-data.PNG',
+  'human-resources': '/screenshots/93-HR_Dashboard_2026-05-03.png',
+  'cash-management': '/screenshots/9-cash-manag-statement-upload.PNG',
 }
 
 const modules: ModuleCardItem[] = moduleCatalog.map((item) => {
@@ -496,6 +529,198 @@ const industries: IndustryItem[] = [
   },
 ]
 
+const flowSectionCopy: Record<Lang, { eyebrow: string; title: string; subtitle: string; openShot: string }> = {
+  en: {
+    eyebrow: 'Smart Visual Flows',
+    title: 'See Real End-To-End Business Execution',
+    subtitle: 'Interactive process flows connect ERP steps with live screenshots so buyers instantly understand business value and control points.',
+    openShot: 'Open Related Screenshot',
+  },
+  fr: {
+    eyebrow: 'Flux Visuels Intelligents',
+    title: 'Visualisez l execution metier de bout en bout',
+    subtitle: 'Des flux interactifs lient chaque etape metier a des captures reelles pour accelerer la comprehension des decideurs.',
+    openShot: 'Ouvrir la capture associee',
+  },
+  ar: {
+    eyebrow: 'تدفقات بصرية ذكية',
+    title: 'شاهد التنفيذ الكامل لتدفق الأعمال خطوة بخطوة',
+    subtitle: 'تربط التدفقات التفاعلية بين مراحل العمل ولقطات النظام الحقيقية لعرض القيمة ونقاط التحكم بشكل فوري.',
+    openShot: 'فتح لقطة الشاشة المرتبطة',
+  },
+}
+
+const smartFlows: SmartFlow[] = [
+  {
+    id: 'p2p',
+    title: { en: 'Procure To Pay', fr: 'Procure To Pay', ar: 'الشراء إلى السداد' },
+    subtitle: { en: 'Supplier Liability Control', fr: 'Controle des engagements fournisseurs', ar: 'التحكم في التزامات الموردين' },
+    headline: {
+      en: 'From supplier invoices to posting and cash discipline in one governed execution path.',
+      fr: 'De la facture fournisseur a la comptabilisation avec une discipline de tresorerie gouvernee.',
+      ar: 'من فاتورة المورد حتى الترحيل والانضباط النقدي ضمن مسار تنفيذي محكوم.',
+    },
+    steps: [
+      {
+        id: 'p2p-1',
+        screenshotSrc: '/screenshots/71-payable-volume-summary.PNG',
+        kpi: 'AP Volume',
+        title: { en: 'Capture Payables Volume', fr: 'Capturer le volume AP', ar: 'التقاط حجم الحسابات الدائنة' },
+        detail: {
+          en: 'Finance leaders monitor invoice throughput and payment workload.',
+          fr: 'Les equipes finance suivent le debit des factures et la charge de paiement.',
+          ar: 'تتابع الإدارة المالية تدفق الفواتير وحجم عمليات السداد.',
+        },
+      },
+      {
+        id: 'p2p-2',
+        screenshotSrc: '/screenshots/72-payable-outstanding-summary.PNG',
+        kpi: 'Outstanding',
+        title: { en: 'Prioritize Open Liabilities', fr: 'Prioriser les passifs ouverts', ar: 'ترتيب أولويات الالتزامات القائمة' },
+        detail: {
+          en: 'Outstanding commitments are grouped for treasury and supplier planning.',
+          fr: 'Les engagements ouverts sont regroupes pour la tresorerie et les fournisseurs.',
+          ar: 'تُجمع الالتزامات المفتوحة لدعم التخطيط النقدي والتعامل مع الموردين.',
+        },
+      },
+      {
+        id: 'p2p-3',
+        screenshotSrc: '/screenshots/73-payable-aging-summary.PNG',
+        kpi: 'Aging Risk',
+        title: { en: 'Control Aging Exposure', fr: 'Maitriser le risque d anciennete', ar: 'ضبط مخاطر الأعمار' },
+        detail: {
+          en: 'Aging insights drive due-date discipline and supplier confidence.',
+          fr: 'L analyse d anciennete renforce la discipline des echeances fournisseurs.',
+          ar: 'تحليلات الأعمار تعزز الالتزام بالمواعيد وثقة الموردين.',
+        },
+      },
+      {
+        id: 'p2p-4',
+        screenshotSrc: '/screenshots/9-cash-manag-statement-upload.PNG',
+        kpi: 'Cash Match',
+        title: { en: 'Match Bank Activity', fr: 'Rapprocher l activite bancaire', ar: 'مطابقة حركة البنوك' },
+        detail: {
+          en: 'Bank statement processing confirms payment execution and reconciliation speed.',
+          fr: 'Le traitement des releves confirme l execution des paiements et le rapprochement.',
+          ar: 'تؤكد معالجة كشوف البنوك تنفيذ المدفوعات وسرعة التسويات.',
+        },
+      },
+      {
+        id: 'p2p-5',
+        screenshotSrc: '/screenshots/9-GL-Journals.PNG',
+        kpi: 'Audit Trail',
+        title: { en: 'Post To General Ledger', fr: 'Comptabiliser au grand livre', ar: 'الترحيل إلى دفتر الأستاذ' },
+        detail: {
+          en: 'Controlled posting closes the loop with full accounting traceability.',
+          fr: 'La comptabilisation gouvernee boucle le cycle avec une tracabilite complete.',
+          ar: 'يغلق الترحيل المحكوم الدورة مع أثر محاسبي قابل للتدقيق.',
+        },
+      },
+    ],
+  },
+  {
+    id: 'o2c',
+    title: { en: 'Order To Cash', fr: 'Order To Cash', ar: 'الطلب إلى التحصيل' },
+    subtitle: { en: 'Receivable Performance', fr: 'Performance des creances', ar: 'أداء الحسابات المدينة' },
+    headline: {
+      en: 'Monitor receivable growth, prioritize collections, and reduce cash-cycle friction.',
+      fr: 'Piloter la croissance des creances, prioriser le recouvrement et accelerer le cycle cash.',
+      ar: 'راقب نمو الذمم المدينة وحدد أولويات التحصيل وخفّض احتكاك دورة النقد.',
+    },
+    steps: [
+      {
+        id: 'o2c-1',
+        screenshotSrc: '/screenshots/81-receivable-volume-summary.PNG',
+        kpi: 'AR Volume',
+        title: { en: 'Track Receivable Throughput', fr: 'Suivre le debit client', ar: 'متابعة تدفق الحسابات المدينة' },
+        detail: {
+          en: 'Executive view of invoicing momentum across customer portfolios.',
+          fr: 'Vue executive de la dynamique de facturation sur le portefeuille clients.',
+          ar: 'رؤية تنفيذية لزخم الفوترة عبر شرائح العملاء.',
+        },
+      },
+      {
+        id: 'o2c-2',
+        screenshotSrc: '/screenshots/82-receivable-outstanding-summary.PNG',
+        kpi: 'Open AR',
+        title: { en: 'Focus On Open Balances', fr: 'Cibler les soldes ouverts', ar: 'التركيز على الأرصدة المفتوحة' },
+        detail: {
+          en: 'Teams segment open balances and launch focused follow-up actions.',
+          fr: 'Les equipes segmentent les soldes ouverts pour des actions ciblees.',
+          ar: 'تقوم الفرق بتجزئة الأرصدة المفتوحة لتنفيذ إجراءات متابعة مركزة.',
+        },
+      },
+      {
+        id: 'o2c-3',
+        screenshotSrc: '/screenshots/83-receivable-aging-summary.PNG',
+        kpi: 'DSO Risk',
+        title: { en: 'Control Aging Buckets', fr: 'Maitriser les tranches d anciennete', ar: 'التحكم في شرائح الأعمار' },
+        detail: {
+          en: 'Aging buckets reveal collection risk and protect cash predictability.',
+          fr: 'Les tranches d anciennete revelent le risque de recouvrement et la prevision cash.',
+          ar: 'تُظهر شرائح الأعمار مخاطر التحصيل وتحسّن توقعات التدفق النقدي.',
+        },
+      },
+      {
+        id: 'o2c-4',
+        screenshotSrc: '/screenshots/881-eta-top-customers.PNG',
+        kpi: 'Top Customers',
+        title: { en: 'Prioritize Key Accounts', fr: 'Prioriser les comptes cles', ar: 'ترتيب أولويات الحسابات الكبرى' },
+        detail: {
+          en: 'Customer concentration insights align collections with account strategy.',
+          fr: 'Les insights clients alignent recouvrement et strategie commerciale.',
+          ar: 'رؤى تركز العملاء تربط التحصيل باستراتيجية إدارة الحسابات.',
+        },
+      },
+    ],
+  },
+  {
+    id: 'h2r',
+    title: { en: 'Hire To Retire', fr: 'Hire To Retire', ar: 'التوظيف إلى نهاية الخدمة' },
+    subtitle: { en: 'HR And Payroll Governance', fr: 'Gouvernance RH et paie', ar: 'حوكمة الموارد البشرية والرواتب' },
+    headline: {
+      en: 'Connect workforce analytics, payroll execution, and finance posting in one lifecycle.',
+      fr: 'Relier analytics RH, execution paie et comptabilisation finance dans un cycle unique.',
+      ar: 'ربط تحليلات القوى العاملة وتشغيل الرواتب والترحيل المالي ضمن دورة موحدة.',
+    },
+    steps: [
+      {
+        id: 'h2r-1',
+        screenshotSrc: '/screenshots/93-HR_Dashboard_2026-05-03.png',
+        kpi: 'Workforce View',
+        title: { en: 'Monitor Workforce Health', fr: 'Suivre la sante des effectifs', ar: 'مراقبة صحة القوى العاملة' },
+        detail: {
+          en: 'Leadership tracks people performance and payroll readiness from one dashboard.',
+          fr: 'La direction suit la performance RH et la preparation paie en un seul ecran.',
+          ar: 'تتابع الإدارة أداء الموارد البشرية وجاهزية الرواتب من لوحة واحدة.',
+        },
+      },
+      {
+        id: 'h2r-2',
+        screenshotSrc: '/screenshots/6-petty-cash.PNG',
+        kpi: 'Employee Claims',
+        title: { en: 'Settle Claims And Advances', fr: 'Regler les avances et frais', ar: 'تسوية السلف والمطالبات' },
+        detail: {
+          en: 'Employee expenses and petty cash flows are settled with policy controls.',
+          fr: 'Les frais collaborateurs sont regles avec des controles de politique.',
+          ar: 'تُسوّى مصروفات الموظفين والعهد النقدية وفق ضوابط السياسات.',
+        },
+      },
+      {
+        id: 'h2r-3',
+        screenshotSrc: '/screenshots/9-GL-Journals.PNG',
+        kpi: 'Payroll Posting',
+        title: { en: 'Post Payroll To GL', fr: 'Comptabiliser la paie', ar: 'ترحيل الرواتب إلى الأستاذ' },
+        detail: {
+          en: 'Payroll journals are posted with clear traceability for compliance and audit.',
+          fr: 'Les journaux de paie sont comptabilises avec une tracabilite claire.',
+          ar: 'يتم ترحيل قيود الرواتب بأثر واضح يدعم الالتزام والتدقيق.',
+        },
+      },
+    ],
+  },
+]
+
 const copy = {
   en: {
     headerCta: 'Start Free Consultation',
@@ -755,10 +980,43 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [selectedShot, setSelectedShot] = useState<(typeof screenshotItems)[number] | null>(null)
+  const [activeFlowId, setActiveFlowId] = useState(smartFlows[0].id)
+  const [activeShotIndex, setActiveShotIndex] = useState(0)
+  const [screenFilter, setScreenFilter] = useState('all')
   const sectionIds = useMemo(() => navItems.map((item) => item.id), [])
   const t = copy[lang]
   const isRtl = lang === 'ar'
+  const flowText = flowSectionCopy[lang]
+  const activeFlow = smartFlows.find((flow) => flow.id === activeFlowId) ?? smartFlows[0]
   const localizedShot = (shot: ScreenshotItem) => screenshotLocalized[shot.src]
+  const featuredScreens = useMemo(() => screenshotItems.slice(0, 6), [])
+  const activeShot = featuredScreens[activeShotIndex % featuredScreens.length]
+  const activeShotI18n = localizedShot(activeShot)
+  const screenFilterOptions = useMemo(() => {
+    const seen = new Set<string>()
+    const options: Array<{ key: string; label: string }> = []
+
+    screenshotItems.forEach((shot) => {
+      if (seen.has(shot.module)) {
+        return
+      }
+      seen.add(shot.module)
+      options.push({ key: shot.module, label: screenshotLocalized[shot.src]?.module[lang] ?? shot.module })
+    })
+
+    return options
+  }, [lang])
+  const filteredScreens = useMemo(
+    () => (screenFilter === 'all' ? screenshotItems : screenshotItems.filter((shot) => shot.module === screenFilter)),
+    [screenFilter],
+  )
+
+  const openFlowScreenshot = (screenshotSrc: string) => {
+    const match = screenshotItems.find((shot) => shot.src === screenshotSrc)
+    if (match) {
+      setSelectedShot(match)
+    }
+  }
 
   useEffect(() => {
     document.documentElement.lang = lang
@@ -817,6 +1075,18 @@ function App() {
     window.addEventListener('keydown', onEsc)
     return () => window.removeEventListener('keydown', onEsc)
   }, [])
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveShotIndex((previous) => (previous + 1) % featuredScreens.length)
+    }, 4800)
+
+    return () => window.clearInterval(timer)
+  }, [featuredScreens.length])
 
   const scrollTo = (id: string) => {
     setMenuOpen(false)
@@ -895,8 +1165,6 @@ function App() {
 
   return (
     <div className={`relative overflow-hidden ${isRtl ? 'lang-ar' : ''}`}>
-      <div className="hero-glow pointer-events-none absolute left-1/2 top-[-220px] -z-10 h-[520px] w-[780px] -translate-x-1/2 rounded-full" />
-
       <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
           <button onClick={() => scrollTo('home')} className="flex items-center gap-2" aria-label="EPIX home">
@@ -978,65 +1246,159 @@ function App() {
       </header>
 
       <main className="mx-auto w-full max-w-7xl px-5 pb-20 pt-28 md:px-8 md:pt-32">
-        <section id="home" className="grid items-center gap-10 py-10 md:grid-cols-[1.05fr_0.95fr] md:py-16">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-cyan/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand)]">
-              {t.heroBadge}
-            </p>
-            <h1 className="font-display text-4xl font-extrabold leading-[1.04] text-[var(--text)] md:text-[64px]">{t.heroTitle}</h1>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">{t.heroDesc}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button className="rounded-xl bg-[var(--brand)] px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-[#124cd7]">{t.heroPrimary}</button>
-              <button className="rounded-xl border border-[var(--line)] bg-white px-6 py-3 font-semibold text-[var(--text)]">{t.heroSecondary}</button>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-4 text-sm text-[var(--text-muted)]">
-              {t.heroPills.map((pill) => (
-                <span key={pill} className="inline-flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-[var(--brand)]" />
-                  {pill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+        <section id="home" className="relative isolate py-12 md:py-20">
+          <div className="hero-mesh" aria-hidden="true">
+            <div className="hero-grid-overlay" />
+            <span className="hero-orb hero-orb-a" />
+            <span className="hero-orb hero-orb-b" />
+            <span className="hero-orb hero-orb-c" />
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12 }}
-            className="rounded-[28px] border border-[var(--line)] bg-white p-5 shadow-panel md:p-6"
-          >
-            <div className="rounded-2xl border border-[#d5e2ff] bg-[#f6f9ff] p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#2f62d8]">{t.boardTitle}</p>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-white p-3">
-                  <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[0]}</p>
-                  <p className="font-display text-xl font-bold text-[var(--text)]">$8.4M</p>
+          <div className="grid items-center gap-12 md:grid-cols-[1.05fr_0.95fr]">
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgba(29,93,242,0.18)] bg-white/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--brand)] backdrop-blur-md">
+                <span className="hero-badge-pulse-dot" />
+                {t.heroBadge}
+              </p>
+
+              <h1 className="hero-headline font-display text-[40px] font-extrabold leading-[1.05] text-[var(--text)] sm:text-5xl md:text-[68px]">
+                <span className="hero-headline-accent">EPIX</span> — {t.heroTitle}
+              </h1>
+
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">{t.heroDesc}</p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button className="hero-cta-primary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
+                  {t.heroPrimary}
+                  <ArrowRight size={16} />
+                </button>
+                <button className="hero-cta-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
+                  {t.heroSecondary}
+                </button>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-2 text-xs text-[var(--text)] md:text-sm">
+                {t.heroPills.map((pill) => (
+                  <span key={pill} className="hero-pill inline-flex items-center gap-2">
+                    <CheckCircle2 size={14} className="text-[var(--brand)]" />
+                    {pill}
+                  </span>
+                ))}
+              </div>
+
+              <div className="hero-trust-strip mt-10 grid grid-cols-3 gap-4 px-5 py-4 text-center">
+                <div>
+                  <p className="font-display text-2xl font-extrabold text-[var(--text)]">13+</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">Modules</p>
                 </div>
-                <div className="rounded-xl bg-white p-3">
-                  <p className="text-xs text-[var(--text-muted)]">Margin</p>
-                  <p className="font-display text-xl font-bold text-[var(--text)]">31.2%</p>
+                <div className="border-x border-[rgba(29,93,242,0.12)]">
+                  <p className="font-display text-2xl font-extrabold text-[var(--text)]">3</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">Languages</p>
                 </div>
-                <div className="rounded-xl bg-white p-3">
-                  <p className="text-xs text-[var(--text-muted)]">Open Tasks</p>
-                  <p className="font-display text-xl font-bold text-[var(--text)]">278</p>
-                </div>
-                <div className="rounded-xl bg-white p-3">
-                  <p className="text-xs text-[var(--text-muted)]">Cash</p>
-                  <p className="font-display text-xl font-bold text-[var(--text)]">+18.4%</p>
+                <div>
+                  <p className="font-display text-2xl font-extrabold text-[var(--text)]">99.9%</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">Uptime SLA</p>
                 </div>
               </div>
-            </div>
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <div className="rounded-xl border border-[var(--line)] p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-[var(--text-muted)]">AI</p>
-                <p className="mt-1 text-sm font-medium text-[var(--text)]">{t.aiCards[0].title}</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.12 }}
+              className="relative"
+            >
+              <div className="hero-showcase p-4 md:p-5">
+                <div className="mb-3 flex items-center justify-between rounded-xl border border-[rgba(29,93,242,0.12)] bg-white/70 px-3 py-2 backdrop-blur">
+                  <div className="flex items-center gap-1.5">
+                    <span className="hero-window-dot" style={{ background: '#f76d57' }} />
+                    <span className="hero-window-dot" style={{ background: '#ffbd44' }} />
+                    <span className="hero-window-dot" style={{ background: '#59d6b8' }} />
+                  </div>
+                  <p className="truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4f6ea4]">
+                    epix.app / {activeShotI18n.module[lang]}
+                  </p>
+                  <span className="text-[11px] font-semibold text-[#0a8f6b]">● LIVE</span>
+                </div>
+
+                <div className="relative overflow-hidden rounded-xl border border-[#d7e5ff] bg-white">
+                  <img
+                    key={activeShot.src}
+                    src={activeShot.src}
+                    alt={`${activeShotI18n.title[lang]} - ${activeShotI18n.module[lang]}`}
+                    loading="eager"
+                    decoding="async"
+                    className="h-[300px] w-full object-cover object-top md:h-[360px]"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0f2345]/45 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
+                      {activeShotI18n.module[lang]}
+                    </p>
+                    <p className="mt-0.5 font-display text-base font-bold text-white md:text-lg">
+                      {activeShotI18n.title[lang]}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex flex-wrap gap-2">
+                    {featuredScreens.map((shot, index) => {
+                      const shotI18n = localizedShot(shot)
+                      return (
+                        <button
+                          key={shot.src}
+                          type="button"
+                          onClick={() => setActiveShotIndex(index)}
+                          aria-label={`Show ${shotI18n.title[lang]}`}
+                          className={`h-2.5 rounded-full transition-all ${
+                            index === activeShotIndex
+                              ? 'w-8 bg-gradient-to-r from-[#1d5df2] to-[#0ea5a8]'
+                              : 'w-2.5 bg-[#bcd0f2] hover:bg-[#8eafeb]'
+                          }`}
+                        />
+                      )
+                    })}
+                  </div>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#5f7cb0]">
+                    {activeShotIndex + 1} / {featuredScreens.length}
+                  </span>
+                </div>
               </div>
-              <div className="rounded-xl border border-[var(--line)] p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-[var(--text-muted)]">Workflow</p>
-                <p className="mt-1 text-sm font-medium text-[var(--text)]">97.8% on-time</p>
+
+              <div className="hero-float pointer-events-none absolute -left-4 top-10 hidden rounded-2xl border border-[rgba(29,93,242,0.18)] bg-white/90 px-4 py-3 shadow-xl backdrop-blur md:block">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-[#eef4ff] p-2 text-[#1d5df2]">
+                    <BarChart3 size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#5f7cb0]">Revenue</p>
+                    <p className="font-display text-lg font-extrabold text-[var(--text)]">$8.4M</p>
+                  </div>
+                  <span className="rounded-full bg-[#dff5ec] px-2 py-0.5 text-[11px] font-bold text-[#0a8f6b]">+18.4%</span>
+                </div>
               </div>
-            </div>
-          </motion.div>
+
+              <div className="hero-float hero-float-delay pointer-events-none absolute -right-3 bottom-8 hidden rounded-2xl border border-[rgba(14,165,168,0.25)] bg-white/90 px-4 py-3 shadow-xl backdrop-blur md:block">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-[#e6fbf7] p-2 text-[#0ea5a8]">
+                    <Bot size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#5f7cb0]">AI Insight</p>
+                    <p className="text-sm font-semibold text-[var(--text)]">Anomaly cleared</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="hero-float pointer-events-none absolute -top-4 right-6 hidden rounded-full border border-[rgba(29,93,242,0.18)] bg-white/90 px-3 py-1.5 shadow-lg backdrop-blur md:inline-flex">
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[var(--text)]">
+                  <ShieldCheck size={14} className="text-[#0ea5a8]" />
+                  Audit Ready
+                </span>
+              </div>
+            </motion.div>
+          </div>
         </section>
 
         <section id="about" className="py-16 md:py-24">
@@ -1046,18 +1408,27 @@ function App() {
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-3xl border border-[#d5e2ff] bg-gradient-to-br from-[#f7faff] via-white to-[#eef4ff] p-7 md:p-9"
+              className="about-visual-panel rounded-3xl border border-[#d5e2ff] bg-gradient-to-br from-[#f7faff] via-white to-[#eef4ff] p-7 md:p-9"
             >
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2f62d8]">{t.aboutPanelTag}</p>
               <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-[var(--text)] md:text-4xl">{t.aboutPanelTitle}</h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.aboutPanelText}</p>
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {t.aboutMetrics.map((item) => (
-                  <div key={item.label} className="rounded-xl border border-[#d7e3fb] bg-white px-4 py-3">
+                  <div key={item.label} className="glass-stat rounded-xl px-4 py-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">{item.label}</p>
                     <p className="mt-1 font-display text-lg font-semibold text-[var(--text)]">{item.value}</p>
                   </div>
                 ))}
+              </div>
+              <div className="mt-8 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white">
+                <img
+                  src="/screenshots/2-home-page.PNG"
+                  alt="EPIX Unified Home Dashboard"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-48 w-full object-cover object-top md:h-56"
+                />
               </div>
             </motion.article>
 
@@ -1069,9 +1440,9 @@ function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className="rounded-2xl border border-[var(--line)] bg-white p-5"
+                  className="rounded-2xl border border-[var(--line)] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#c6d7ff] hover:shadow-md"
                 >
-                  <div className="mb-3 inline-flex rounded-lg bg-[#eef4ff] p-1.5 text-[#2f62d8]">
+                  <div className="mb-3 inline-flex rounded-lg bg-gradient-to-br from-[#eef4ff] to-[#e6fbf7] p-2 text-[#2f62d8]">
                     <CheckCircle2 size={15} />
                   </div>
                   <h3 className="font-display text-lg font-bold text-[var(--text)]">{item.title}</h3>
@@ -1082,11 +1453,99 @@ function App() {
           </div>
         </section>
 
+        <section id="flows" className="py-16 md:py-24">
+          <SectionTitle eyebrow={flowText.eyebrow} title={flowText.title} subtitle={flowText.subtitle} />
+          <div className="flow-stage rounded-3xl border border-[#ceddff] p-5 md:p-7">
+            <div className="flex flex-wrap gap-2">
+              {smartFlows.map((flow) => (
+                <button
+                  key={flow.id}
+                  type="button"
+                  onClick={() => setActiveFlowId(flow.id)}
+                  className={`flow-tab rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                    activeFlowId === flow.id
+                      ? 'border-[#2d63d5] bg-[#2d63d5] text-white shadow-sm'
+                      : 'border-[#cfe0ff] bg-white text-[#46689c] hover:border-[#9ebeff]'
+                  }`}
+                >
+                  {flow.title[lang]}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-5 rounded-2xl border border-[#d7e5ff] bg-white/90 p-5 md:p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#4067a8]">{activeFlow.subtitle[lang]}</p>
+              <h3 className="mt-2 font-display text-2xl font-bold text-[var(--text)] md:text-3xl">{activeFlow.title[lang]}</h3>
+              <p className="mt-3 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{activeFlow.headline[lang]}</p>
+
+              <div className="mt-6 mb-8 flow-diagram">
+                {activeFlow.steps.map((step, index) => (
+                  <div key={step.id} className="contents">
+                    <div className="flow-diagram-step">
+                      <span className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#1d5df2] to-[#0ea5a8] text-xs font-bold text-white shadow-sm">
+                        {index + 1}
+                      </span>
+                      <p className="text-xs font-semibold text-[var(--text)] md:text-sm">{step.title[lang]}</p>
+                      <p className="mt-1 hidden text-[10px] text-[var(--text-muted)] md:block">{step.kpi}</p>
+                    </div>
+                    {index < activeFlow.steps.length - 1 && (
+                      <div className="flow-diagram-connector">
+                        <ArrowRight size={16} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {activeFlow.steps.map((step, index) => {
+                  const shotI18n = screenshotLocalized[step.screenshotSrc]
+                  return (
+                    <motion.button
+                      key={step.id}
+                      type="button"
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.04 }}
+                      onClick={() => openFlowScreenshot(step.screenshotSrc)}
+                      className="flow-step-card group rounded-2xl border border-[#dbe7ff] bg-white p-4 text-left"
+                    >
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#edf3ff] text-xs font-bold text-[#355da8]">{index + 1}</span>
+                        <span className="rounded-full border border-[#d8e6ff] bg-[#f7fbff] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#5678b3]">
+                          {step.kpi}
+                        </span>
+                      </div>
+                      <h4 className="font-display text-lg font-semibold text-[var(--text)]">{step.title[lang]}</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{step.detail[lang]}</p>
+                      <div className="mt-4 overflow-hidden rounded-xl border border-[#dce8ff] bg-[#edf4ff]">
+                        <img
+                          src={step.screenshotSrc}
+                          alt={`${step.title[lang]} - ${shotI18n.title[lang]}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-40 w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]"
+                        />
+                      </div>
+                      <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)]">
+                        {flowText.openShot}
+                        <ArrowRight size={14} />
+                      </span>
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="modules" className="py-16 md:py-24">
           <SectionTitle eyebrow={t.modulesEyebrow} title={t.modulesTitle} subtitle={t.modulesSubtitle} />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {modules.map((item, index) => {
               const Icon = item.icon
+              const thumb = moduleScreenshot[item.slug]
               return (
                 <motion.article
                   key={item.name.en}
@@ -1094,34 +1553,48 @@ function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className="group rounded-2xl border border-[var(--line)] bg-white p-6 transition hover:-translate-y-0.5 hover:border-[#c6d7ff] hover:shadow-lg"
+                  className="module-card-enhanced group rounded-2xl border border-[var(--line)] bg-white"
                 >
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="inline-flex rounded-xl bg-[#eef4ff] p-2 text-[#2f62d8]">
-                      <Icon size={18} />
+                  {thumb && (
+                    <div className="relative h-36 overflow-hidden rounded-t-2xl bg-[#edf4ff]">
+                      <img
+                        src={thumb}
+                        alt={`${item.name[lang]} preview`}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]"
+                      />
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white to-transparent" />
+                      <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#496ca9] backdrop-blur-sm">
+                        {t.moduleTag}
+                      </span>
                     </div>
-                    <span className="rounded-full bg-[#f3f7ff] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#496ca9]">
-                      {t.moduleTag}
-                    </span>
+                  )}
+                  <div className="p-6">
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="inline-flex rounded-xl bg-gradient-to-br from-[#eef4ff] to-[#e6fbf7] p-2.5 text-[#2f62d8]">
+                        <Icon size={20} />
+                      </div>
+                      <h3 className="font-display text-xl font-semibold text-[var(--text)]">{item.name[lang]}</h3>
+                    </div>
+                    <p className="text-sm leading-relaxed text-[var(--text-muted)]">{item.executive[lang]}</p>
+                    <p className="mt-4 text-xs font-bold uppercase tracking-[0.15em] text-[#5f7cb0]">{t.keyCapabilities}</p>
+                    <ul className="mt-2 space-y-2.5 border-t border-[var(--line)] pt-3.5">
+                      {item.details.slice(0, 2).map((detail) => (
+                        <li key={detail.en} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
+                          <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-[var(--brand)]" />
+                          <span>{detail[lang]}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href={`/modules/${item.slug}?lang=${lang}`}
+                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline"
+                    >
+                      {t.modulePageCta}
+                      <ArrowRight size={14} />
+                    </a>
                   </div>
-                  <h3 className="font-display text-xl font-semibold text-[var(--text)]">{item.name[lang]}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{item.executive[lang]}</p>
-                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.15em] text-[#5f7cb0]">{t.keyCapabilities}</p>
-                  <ul className="mt-2 space-y-2.5 border-t border-[var(--line)] pt-3.5">
-                    {item.details.slice(0, 2).map((detail) => (
-                      <li key={detail.en} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
-                        <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-[var(--brand)]" />
-                        <span>{detail[lang]}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href={`/modules/${item.slug}?lang=${lang}`}
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline"
-                  >
-                    {t.modulePageCta}
-                    <ArrowRight size={14} />
-                  </a>
                 </motion.article>
               )
             })}
@@ -1133,8 +1606,35 @@ function App() {
           <div className="mb-8 rounded-2xl border border-[#dbe7ff] bg-gradient-to-r from-[#f2f7ff] to-[#edf8ff] p-5 md:p-6">
             <p className="text-sm leading-relaxed text-[var(--text-muted)]">{t.screensText}</p>
           </div>
+          <div className="mb-6 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setScreenFilter('all')}
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                screenFilter === 'all'
+                  ? 'border-[#2d63d5] bg-[#2d63d5] text-white'
+                  : 'border-[#ceddf8] bg-white text-[#4f6ea4] hover:border-[#9ebeff]'
+              }`}
+            >
+              {lang === 'fr' ? 'Tous les modules' : lang === 'ar' ? 'كل الوحدات' : 'All Modules'}
+            </button>
+            {screenFilterOptions.map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                onClick={() => setScreenFilter(option.key)}
+                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                  screenFilter === option.key
+                    ? 'border-[#2d63d5] bg-[#2d63d5] text-white'
+                    : 'border-[#ceddf8] bg-white text-[#4f6ea4] hover:border-[#9ebeff]'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {screenshotItems.map((shot, index) => (
+            {filteredScreens.map((shot, index) => (
               (() => {
                 const shotI18n = localizedShot(shot)
                 return (
@@ -1179,15 +1679,24 @@ function App() {
         </section>
 
         <section id="ai" className="py-16 md:py-24">
-          <div className="grid gap-6 rounded-3xl border border-[#d5e2ff] bg-gradient-to-r from-[#f4f8ff] to-[#eef8f8] p-6 md:grid-cols-[1fr_1fr] md:p-10">
+          <div className="ai-section-glow grid gap-6 rounded-3xl border border-[#d5e2ff] bg-gradient-to-r from-[#f4f8ff] to-[#eef8f8] p-6 md:grid-cols-[1fr_1fr] md:p-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#2f62d8]">{t.aiTag}</p>
               <h3 className="mt-3 font-display text-3xl font-bold text-[var(--text)] md:text-4xl">{t.aiTitle}</h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.aiText}</p>
-              <button className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[var(--brand)] px-5 py-3 text-sm font-semibold text-white">
+              <button className="hero-cta-primary mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold">
                 {t.aiCta}
                 <ArrowRight size={16} />
               </button>
+              <div className="mt-6 overflow-hidden rounded-xl border border-[#d7e5ff]">
+                <img
+                  src="/screenshots/4-chart-builder.PNG"
+                  alt="EPIX Analytics Chart Builder"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-44 w-full object-cover object-top"
+                />
+              </div>
             </div>
             <div className="grid gap-3">
               {[
@@ -1195,12 +1704,12 @@ function App() {
                 { icon: Cloud, ...t.aiCards[1] },
                 { icon: ShieldCheck, ...t.aiCards[2] },
               ].map(({ icon: Icon, title, text }) => (
-                <div key={title} className="rounded-xl border border-[#d5e2ff] bg-white p-4">
-                  <div className="inline-flex rounded-lg bg-[#eef4ff] p-2 text-[#2f62d8]">
-                    <Icon size={16} />
+                <div key={title} className="rounded-xl border border-[#d5e2ff] bg-white/80 p-5 backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                  <div className="inline-flex rounded-lg bg-gradient-to-br from-[#eef4ff] to-[#e6fbf7] p-2.5 text-[#2f62d8]">
+                    <Icon size={18} />
                   </div>
-                  <p className="mt-3 font-semibold text-[var(--text)]">{title}</p>
-                  <p className="mt-1 text-sm text-[var(--text-muted)]">{text}</p>
+                  <p className="mt-3 font-display text-lg font-semibold text-[var(--text)]">{title}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{text}</p>
                 </div>
               ))}
             </div>
@@ -1210,44 +1719,57 @@ function App() {
         <section id="industries" className="py-16 md:py-24">
           <SectionTitle eyebrow={t.industriesEyebrow} title={t.industriesTitle} subtitle={t.industriesSubtitle} />
           <div className="grid gap-4 md:grid-cols-2">
-            {industries.map(({ title, text, icon: Icon }) => (
-              <div key={title.en} className="rounded-2xl border border-[var(--line)] bg-white p-6">
-                <div className="inline-flex rounded-xl bg-[#eef4ff] p-2 text-[#2f62d8]">
-                  <Icon size={18} />
+            {industries.map(({ title, text, icon: Icon }, index) => (
+              <motion.div
+                key={title.en}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.06 }}
+                className="group rounded-2xl border border-[var(--line)] bg-white p-6 transition hover:-translate-y-0.5 hover:border-[#c6d7ff] hover:shadow-lg"
+              >
+                <div className="inline-flex rounded-xl bg-gradient-to-br from-[#eef4ff] to-[#e6fbf7] p-3 text-[#2f62d8] shadow-sm">
+                  <Icon size={22} />
                 </div>
                 <h3 className="mt-3 font-display text-2xl font-semibold text-[var(--text)]">{title[lang]}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{text[lang]}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
 
         <section id="preview" className="py-16 md:py-24">
           <SectionTitle eyebrow={t.previewEyebrow} title={t.previewTitle} subtitle={t.previewSubtitle} />
-          <div className="rounded-3xl border border-[var(--line)] bg-white p-5 shadow-panel md:p-7">
+          <div className="hero-showcase p-5 md:p-7">
+            <div className="mb-4 flex items-center gap-1.5 rounded-xl border border-[rgba(29,93,242,0.12)] bg-white/70 px-3 py-2 backdrop-blur">
+              <span className="hero-window-dot" style={{ background: '#f76d57' }} />
+              <span className="hero-window-dot" style={{ background: '#ffbd44' }} />
+              <span className="hero-window-dot" style={{ background: '#59d6b8' }} />
+              <span className="ml-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4f6ea4]">epix.app / dashboard</span>
+            </div>
             <div className="grid gap-4 md:grid-cols-[1.25fr_1fr]">
-              <div className="rounded-2xl border border-[var(--line)] p-4">
+              <div className="rounded-2xl border border-[var(--line)] bg-white/80 p-4 backdrop-blur-sm">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">{t.boardTitle}</p>
                 <div className="mt-3 grid grid-cols-3 gap-3 text-center">
-                  <div className="rounded-lg bg-[var(--bg-soft)] p-3">
+                  <div className="glass-stat rounded-lg p-3">
                     <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[0]}</p>
                     <p className="font-display text-lg font-bold text-[var(--text)]">$8.4M</p>
                   </div>
-                  <div className="rounded-lg bg-[var(--bg-soft)] p-3">
+                  <div className="glass-stat rounded-lg p-3">
                     <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[1]}</p>
                     <p className="font-display text-lg font-bold text-[var(--text)]">$4.1M</p>
                   </div>
-                  <div className="rounded-lg bg-[var(--bg-soft)] p-3">
+                  <div className="glass-stat rounded-lg p-3">
                     <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[2]}</p>
                     <p className="font-display text-lg font-bold text-[var(--text)]">$2.2M</p>
                   </div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-[var(--line)] p-4">
+              <div className="rounded-2xl border border-[var(--line)] bg-white/80 p-4 backdrop-blur-sm">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">{t.timelineTitle}</p>
                 <ul className="mt-3 space-y-3 text-sm text-[var(--text)]">
                   {t.timelineItems.map((item) => (
-                    <li key={item} className="rounded-lg bg-[var(--bg-soft)] p-3">
+                    <li key={item} className="rounded-lg border border-[rgba(29,93,242,0.1)] bg-[var(--bg-soft)] p-3">
                       {item}
                     </li>
                   ))}
@@ -1263,7 +1785,7 @@ function App() {
             {stats.map((item) => (
               <InView key={item.label.en} triggerOnce>
                 {({ inView, ref }) => (
-                  <div ref={ref} className="rounded-2xl border border-[var(--line)] bg-white p-5 text-center">
+                  <div ref={ref} className="glass-stat rounded-2xl p-5 text-center">
                     <p className="font-display text-4xl font-extrabold text-[var(--brand)]">
                       {inView ? <CountUp end={item.value} duration={2.1} /> : 0}
                       {item.suffix}
@@ -1277,14 +1799,14 @@ function App() {
         </section>
 
         <section id="contact" className="py-16 md:py-24">
-          <div className="rounded-3xl border border-[#cddcff] bg-gradient-to-r from-[#f4f8ff] to-[#f8fcff] p-7 md:p-10">
+          <div className="ai-section-glow rounded-3xl border border-[#cddcff] bg-gradient-to-r from-[#f4f8ff] to-[#f8fcff] p-7 md:p-10">
             <SectionTitle eyebrow={t.contactEyebrow} title={t.contactTitle} subtitle={t.contactSubtitle} />
             <form className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
-              <input className="rounded-xl border border-[#ccd9f3] bg-white px-4 py-3" placeholder={t.placeholders.fullName} />
-              <input className="rounded-xl border border-[#ccd9f3] bg-white px-4 py-3" placeholder={t.placeholders.workEmail} />
-              <input className="rounded-xl border border-[#ccd9f3] bg-white px-4 py-3 md:col-span-2" placeholder={t.placeholders.company} />
-              <textarea className="min-h-32 rounded-xl border border-[#ccd9f3] bg-white px-4 py-3 md:col-span-2" placeholder={t.placeholders.priorities} />
-              <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--brand)] px-5 py-3 font-semibold text-white md:col-span-2">
+              <input className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.fullName} />
+              <input className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.workEmail} />
+              <input className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.company} />
+              <textarea className="min-h-32 rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.priorities} />
+              <button className="hero-cta-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold md:col-span-2">
                 {t.contactCta}
                 <ArrowRight size={16} />
               </button>

@@ -251,19 +251,29 @@ export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
           {t.backToHome}
         </a>
 
-        <section className="mt-6 rounded-3xl border border-[#d7e4ff] bg-gradient-to-br from-[#f6f9ff] via-white to-[#eef7ff] p-7 md:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">{t.breadcrumb}</p>
-          <h1 className="mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.heroTitle}</h1>
-          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.heroDesc}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button className="rounded-xl bg-[var(--brand)] px-5 py-3 font-semibold text-white">{t.heroPrimary}</button>
-            <button className="rounded-xl border border-[#cad9f7] bg-white px-5 py-3 font-semibold">{t.heroSecondary}</button>
+        <section className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">
+          <p className="relative text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">{t.breadcrumb}</p>
+          <h1 className="relative mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.heroTitle}</h1>
+          <p className="relative mt-4 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.heroDesc}</p>
+          <div className="relative mt-6 flex flex-wrap gap-3">
+            <button className="hero-cta-primary rounded-xl px-5 py-3 font-semibold">{t.heroPrimary}</button>
+            <button className="hero-cta-secondary rounded-xl px-5 py-3 font-semibold">{t.heroSecondary}</button>
+          </div>
+          <div className="relative mt-8 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-lg">
+            <img
+              src="/screenshots/71-payable-volume-summary.PNG"
+              alt="Accounts Payable Dashboard"
+              loading="eager"
+              decoding="async"
+              className="h-52 w-full object-cover object-top md:h-64"
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white to-transparent" />
           </div>
         </section>
 
         <section className="mt-8 grid gap-4 md:grid-cols-3">
           {topStats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-[var(--line)] bg-white p-5">
+            <div key={stat.label} className="glass-stat rounded-2xl p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">{stat.label}</p>
               <p className="mt-1 font-display text-2xl font-bold text-[var(--brand)]">{stat.value}</p>
             </div>
@@ -278,16 +288,18 @@ export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
         <section className="mt-8 grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-[var(--line)] bg-white p-6">
             <h3 className="font-display text-2xl font-bold">{t.flowTitle}</h3>
-            <ol className="mt-4 space-y-3">
+            <div className="flow-pipeline mt-5">
               {t.flowSteps.map((step, idx) => (
-                <li key={step} className="flex items-start gap-3 text-sm text-[var(--text-muted)]">
-                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eef4ff] text-xs font-bold text-[#335fae]">
-                    {idx + 1}
-                  </span>
-                  <span>{step}</span>
-                </li>
+                <div key={step} className="flow-pipeline-step">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1d5df2] to-[#0ea5a8] text-xs font-bold text-white shadow-sm">
+                      {idx + 1}
+                    </span>
+                    <span className="text-sm font-medium text-[var(--text)]">{step}</span>
+                  </div>
+                </div>
               ))}
-            </ol>
+            </div>
           </div>
 
           <div className="rounded-2xl border border-[var(--line)] bg-white p-6">
@@ -306,14 +318,14 @@ export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
         <section className="mt-8 rounded-2xl border border-[var(--line)] bg-white p-6">
           <h3 className="font-display text-2xl font-bold">{t.comparisonTitle}</h3>
           <div className="mt-5 overflow-hidden rounded-xl border border-[var(--line)]">
-            <div className="grid grid-cols-2 bg-[#f3f7ff] text-sm font-bold">
-              <div className="px-4 py-3">{t.comparisonManual}</div>
-              <div className="border-l border-[#d8e5ff] px-4 py-3">{t.comparisonEpix}</div>
+            <div className="grid grid-cols-2 bg-gradient-to-r from-[#f3f7ff] to-[#edf8f8] text-sm font-bold">
+              <div className="px-4 py-3 text-[#5f7391]">{t.comparisonManual}</div>
+              <div className="border-l border-[#d8e5ff] px-4 py-3 text-[#1d5df2]">{t.comparisonEpix}</div>
             </div>
             {t.comparisonRows.map((row) => (
               <div key={row.m} className="grid grid-cols-2 border-t border-[var(--line)] text-sm">
                 <div className="px-4 py-3 text-[var(--text-muted)]">{row.m}</div>
-                <div className="border-l border-[var(--line)] px-4 py-3 text-[var(--text)]">{row.e}</div>
+                <div className="comparison-row-epix border-l border-[var(--line)] px-4 py-3 font-medium text-[var(--text)]">{row.e}</div>
               </div>
             ))}
           </div>

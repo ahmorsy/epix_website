@@ -97,10 +97,20 @@ export function InventoryManagementPage({ lang = 'en' }: { lang?: Lang }) {
           {t.backToHome}
         </a>
 
-        <section className="mt-6 rounded-3xl border border-[#d7e4ff] bg-gradient-to-br from-[#f6f9ff] via-white to-[#eef7ff] p-7 md:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">Inventory Management</p>
-          <h1 className="mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.title}</h1>
-          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.desc}</p>
+        <section className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">
+          <p className="relative text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">Inventory Management</p>
+          <h1 className="relative mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.title}</h1>
+          <p className="relative mt-4 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.desc}</p>
+          <div className="relative mt-8 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-lg">
+            <img
+              src="/screenshots/91-inventory-executive-summary-1.PNG"
+              alt="Inventory Executive Summary"
+              loading="eager"
+              decoding="async"
+              className="h-52 w-full object-cover object-top md:h-64"
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white to-transparent" />
+          </div>
         </section>
 
         <section className="mt-8 grid gap-5 lg:grid-cols-2">
@@ -114,11 +124,18 @@ export function InventoryManagementPage({ lang = 'en' }: { lang?: Lang }) {
           </div>
           <div className="rounded-2xl border border-[var(--line)] bg-white p-6">
             <h2 className="font-display text-2xl font-bold">{t.flowTitle}</h2>
-            <ol className="mt-4 space-y-3">
+            <div className="flow-pipeline mt-5">
               {t.flow.map((step, idx) => (
-                <li key={step} className="flex items-start gap-3 text-sm text-[var(--text-muted)]"><span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eef4ff] text-xs font-bold text-[#335fae]">{idx + 1}</span><span>{step}</span></li>
+                <div key={step} className="flow-pipeline-step">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1d5df2] to-[#0ea5a8] text-xs font-bold text-white shadow-sm">
+                      {idx + 1}
+                    </span>
+                    <span className="text-sm font-medium text-[var(--text)]">{step}</span>
+                  </div>
+                </div>
               ))}
-            </ol>
+            </div>
           </div>
         </section>
 
