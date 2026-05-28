@@ -6,25 +6,15 @@ import CountUp from 'react-countup'
 import { InView } from 'react-intersection-observer'
 import {
   ArrowRight,
-  BadgeCheck,
   BarChart3,
   Bot,
-  Boxes,
   Building2,
   CheckCircle2,
-  CircleDollarSign,
   Cloud,
   Factory,
-  FileText,
   Globe2,
-  Image,
-  Landmark,
-  Layers3,
   Menu,
-  Rocket,
   ShieldCheck,
-  Truck,
-  Wallet,
   X,
 } from 'lucide-react'
 import { AccessibleImageModal } from './components/AccessibleImageModal'
@@ -52,14 +42,6 @@ type Lang = 'en' | 'fr' | 'ar'
 type LocalizedText = { en: string; fr: string; ar: string }
 
 type NavItem = { id: string; label: LocalizedText }
-
-type ModuleCardItem = {
-  slug: string
-  icon: ComponentType<{ size?: string | number }>
-  name: LocalizedText
-  executive: LocalizedText
-  details: [LocalizedText, LocalizedText, LocalizedText]
-}
 
 type IndustryItem = {
   title: LocalizedText
@@ -105,47 +87,7 @@ const navItems: NavItem[] = [
   { id: 'contact', label: { en: 'Contact', fr: 'Contact', ar: 'تواصل معنا' } },
 ]
 
-const iconBySlug: Record<string, ComponentType<{ size?: string | number }>> = {
-  'business-masters': Layers3,
-  'petty-cash': CircleDollarSign,
-  'procure-to-pay': FileText,
-  'accounts-payable': Landmark,
-  'accounts-receivable': Globe2,
-  'inventory-management': Boxes,
-  'shipment-management': Truck,
-  'discrete-manufacturing': Rocket,
-  'general-ledger': Building2,
-  'fixed-assets': BadgeCheck,
-  'car-inspection': ShieldCheck,
-  'human-resources': BarChart3,
-  'cash-management': Wallet,
-}
 
-const moduleScreenshot: Record<string, string> = {
-  'business-masters': '/screenshots/3-grid-data.PNG',
-  'petty-cash': '/screenshots/6-petty-cash.PNG',
-  'procure-to-pay': '/screenshots/881-eta-top-customers.PNG',
-  'accounts-payable': '/screenshots/71-payable-volume-summary.PNG',
-  'accounts-receivable': '/screenshots/81-receivable-volume-summary.PNG',
-  'inventory-management': '/screenshots/91-inventory-executive-summary-1.PNG',
-  'shipment-management': '/screenshots/3-grid-data.PNG',
-  'discrete-manufacturing': '/screenshots/92-projects-gantt.PNG',
-  'general-ledger': '/screenshots/9-GL-Journals.PNG',
-  'fixed-assets': '/screenshots/5-FA_Dashboard_2026-05-03.png',
-  'car-inspection': '/screenshots/3-grid-data.PNG',
-  'human-resources': '/screenshots/93-HR_Dashboard_2026-05-03.png',
-  'cash-management': '/screenshots/9-cash-manag-statement-upload.PNG',
-}
-
-const modules: ModuleCardItem[] = moduleCatalog.map((item) => {
-  return {
-    slug: item.slug,
-    icon: iconBySlug[item.slug] ?? Layers3,
-    name: item.name,
-    executive: item.executive,
-    details: item.details,
-  }
-})
 
 const screenshotItems: ScreenshotItem[] = [
   {
@@ -985,7 +927,6 @@ function App() {
   const [selectedShot, setSelectedShot] = useState<(typeof screenshotItems)[number] | null>(null)
   const [activeFlowId, setActiveFlowId] = useState(smartFlows[0].id)
   const [activeShotIndex, setActiveShotIndex] = useState(0)
-  const [screenFilter, setScreenFilter] = useState('all')
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const formRef = useRef<HTMLFormElement>(null)
   const sectionIds = useMemo(() => navItems.map((item) => item.id), [])
@@ -997,24 +938,7 @@ function App() {
   const featuredScreens = useMemo(() => screenshotItems.slice(0, 6), [])
   const activeShot = featuredScreens[activeShotIndex % featuredScreens.length]
   const activeShotI18n = localizedShot(activeShot)
-  const screenFilterOptions = useMemo(() => {
-    const seen = new Set<string>()
-    const options: Array<{ key: string; label: string }> = []
 
-    screenshotItems.forEach((shot) => {
-      if (seen.has(shot.module)) {
-        return
-      }
-      seen.add(shot.module)
-      options.push({ key: shot.module, label: screenshotLocalized[shot.src]?.module[lang] ?? shot.module })
-    })
-
-    return options
-  }, [lang])
-  const filteredScreens = useMemo(
-    () => (screenFilter === 'all' ? screenshotItems : screenshotItems.filter((shot) => shot.module === screenFilter)),
-    [screenFilter],
-  )
 
   const openFlowScreenshot = (screenshotSrc: string) => {
     const match = screenshotItems.find((shot) => shot.src === screenshotSrc)
