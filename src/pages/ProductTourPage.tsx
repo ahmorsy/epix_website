@@ -21,7 +21,6 @@ import {
 } from 'lucide-react'
 
 type Lang = 'en' | 'fr' | 'ar'
-type Localized = { en: string; fr: string; ar: string }
 
 /* ---------- Tour Steps ---------- */
 const tourSteps = [
