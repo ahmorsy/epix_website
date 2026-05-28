@@ -46,6 +46,7 @@ const PettyCashPage = lazy(() => import('./pages/PettyCashPage').then((m) => ({ 
 const ProcureToPayPage = lazy(() => import('./pages/ProcureToPayPage').then((m) => ({ default: m.ProcureToPayPage })))
 const ShipmentManagementPage = lazy(() => import('./pages/ShipmentManagementPage').then((m) => ({ default: m.ShipmentManagementPage })))
 const ProductTourPage = lazy(() => import('./pages/ProductTourPage').then((m) => ({ default: m.ProductTourPage })))
+const AICapabilitiesPage = lazy(() => import('./pages/AICapabilitiesPage').then((m) => ({ default: m.AICapabilitiesPage })))
 
 type Lang = 'en' | 'fr' | 'ar'
 type LocalizedText = { en: string; fr: string; ar: string }
@@ -99,11 +100,8 @@ const navItems: NavItem[] = [
   { id: 'home', label: { en: 'Home', fr: 'Accueil', ar: 'الرئيسية' } },
   { id: 'about', label: { en: 'About', fr: 'À propos', ar: 'حول النظام' } },
   { id: 'flows', label: { en: 'Flows', fr: 'Flux', ar: 'تدفقات' } },
-  { id: 'modules', label: { en: 'Modules', fr: 'Modules', ar: 'الوحدات' } },
-  { id: 'screens', label: { en: 'Screenshots', fr: 'Captures', ar: 'اللقطات' } },
   { id: 'ai', label: { en: 'AI', fr: 'IA', ar: 'الذكاء الاصطناعي' } },
   { id: 'industries', label: { en: 'Industries', fr: 'Secteurs', ar: 'القطاعات' } },
-  { id: 'preview', label: { en: 'Preview', fr: 'Aperçu', ar: 'نظرة عامة' } },
   { id: 'contact', label: { en: 'Contact', fr: 'Contact', ar: 'تواصل معنا' } },
 ]
 
@@ -487,7 +485,7 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
 
 const stats: StatItem[] = [
   { label: { en: 'Enterprise Modules', fr: 'Modules ERP', ar: 'وحدات النظام' }, value: 12, suffix: '+' },
-  { label: { en: 'Workflow Automations', fr: 'Automatisations', ar: 'أتمتة العمليات' }, value: 180, suffix: '+' },
+  { label: { en: 'Workflow Automations', fr: 'Automatisations', ar: 'أتمتة العمليات' }, value: 100, suffix: '+' },
   { label: { en: 'Faster Cycle Times', fr: 'Gain de temps', ar: 'تسريع الدورات' }, value: 37, suffix: '%' },
   { label: { en: 'Connected Integrations', fr: 'Intégrations', ar: 'تكاملات متصلة' }, value: 40, suffix: '+' },
 ]
@@ -1150,6 +1148,9 @@ function App() {
   if (path === '/tour' || path === '/product-tour') {
     return renderLazyPage(<ProductTourPage lang={lang} />)
   }
+  if (path === '/ai' || path === '/ai-capabilities') {
+    return renderLazyPage(<AICapabilitiesPage lang={lang} />)
+  }
   if (path === '/modules/business-masters' || path === '/modules/common-masters') {
     return renderLazyPage(<BusinessMastersPage lang={lang} />)
   }
@@ -1195,7 +1196,7 @@ function App() {
       <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
           <button onClick={() => scrollTo('home')} className="flex items-center gap-2" aria-label="EPIX home">
-            <img src="/EPIX.png" alt="EPIX" className="h-14 w-auto md:h-16" />
+            <img src="/EPIX.png" alt="EPIX" className="h-28 w-auto md:h-32 drop-shadow-md" />
           </button>
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -1203,11 +1204,16 @@ function App() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className={`text-sm font-medium transition-colors ${
-                  activeSection === item.id ? 'text-[var(--brand)]' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
+                className={`relative rounded-lg px-3 py-1.5 text-sm font-semibold transition-all duration-200 ${
+                  activeSection === item.id
+                    ? 'bg-[var(--brand)]/10 text-[var(--brand)] shadow-sm ring-1 ring-[var(--brand)]/20'
+                    : 'text-[var(--text-muted)] hover:bg-[var(--brand)]/5 hover:text-[var(--text)]'
                 }`}
               >
                 {item.label[lang]}
+                {activeSection === item.id && (
+                  <span className="absolute -bottom-2.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-[var(--brand)]" />
+                )}
               </button>
             ))}
           </nav>
@@ -1261,7 +1267,11 @@ function App() {
                 <button
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
-                  className="rounded-lg border border-[var(--line)] px-3 py-2 text-left text-sm"
+                  className={`rounded-lg border px-3 py-2 text-left text-sm font-medium transition-all ${
+                    activeSection === item.id
+                      ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
+                      : 'border-[var(--line)] text-[var(--text-muted)]'
+                  }`}
                 >
                   {item.label[lang]}
                 </button>
@@ -1566,154 +1576,16 @@ function App() {
           </div>
         </section>
 
-        <section id="modules" className="py-16 md:py-24">
-          <SectionTitle eyebrow={t.modulesEyebrow} title={t.modulesTitle} subtitle={t.modulesSubtitle} />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {modules.map((item, index) => {
-              const Icon = item.icon
-              const thumb = moduleScreenshot[item.slug]
-              return (
-                <motion.article
-                  key={item.name.en}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className="module-card-enhanced group rounded-2xl border border-[var(--line)] bg-white"
-                >
-                  {thumb && (
-                    <div className="relative h-36 overflow-hidden rounded-t-2xl bg-[#edf4ff]">
-                      <img
-                        src={thumb}
-                        alt={`${item.name[lang]} preview`}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]"
-                      />
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white to-transparent" />
-                      <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#496ca9] backdrop-blur-sm">
-                        {t.moduleTag}
-                      </span>
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="inline-flex rounded-xl bg-gradient-to-br from-[#eef4ff] to-[#e6fbf7] p-2.5 text-[#2f62d8]">
-                        <Icon size={20} />
-                      </div>
-                      <h3 className="font-display text-xl font-semibold text-[var(--text)]">{item.name[lang]}</h3>
-                    </div>
-                    <p className="text-sm leading-relaxed text-[var(--text-muted)]">{item.executive[lang]}</p>
-                    <p className="mt-4 text-xs font-bold uppercase tracking-[0.15em] text-[#5f7cb0]">{t.keyCapabilities}</p>
-                    <ul className="mt-2 space-y-2.5 border-t border-[var(--line)] pt-3.5">
-                      {item.details.slice(0, 2).map((detail) => (
-                        <li key={detail.en} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
-                          <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-[var(--brand)]" />
-                          <span>{detail[lang]}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <a
-                      href={`/modules/${item.slug}?lang=${lang}`}
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline"
-                    >
-                      {t.modulePageCta}
-                      <ArrowRight size={14} />
-                    </a>
-                  </div>
-                </motion.article>
-              )
-            })}
-          </div>
-        </section>
-
-        <section id="screens" className="py-16 md:py-24">
-          <SectionTitle eyebrow={t.screensEyebrow} title={t.screensTitle} subtitle={t.screensSubtitle} />
-          <div className="mb-8 rounded-2xl border border-[#dbe7ff] bg-gradient-to-r from-[#f2f7ff] to-[#edf8ff] p-5 md:p-6">
-            <p className="text-sm leading-relaxed text-[var(--text-muted)]">{t.screensText}</p>
-          </div>
-          <div className="mb-6 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => setScreenFilter('all')}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                screenFilter === 'all'
-                  ? 'border-[#2d63d5] bg-[#2d63d5] text-white'
-                  : 'border-[#ceddf8] bg-white text-[#4f6ea4] hover:border-[#9ebeff]'
-              }`}
-            >
-              {lang === 'fr' ? 'Tous les modules' : lang === 'ar' ? 'كل الوحدات' : 'All Modules'}
-            </button>
-            {screenFilterOptions.map((option) => (
-              <button
-                key={option.key}
-                type="button"
-                onClick={() => setScreenFilter(option.key)}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  screenFilter === option.key
-                    ? 'border-[#2d63d5] bg-[#2d63d5] text-white'
-                    : 'border-[#ceddf8] bg-white text-[#4f6ea4] hover:border-[#9ebeff]'
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {filteredScreens.map((shot, index) => (
-              (() => {
-                const shotI18n = localizedShot(shot)
-                return (
-              <motion.article
-                key={shot.src}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03 }}
-                className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white"
-              >
-                <button
-                  type="button"
-                  onClick={() => setSelectedShot(shot)}
-                  className="block w-full text-left"
-                  aria-label={`Open screenshot ${shotI18n.title[lang]}`}
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-[#f2f6ff]">
-                    <img
-                      src={shot.src}
-                      alt={`${shotI18n.title[lang]} - ${shotI18n.module[lang]}`}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]"
-                    />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" />
-                    <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">
-                      <Image size={12} />
-                      {shotI18n.module[lang]}
-                    </span>
-                  </div>
-                </button>
-                <div className="p-4">
-                  <h3 className="font-display text-xl font-semibold text-[var(--text)]">{shotI18n.title[lang]}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{shotI18n.caption[lang]}</p>
-                </div>
-              </motion.article>
-                )
-              })()
-            ))}
-          </div>
-        </section>
-
         <section id="ai" className="py-16 md:py-24">
           <div className="ai-section-glow grid gap-6 rounded-3xl border border-[#d5e2ff] bg-gradient-to-r from-[#f4f8ff] to-[#eef8f8] p-6 md:grid-cols-[1fr_1fr] md:p-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#2f62d8]">{t.aiTag}</p>
               <h3 className="mt-3 font-display text-3xl font-bold text-[var(--text)] md:text-4xl">{t.aiTitle}</h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.aiText}</p>
-              <button className="hero-cta-primary mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold">
+              <a href={`/ai?lang=${lang}`} className="hero-cta-primary mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold">
                 {t.aiCta}
                 <ArrowRight size={16} />
-              </button>
+              </a>
               <div className="mt-6 overflow-hidden rounded-xl border border-[#d7e5ff]">
                 <img
                   src="/screenshots/4-chart-builder.PNG"
@@ -1761,47 +1633,6 @@ function App() {
                 <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{text[lang]}</p>
               </motion.div>
             ))}
-          </div>
-        </section>
-
-        <section id="preview" className="py-16 md:py-24">
-          <SectionTitle eyebrow={t.previewEyebrow} title={t.previewTitle} subtitle={t.previewSubtitle} />
-          <div className="hero-showcase p-5 md:p-7">
-            <div className="mb-4 flex items-center gap-1.5 rounded-xl border border-[rgba(29,93,242,0.12)] bg-white/70 px-3 py-2 backdrop-blur">
-              <span className="hero-window-dot" style={{ background: '#f76d57' }} />
-              <span className="hero-window-dot" style={{ background: '#ffbd44' }} />
-              <span className="hero-window-dot" style={{ background: '#59d6b8' }} />
-              <span className="ml-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4f6ea4]">epix.app / dashboard</span>
-            </div>
-            <div className="grid gap-4 md:grid-cols-[1.25fr_1fr]">
-              <div className="rounded-2xl border border-[var(--line)] bg-white/80 p-4 backdrop-blur-sm">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">{t.boardTitle}</p>
-                <div className="mt-3 grid grid-cols-3 gap-3 text-center">
-                  <div className="glass-stat rounded-lg p-3">
-                    <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[0]}</p>
-                    <p className="font-display text-lg font-bold text-[var(--text)]">$8.4M</p>
-                  </div>
-                  <div className="glass-stat rounded-lg p-3">
-                    <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[1]}</p>
-                    <p className="font-display text-lg font-bold text-[var(--text)]">$4.1M</p>
-                  </div>
-                  <div className="glass-stat rounded-lg p-3">
-                    <p className="text-xs text-[var(--text-muted)]">{t.boardMetrics[2]}</p>
-                    <p className="font-display text-lg font-bold text-[var(--text)]">$2.2M</p>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-[var(--line)] bg-white/80 p-4 backdrop-blur-sm">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">{t.timelineTitle}</p>
-                <ul className="mt-3 space-y-3 text-sm text-[var(--text)]">
-                  {t.timelineItems.map((item) => (
-                    <li key={item} className="rounded-lg border border-[rgba(29,93,242,0.1)] bg-[var(--bg-soft)] p-3">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -1884,7 +1715,7 @@ function App() {
       <footer className="border-t border-[var(--line)] bg-white">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-5 py-10 md:flex-row md:px-8">
           <div className="flex flex-col items-center gap-3 md:items-start">
-            <img src="/EPIX.png" alt="EPIX" className="h-12 w-auto" />
+            <img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" />
             <p className="text-sm text-[var(--text-muted)]">© {new Date().getFullYear()} EPIX ERP. All rights reserved.</p>
           </div>
           <p className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)]">

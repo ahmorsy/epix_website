@@ -533,11 +533,156 @@ a {
   background: linear-gradient(90deg, rgba(238, 244, 255, 0.6), rgba(230, 251, 247, 0.4));
 }
 
-/* ===== Product Tour Page ===== */
+/* ===== AI Capabilities Page ===== */
+
+.ai-page-hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 60%, rgba(109, 40, 217, 0.06), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(29, 93, 242, 0.05), transparent),
+    radial-gradient(ellipse 40% 40% at 60% 80%, rgba(14, 165, 168, 0.04), transparent),
+    linear-gradient(180deg, #f9f5ff 0%, #ffffff 100%);
+}
+.ai-page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(109, 40, 217, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(109, 40, 217, 0.03) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
+  pointer-events: none;
+}
+
+.ai-stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ai-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -8px rgba(109, 40, 217, 0.12);
+}
+
+.ai-capability-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.ai-capability-card:hover {
+  transform: translateY(-4px);
+}
+.ai-capability-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 1rem;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(109, 40, 217, 0.25), rgba(29, 93, 242, 0.25));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+.ai-capability-card:hover::after {
+  opacity: 1;
+}
+
+.ai-pipeline-section {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(109, 40, 217, 0.04), transparent),
+    linear-gradient(180deg, #f9f5ff, #ffffff);
+}
+.ai-pipeline-flow {
+  position: relative;
+}
+@media (min-width: 768px) {
+  .ai-pipeline-flow::before {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 8%;
+    right: 8%;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(109, 40, 217, 0.06), rgba(109, 40, 217, 0.3) 25%, rgba(29, 93, 242, 0.3) 75%, rgba(29, 93, 242, 0.06));
+    border-radius: 2px;
+    z-index: 0;
+  }
+}
+.ai-pipeline-circle {
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ai-pipeline-node:hover .ai-pipeline-circle {
+  transform: scale(1.12);
+  box-shadow: 0 14px 40px -6px rgba(109, 40, 217, 0.3);
+}
+
+.ai-usecase-card {
+  position: relative;
+  overflow: hidden;
+}
+.ai-usecase-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(109, 40, 217, 0.02), rgba(29, 93, 242, 0.02));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.ai-usecase-card:hover::before {
+  opacity: 1;
+}
+
+.ai-diff-section {
+  background:
+    radial-gradient(ellipse 50% 40% at 20% 50%, rgba(109, 40, 217, 0.03), transparent),
+    radial-gradient(ellipse 50% 40% at 80% 50%, rgba(29, 93, 242, 0.03), transparent),
+    linear-gradient(180deg, #ffffff, #f9f5ff);
+}
+.ai-diff-card {
+  position: relative;
+  overflow: hidden;
+}
+.ai-diff-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(109, 40, 217, 0.03), rgba(29, 93, 242, 0.02));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.ai-diff-card:hover::before {
+  opacity: 1;
+}
+
+.ai-cta-section {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(109, 40, 217, 0.06), transparent),
+    radial-gradient(ellipse 40% 30% at 30% 70%, rgba(29, 93, 242, 0.04), transparent),
+    linear-gradient(180deg, #f9f5ff, #f0e8ff);
+}
+.ai-cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(109, 40, 217, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(109, 40, 217, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 20%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ===== Product Tour Page (Complete Redesign) ===== */
+
+/* Hero */
 .tour-hero {
   background:
-    radial-gradient(ellipse 80% 50% at 20% 60%, rgba(29, 93, 242, 0.06), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 30%, rgba(14, 165, 168, 0.05), transparent),
+    radial-gradient(ellipse 90% 60% at 20% 60%, rgba(29, 93, 242, 0.07), transparent),
+    radial-gradient(ellipse 70% 50% at 80% 30%, rgba(14, 165, 168, 0.06), transparent),
+    radial-gradient(ellipse 40% 40% at 50% 80%, rgba(99, 102, 241, 0.03), transparent),
     linear-gradient(180deg, #f7faff 0%, #ffffff 100%);
 }
 .tour-hero::before {
@@ -553,6 +698,16 @@ a {
   pointer-events: none;
 }
 
+/* Stat cards in hero */
+.tour-stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tour-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -8px rgba(29, 93, 242, 0.12);
+}
+
+/* Screenshot mosaic */
 .tour-mosaic {
   perspective: 1200px;
 }
@@ -560,11 +715,16 @@ a {
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
 }
 .tour-mosaic > *:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px -15px rgba(29, 93, 242, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px -12px rgba(29, 93, 242, 0.18);
 }
 
-/* Tour steps - alternating layout */
+/* Section badges */
+.tour-section-badge {
+  box-shadow: 0 2px 8px rgba(29, 93, 242, 0.08);
+}
+
+/* Tour steps - alternating layout with timeline */
 .tour-steps-grid {
   position: relative;
 }
@@ -574,9 +734,10 @@ a {
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg, transparent, rgba(29, 93, 242, 0.15) 10%, rgba(14, 165, 168, 0.15) 90%, transparent);
+  width: 3px;
+  background: linear-gradient(180deg, transparent, rgba(29, 93, 242, 0.2) 10%, rgba(14, 165, 168, 0.2) 90%, transparent);
   transform: translateX(-50%);
+  border-radius: 2px;
   display: none;
 }
 @media (min-width: 768px) {
@@ -586,7 +747,7 @@ a {
   .tour-steps-grid {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 5rem;
   }
 }
 .tour-step-card {
@@ -600,14 +761,14 @@ a {
   position: absolute;
   inset: -1px;
   border-radius: 1rem;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(29, 93, 242, 0.2), rgba(14, 165, 168, 0.2));
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(29, 93, 242, 0.3), rgba(14, 165, 168, 0.3));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 .tour-step-card:hover .tour-step-screenshot::before {
   opacity: 1;
@@ -616,7 +777,7 @@ a {
 /* E2E Flow section */
 .tour-flow-section {
   background:
-    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(29, 93, 242, 0.04), transparent),
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(29, 93, 242, 0.05), transparent),
     linear-gradient(180deg, #f7faff, #ffffff);
 }
 .tour-e2e-flow {
@@ -627,10 +788,10 @@ a {
     content: '';
     position: absolute;
     top: 40px;
-    left: 10%;
-    right: 10%;
-    height: 3px;
-    background: linear-gradient(90deg, rgba(29, 93, 242, 0.08), rgba(29, 93, 242, 0.25) 30%, rgba(14, 165, 168, 0.25) 70%, rgba(14, 165, 168, 0.08));
+    left: 8%;
+    right: 8%;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(29, 93, 242, 0.06), rgba(29, 93, 242, 0.3) 25%, rgba(14, 165, 168, 0.3) 75%, rgba(14, 165, 168, 0.06));
     border-radius: 2px;
     z-index: 0;
   }
@@ -640,11 +801,46 @@ a {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .tour-e2e-node:hover .tour-e2e-circle {
-  transform: scale(1.1);
-  box-shadow: 0 12px 40px -8px rgba(29, 93, 242, 0.3);
+  transform: scale(1.15);
+  box-shadow: 0 14px 40px -6px rgba(29, 93, 242, 0.35);
 }
 
-/* Differentiator cards */
+/* Module mega cards */
+.tour-modules-mega-section {
+  background: linear-gradient(180deg, #ffffff 0%, #f7faff 50%, #ffffff 100%);
+}
+.tour-module-mega-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tour-module-mega-card:hover {
+  transform: translateY(-4px);
+}
+.tour-module-mega-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 1rem;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(29, 93, 242, 0.25), rgba(14, 165, 168, 0.25));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+.tour-module-mega-card:hover::after {
+  opacity: 1;
+}
+
+/* Differentiator section */
+.tour-diff-section {
+  background:
+    radial-gradient(ellipse 50% 40% at 20% 50%, rgba(29, 93, 242, 0.03), transparent),
+    radial-gradient(ellipse 50% 40% at 80% 50%, rgba(14, 165, 168, 0.03), transparent),
+    linear-gradient(180deg, #ffffff, #f9fbff);
+}
 .tour-diff-card {
   position: relative;
   overflow: hidden;
@@ -653,7 +849,7 @@ a {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(29, 93, 242, 0.02), rgba(14, 165, 168, 0.02));
+  background: linear-gradient(135deg, rgba(29, 93, 242, 0.03), rgba(14, 165, 168, 0.03));
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -661,34 +857,22 @@ a {
   opacity: 1;
 }
 
-/* Modules section */
-.tour-modules-section {
-  background: linear-gradient(180deg, #ffffff, #f7faff);
+/* Screenshot Gallery */
+.tour-gallery-section {
+  background: linear-gradient(180deg, #f7faff, #ffffff, #f7faff);
 }
-.tour-module-card::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 1rem;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(29, 93, 242, 0.3), rgba(14, 165, 168, 0.3));
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
+.tour-gallery-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-.tour-module-card:hover::before {
-  opacity: 1;
+.tour-gallery-item:hover {
+  transform: translateY(-3px);
 }
 
 /* Final CTA section */
 .tour-cta-section {
   background:
-    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(29, 93, 242, 0.06), transparent),
-    radial-gradient(ellipse 40% 30% at 30% 70%, rgba(14, 165, 168, 0.04), transparent),
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(29, 93, 242, 0.07), transparent),
+    radial-gradient(ellipse 40% 30% at 30% 70%, rgba(14, 165, 168, 0.05), transparent),
     linear-gradient(180deg, #f7faff, #eef4ff);
 }
 .tour-cta-section::before {

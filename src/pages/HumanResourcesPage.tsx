@@ -94,7 +94,7 @@ export function HumanResourcesPage({ lang = 'en' }: { lang?: Lang }) {
       <main className="mx-auto w-full max-w-7xl px-5 pb-16 pt-10 md:px-8 md:pt-14">
         <div className="flex items-center justify-between">
           <a href={`/?lang=${lang}#modules`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline"><ArrowRight size={14} className="rotate-180" />{t.backToHome}</a>
-          <a href={`/?lang=${lang}`}><img src="/EPIX.png" alt="EPIX" className="h-12 w-auto" /></a>
+          <a href={`/?lang=${lang}`}><img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" /></a>
         </div>
 
         <section className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">

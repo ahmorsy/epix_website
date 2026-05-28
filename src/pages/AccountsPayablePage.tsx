@@ -251,7 +251,7 @@ export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
             <ArrowRight size={14} className="rotate-180" />
             {t.backToHome}
           </a>
-          <a href={`/?lang=${lang}`}><img src="/EPIX.png" alt="EPIX" className="h-12 w-auto" /></a>
+          <a href={`/?lang=${lang}`}><img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" /></a>
         </div>
 
         <section className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">
