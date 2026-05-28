@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react'
 import { motion } from 'framer-motion'
@@ -28,6 +28,7 @@ import {
   X,
 } from 'lucide-react'
 import { AccessibleImageModal } from './components/AccessibleImageModal'
+import emailjs from '@emailjs/browser'
 import { RouteLoadingState } from './components/RouteLoadingState'
 import { moduleCatalog } from './pages/moduleCatalog'
 
@@ -44,6 +45,7 @@ const InventoryManagementPage = lazy(() => import('./pages/InventoryManagementPa
 const PettyCashPage = lazy(() => import('./pages/PettyCashPage').then((m) => ({ default: m.PettyCashPage })))
 const ProcureToPayPage = lazy(() => import('./pages/ProcureToPayPage').then((m) => ({ default: m.ProcureToPayPage })))
 const ShipmentManagementPage = lazy(() => import('./pages/ShipmentManagementPage').then((m) => ({ default: m.ShipmentManagementPage })))
+const ProductTourPage = lazy(() => import('./pages/ProductTourPage').then((m) => ({ default: m.ProductTourPage })))
 
 type Lang = 'en' | 'fr' | 'ar'
 type LocalizedText = { en: string; fr: string; ar: string }
@@ -790,6 +792,7 @@ const copy = {
     placeholders: {
       fullName: 'Full Name',
       workEmail: 'Work Email',
+      phone: 'Phone Number',
       company: 'Company',
       priorities: 'Tell us about your current ERP priorities',
     },
@@ -865,6 +868,7 @@ const copy = {
     placeholders: {
       fullName: 'Nom complet',
       workEmail: 'Email professionnel',
+      phone: 'Numéro de téléphone',
       company: 'Entreprise',
       priorities: 'Décrivez vos priorités ERP',
     },
@@ -940,6 +944,7 @@ const copy = {
     placeholders: {
       fullName: 'الاسم الكامل',
       workEmail: 'البريد المهني',
+      phone: 'رقم الهاتف',
       company: 'الشركة',
       priorities: 'أخبرنا بأولوياتك الحالية في ERP',
     },
@@ -983,6 +988,8 @@ function App() {
   const [activeFlowId, setActiveFlowId] = useState(smartFlows[0].id)
   const [activeShotIndex, setActiveShotIndex] = useState(0)
   const [screenFilter, setScreenFilter] = useState('all')
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const formRef = useRef<HTMLFormElement>(null)
   const sectionIds = useMemo(() => navItems.map((item) => item.id), [])
   const t = copy[lang]
   const isRtl = lang === 'ar'
@@ -1122,7 +1129,27 @@ function App() {
     setLanguage(order[nextIndex])
   }
 
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!formRef.current) return
+    setFormStatus('sending')
+    emailjs
+      .sendForm('service_amacsl7', 'template_xted9nr', formRef.current, { publicKey: 'hFKQWjC4ppQtyi_lQ' })
+      .then(() => {
+        setFormStatus('success')
+        formRef.current?.reset()
+        setTimeout(() => setFormStatus('idle'), 5000)
+      })
+      .catch(() => {
+        setFormStatus('error')
+        setTimeout(() => setFormStatus('idle'), 5000)
+      })
+  }
+
   const path = window.location.pathname.toLowerCase()
+  if (path === '/tour' || path === '/product-tour') {
+    return renderLazyPage(<ProductTourPage lang={lang} />)
+  }
   if (path === '/modules/business-masters' || path === '/modules/common-masters') {
     return renderLazyPage(<BusinessMastersPage lang={lang} />)
   }
@@ -1168,8 +1195,7 @@ function App() {
       <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
           <button onClick={() => scrollTo('home')} className="flex items-center gap-2" aria-label="EPIX home">
-            <span className="logo-dot" />
-            <span className="font-display text-2xl font-bold text-[var(--text)]">EPIX</span>
+            <img src="/EPIX.png" alt="EPIX" className="h-14 w-auto md:h-16" />
           </button>
 
           <nav className="hidden items-center gap-6 lg:flex">
@@ -1201,7 +1227,7 @@ function App() {
                 </button>
               ))}
             </div>
-            <button className="hidden rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
+            <button onClick={() => scrollTo('contact')} className="hidden rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
               {t.headerCta}
             </button>
             <button
@@ -1268,13 +1294,13 @@ function App() {
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">{t.heroDesc}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <button className="hero-cta-primary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
+                <button onClick={() => scrollTo('contact')} className="hero-cta-primary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
                   {t.heroPrimary}
                   <ArrowRight size={16} />
                 </button>
-                <button className="hero-cta-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
+                <a href={`/tour?lang=${lang}`} className="hero-cta-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
                   {t.heroSecondary}
-                </button>
+                </a>
               </div>
 
               <div className="mt-8 flex flex-wrap gap-2 text-xs text-[var(--text)] md:text-sm">
@@ -1801,15 +1827,39 @@ function App() {
         <section id="contact" className="py-16 md:py-24">
           <div className="ai-section-glow rounded-3xl border border-[#cddcff] bg-gradient-to-r from-[#f4f8ff] to-[#f8fcff] p-7 md:p-10">
             <SectionTitle eyebrow={t.contactEyebrow} title={t.contactTitle} subtitle={t.contactSubtitle} />
-            <form className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
-              <input className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.fullName} />
-              <input className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.workEmail} />
-              <input className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.company} />
-              <textarea className="min-h-32 rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.priorities} />
-              <button className="hero-cta-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold md:col-span-2">
-                {t.contactCta}
-                <ArrowRight size={16} />
+            <form ref={formRef} onSubmit={handleContactSubmit} className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
+              <input name="from_name" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.fullName} />
+              <input name="from_email" type="email" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.workEmail} />
+              <input name="phone" type="tel" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.phone} />
+              <input name="company" className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.company} />
+              <textarea name="message" required className="min-h-32 rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.priorities} />
+              <button
+                type="submit"
+                disabled={formStatus === 'sending'}
+                className="hero-cta-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold disabled:opacity-60 md:col-span-2"
+              >
+                {formStatus === 'sending' ? (
+                  <span className="inline-flex items-center gap-2">
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
+                    Sending...
+                  </span>
+                ) : (
+                  <>
+                    {t.contactCta}
+                    <ArrowRight size={16} />
+                  </>
+                )}
               </button>
+              {formStatus === 'success' && (
+                <p className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 md:col-span-2">
+                  <CheckCircle2 size={16} /> Message sent successfully! We will be in touch soon.
+                </p>
+              )}
+              {formStatus === 'error' && (
+                <p className="flex items-center justify-center gap-2 text-sm font-medium text-red-500 md:col-span-2">
+                  Something went wrong. Please try again or email us directly.
+                </p>
+              )}
             </form>
           </div>
         </section>
@@ -1832,9 +1882,12 @@ function App() {
         })()}
 
       <footer className="border-t border-[var(--line)] bg-white">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 px-5 py-8 text-sm text-[var(--text-muted)] md:flex-row md:px-8">
-          <p>© {new Date().getFullYear()} EPIX ERP. All rights reserved.</p>
-          <p className="inline-flex items-center gap-2">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-5 py-10 md:flex-row md:px-8">
+          <div className="flex flex-col items-center gap-3 md:items-start">
+            <img src="/EPIX.png" alt="EPIX" className="h-12 w-auto" />
+            <p className="text-sm text-[var(--text-muted)]">© {new Date().getFullYear()} EPIX ERP. All rights reserved.</p>
+          </div>
+          <p className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)]">
             {t.footer}
             <ShieldCheck size={14} className="text-[var(--brand)]" />
           </p>

@@ -104,10 +104,13 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
       <main className="mx-auto w-full max-w-7xl px-5 pb-16 pt-10 md:px-8 md:pt-14">
-        <a href={`/?lang=${lang}#modules`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline">
-          <ArrowRight size={14} className="rotate-180" />
-          {t.backToHome}
-        </a>
+        <div className="flex items-center justify-between">
+          <a href={`/?lang=${lang}#modules`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline">
+            <ArrowRight size={14} className="rotate-180" />
+            {t.backToHome}
+          </a>
+          <a href={`/?lang=${lang}`}><img src="/EPIX.png" alt="EPIX" className="h-12 w-auto" /></a>
+        </div>
 
         <section className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">
           <p className="relative text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">General Ledger</p>
