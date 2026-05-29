@@ -20,8 +20,14 @@ import {
 import { AccessibleImageModal } from './components/AccessibleImageModal'
 import emailjs from '@emailjs/browser'
 import { RouteLoadingState } from './components/RouteLoadingState'
+import { SmartImage } from './components/SmartImage'
 import { moduleCatalog } from './pages/moduleCatalog'
 import { moduleSpanishText } from './pages/moduleSpanish'
+import { SeoHead } from './seo/SeoHead'
+import { getPageSeo } from './seo/pageSeo'
+import { createArticleSchema, createBreadcrumbSchema, createFaqSchema, toLocalizedUrl } from './seo/seoUtils'
+import { blogPostBySlug } from './blog/blogData'
+import { pickLocalized } from './blog/blogUtils'
 
 const AccountsPayablePage = lazy(() => import('./pages/AccountsPayablePage').then((m) => ({ default: m.AccountsPayablePage })))
 const AccountsReceivablePage = lazy(() => import('./pages/AccountsReceivablePage').then((m) => ({ default: m.AccountsReceivablePage })))
@@ -38,6 +44,8 @@ const ProcureToPayPage = lazy(() => import('./pages/ProcureToPayPage').then((m) 
 const ShipmentManagementPage = lazy(() => import('./pages/ShipmentManagementPage').then((m) => ({ default: m.ShipmentManagementPage })))
 const ProductTourPage = lazy(() => import('./pages/ProductTourPage').then((m) => ({ default: m.ProductTourPage })))
 const AICapabilitiesPage = lazy(() => import('./pages/AICapabilitiesPage').then((m) => ({ default: m.AICapabilitiesPage })))
+const BlogIndexPage = lazy(() => import('./blog/BlogIndexPage').then((m) => ({ default: m.BlogIndexPage })))
+const BlogArticlePage = lazy(() => import('./blog/BlogArticlePage').then((m) => ({ default: m.BlogArticlePage })))
 
 type ContentLang = 'en' | 'fr' | 'ar'
 type Lang = ContentLang | 'es'
@@ -88,6 +96,33 @@ const navItems: NavItem[] = [
   { id: 'industries', label: { en: 'Industries', fr: 'Secteurs', ar: 'القطاعات', es: 'Sectores' } },
   { id: 'contact', label: { en: 'Contact', fr: 'Contact', ar: 'تواصل معنا', es: 'Contacto' } },
 ]
+
+const blogSectionCopy: Record<Lang, { eyebrow: string; title: string; subtitle: string; cta: string }> = {
+  en: {
+    eyebrow: 'ERP Knowledge',
+    title: 'Enterprise ERP Insights And AI Search Answers',
+    subtitle: 'Explore implementation guides, AI ERP strategy, manufacturing operations, and regional digital transformation playbooks.',
+    cta: 'View Blog Articles',
+  },
+  fr: {
+    eyebrow: 'Connaissance ERP',
+    title: 'Insights ERP entreprise et reponses IA',
+    subtitle: 'Explorez guides implementation, strategie ERP IA, operations industrielles et transformation digitale regionale.',
+    cta: 'Voir les articles',
+  },
+  ar: {
+    eyebrow: 'معرفة ERP',
+    title: 'رؤى ERP للمؤسسات واجابات البحث بالذكاء الاصطناعي',
+    subtitle: 'اكتشف ادلة التنفيذ واستراتيجية ERP المدعوم بالذكاء الاصطناعي وتشغيل التصنيع والتحول الرقمي الاقليمي.',
+    cta: 'عرض المقالات',
+  },
+  es: {
+    eyebrow: 'Conocimiento ERP',
+    title: 'Insights ERP empresariales y respuestas para busqueda IA',
+    subtitle: 'Explora guias de implementacion, estrategia ERP con IA, operaciones de manufactura y transformacion digital regional.',
+    cta: 'Ver articulos',
+  },
+}
 
 
 
@@ -1015,11 +1050,11 @@ const copyEs: typeof copy.en = {
   rightsReserved: 'Todos los derechos reservados.',
 }
 
-function SectionTitle({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
+function SectionTitle({ eyebrow, title, subtitle, headingId }: { eyebrow: string; title: string; subtitle: string; headingId?: string }) {
   return (
     <div className="mb-10 text-center md:mb-14">
       <p className="mb-3 text-xs font-bold uppercase tracking-[0.26em] text-[var(--brand)]">{eyebrow}</p>
-      <h2 className="font-display text-3xl font-bold leading-tight text-[var(--text)] md:text-5xl">{title}</h2>
+      <h2 id={headingId} className="font-display text-3xl font-bold leading-tight text-[var(--text)] md:text-5xl">{title}</h2>
       <p className="mx-auto mt-4 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{subtitle}</p>
     </div>
   )
@@ -1051,6 +1086,8 @@ function App() {
   const sectionIds = useMemo(() => navItems.map((item) => item.id), [])
   const contentLang: ContentLang = lang === 'es' ? 'en' : lang
   const t = lang === 'es' ? copyEs : copy[contentLang]
+  const mobileMenuId = 'site-mobile-nav'
+  const mainContentId = 'main-content'
   const isRtl = lang === 'ar'
   const flowText =
     lang === 'es' ? flowSectionCopyEs : flowSectionCopy[contentLang]
@@ -1076,27 +1113,6 @@ function App() {
     document.documentElement.dir = isRtl ? 'rtl' : 'ltr'
     localStorage.setItem('epix-lang', lang)
   }, [isRtl, lang])
-
-  useEffect(() => {
-    const path = window.location.pathname.toLowerCase()
-    const moduleSlug = path.startsWith('/modules/') ? path.replace('/modules/', '') : ''
-    const normalizedSlug = moduleSlug === 'common-masters' ? 'business-masters' : moduleSlug
-    const pageModule = moduleCatalog.find((item) => item.slug === normalizedSlug)
-    if (pageModule) {
-      document.title = `EPIX ${pageModule.name.en} ERP | Module Overview, Business Flow, and Process Control`
-      const description = document.querySelector('meta[name="description"]')
-      if (description) {
-        description.setAttribute(
-          'content',
-          `Explore EPIX ${pageModule.name.en}: capabilities, business flow, outcomes, and process controls for SMB and enterprise operations.`,
-        )
-      }
-      const ogTitle = document.querySelector('meta[property="og:title"]')
-      if (ogTitle) {
-        ogTitle.setAttribute('content', `EPIX ${pageModule.name.en} ERP | Operational Control`) 
-      }
-    }
-  }, [])
 
   useEffect(() => {
     const currentPath = window.location.pathname.toLowerCase()
@@ -1220,6 +1236,53 @@ function App() {
   }
 
   const path = window.location.pathname.toLowerCase()
+  const moduleSlug = path.startsWith('/modules/') ? path.replace('/modules/', '') : ''
+  const normalizedModuleSlug = moduleSlug === 'common-masters' ? 'business-masters' : moduleSlug
+  const pageModule = moduleCatalog.find((item) => item.slug === normalizedModuleSlug)
+  const blogSlug = path.startsWith('/blog/') ? path.replace('/blog/', '') : ''
+  const blogPost = blogSlug ? blogPostBySlug[blogSlug] : null
+
+  const seoConfig = useMemo(() => {
+    if (path === '/blog' || path === '/blog/') {
+      return getPageSeo('/blog', lang)
+    }
+
+    if (blogPost) {
+      const localizedTitle = pickLocalized(blogPost.title, lang)
+      const localizedDescription = pickLocalized(blogPost.description, lang)
+      const canonicalPath = `/blog/${blogPost.slug}`
+      return {
+        ...getPageSeo(canonicalPath, lang),
+        title: `${localizedTitle} | EPIX ERP Blog`,
+        description: localizedDescription,
+        path: canonicalPath,
+        locale: lang,
+        schemas: [
+          createBreadcrumbSchema([
+            { name: 'Home', url: toLocalizedUrl('/', lang) },
+            { name: 'Blog', url: toLocalizedUrl('/blog', lang) },
+            { name: localizedTitle, url: toLocalizedUrl(canonicalPath, lang) },
+          ]),
+          createArticleSchema({
+            headline: localizedTitle,
+            description: localizedDescription,
+            lang,
+            url: toLocalizedUrl(canonicalPath, lang),
+            datePublished: blogPost.datePublished,
+            dateModified: blogPost.dateModified,
+          }),
+          createFaqSchema(
+            blogPost.faq.map((item) => ({
+              question: pickLocalized(item.question, lang),
+              answer: pickLocalized(item.answer, lang),
+            })),
+          ),
+        ],
+      }
+    }
+
+    return getPageSeo(path || '/', lang, pageModule)
+  }, [blogPost, lang, pageModule, path])
 
   // Determine which sub-page to render (null = homepage)
   let subPageContent: ReactNode | null = null
@@ -1253,20 +1316,32 @@ function App() {
     subPageContent = <FixedAssetsPage lang={lang} />
   } else if (path === '/modules/car-inspection') {
     subPageContent = <CarInspectionPage lang={lang} />
+  } else if (path === '/blog' || path === '/blog/') {
+    subPageContent = <BlogIndexPage lang={lang} />
+  } else if (blogPost) {
+    subPageContent = <BlogArticlePage slug={blogPost.slug} lang={lang} />
   }
 
   if (subPageContent) {
     return (
       <div className={`relative overflow-hidden ${isRtl ? 'lang-ar' : ''}`}>
+        <SeoHead config={seoConfig} />
+        <a
+          href={`#${mainContentId}`}
+          className="sr-only z-[90] rounded-md bg-white px-4 py-2 text-sm font-semibold text-[var(--brand)] focus:not-sr-only focus:fixed focus:left-3 focus:top-3"
+        >
+          Skip to main content
+        </a>
         <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
-          <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 md:px-8">
             <a href={`/?lang=${lang}`} className="flex items-center gap-2" aria-label="EPIX home">
-              <img src="/EPIX.png" alt="EPIX" className="h-28 w-auto md:h-32 drop-shadow-md" />
+              <img src="/EPIX.png" alt="EPIX" className="h-14 w-auto md:h-16 drop-shadow-md" />
             </a>
 
-            <nav className="hidden items-center gap-6 lg:flex">
+            <nav aria-label="Primary navigation" className="hidden items-center gap-6 lg:flex">
               {navItems.map((item) => (
                 <button
+                  type="button"
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
                   className="relative rounded-lg px-3 py-1.5 text-sm font-semibold text-[var(--text-muted)] transition-all duration-200 hover:bg-[var(--brand)]/5 hover:text-[var(--text)]"
@@ -1295,9 +1370,12 @@ function App() {
                 {t.headerCta}
               </button>
               <button
+                type="button"
                 onClick={() => setMenuOpen((prev) => !prev)}
                 className="rounded-xl border border-[var(--line)] p-2 lg:hidden"
                 aria-label={t.navMenu}
+                aria-controls={mobileMenuId}
+                aria-expanded={menuOpen}
               >
                 {menuOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
@@ -1305,10 +1383,11 @@ function App() {
           </div>
 
           {menuOpen && (
-            <div className="border-t border-[var(--line)] bg-white px-5 py-3 lg:hidden">
+            <div id={mobileMenuId} className="border-t border-[var(--line)] bg-white px-5 py-3 lg:hidden">
               <div className="mb-3 flex items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1" role="tablist" aria-label="Language" onKeyDown={onLangTabsKeyDown}>
                 {(['en', 'fr', 'ar', 'es'] as Lang[]).map((l) => (
                   <button
+                    type="button"
                     key={l}
                     onClick={() => setLanguage(l)}
                     role="tab"
@@ -1323,6 +1402,7 @@ function App() {
               <div className="grid grid-cols-2 gap-2">
                 {navItems.map((item) => (
                   <button
+                    type="button"
                     key={item.id}
                     onClick={() => scrollTo(item.id)}
                     className="rounded-lg border border-[var(--line)] px-3 py-2 text-left text-sm font-medium text-[var(--text-muted)] transition-all hover:border-[var(--brand)] hover:text-[var(--text)]"
@@ -1335,26 +1415,35 @@ function App() {
           )}
         </header>
 
-        <div className="pt-28 md:pt-32">
+        <main id={mainContentId} className="pt-20 md:pt-22">
           <Suspense fallback={<RouteLoadingState />}>{subPageContent}</Suspense>
-        </div>
+        </main>
       </div>
     )
   }
 
   return (
     <div className={`relative overflow-hidden ${isRtl ? 'lang-ar' : ''}`}>
+      <SeoHead config={seoConfig} />
+      <a
+        href={`#${mainContentId}`}
+        className="sr-only z-[90] rounded-md bg-white px-4 py-2 text-sm font-semibold text-[var(--brand)] focus:not-sr-only focus:fixed focus:left-3 focus:top-3"
+      >
+        Skip to main content
+      </a>
       <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
-          <button onClick={() => scrollTo('home')} className="flex items-center gap-2" aria-label="EPIX home">
-            <img src="/EPIX.png" alt="EPIX" className="h-28 w-auto md:h-32 drop-shadow-md" />
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 md:px-8">
+          <button type="button" onClick={() => scrollTo('home')} className="flex items-center gap-2" aria-label="EPIX home">
+            <img src="/EPIX.png" alt="EPIX" className="h-14 w-auto md:h-16 drop-shadow-md" />
           </button>
 
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav aria-label="Primary navigation" className="hidden items-center gap-6 lg:flex">
             {navItems.map((item) => (
               <button
+                type="button"
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
+                aria-pressed={activeSection === item.id}
                 className={`relative rounded-lg px-3 py-1.5 text-sm font-semibold transition-all duration-200 ${
                   activeSection === item.id
                     ? 'bg-[var(--brand)]/10 text-[var(--brand)] shadow-sm ring-1 ring-[var(--brand)]/20'
@@ -1388,9 +1477,12 @@ function App() {
               {t.headerCta}
             </button>
             <button
+              type="button"
               onClick={() => setMenuOpen((prev) => !prev)}
               className="rounded-xl border border-[var(--line)] p-2 lg:hidden"
               aria-label={t.navMenu}
+              aria-controls={mobileMenuId}
+              aria-expanded={menuOpen}
             >
               {menuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -1398,10 +1490,11 @@ function App() {
         </div>
 
         {menuOpen && (
-          <div className="border-t border-[var(--line)] bg-white px-5 py-3 lg:hidden">
+          <div id={mobileMenuId} className="border-t border-[var(--line)] bg-white px-5 py-3 lg:hidden">
             <div className="mb-3 flex items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1" role="tablist" aria-label="Language" onKeyDown={onLangTabsKeyDown}>
               {(['en', 'fr', 'ar', 'es'] as Lang[]).map((l) => (
                 <button
+                  type="button"
                   key={l}
                   onClick={() => setLanguage(l)}
                   role="tab"
@@ -1416,8 +1509,10 @@ function App() {
             <div className="grid grid-cols-2 gap-2">
               {navItems.map((item) => (
                 <button
+                  type="button"
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
+                  aria-pressed={activeSection === item.id}
                   className={`rounded-lg border px-3 py-2 text-left text-sm font-medium transition-all ${
                     activeSection === item.id
                       ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
@@ -1432,8 +1527,8 @@ function App() {
         )}
       </header>
 
-      <main className="mx-auto w-full max-w-7xl px-5 pb-20 pt-28 md:px-8 md:pt-32">
-        <section id="home" className="relative isolate py-12 md:py-20">
+      <main id={mainContentId} className="mx-auto w-full max-w-7xl px-5 pb-20 pt-20 md:px-8 md:pt-22">
+        <section id="home" aria-labelledby="home-heading" className="relative isolate py-12 md:py-20">
           <div className="hero-mesh" aria-hidden="true">
             <div className="hero-grid-overlay" />
             <span className="hero-orb hero-orb-a" />
@@ -1448,7 +1543,7 @@ function App() {
                 {t.heroBadge}
               </p>
 
-              <h1 className="hero-headline font-display text-[40px] font-extrabold leading-[1.05] text-[var(--text)] sm:text-5xl md:text-[68px]">
+              <h1 id="home-heading" className="hero-headline font-display text-[40px] font-extrabold leading-[1.05] text-[var(--text)] sm:text-5xl md:text-[68px]">
                 <span className="hero-headline-accent">EPIX</span> — {t.heroTitle}
               </h1>
 
@@ -1459,8 +1554,10 @@ function App() {
                   {t.heroPrimary}
                   <ArrowRight size={16} />
                 </button>
-                <a href={`/tour?lang=${lang}`} className="hero-cta-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
+                <a href={`/tour?lang=${lang}`} className="tour-cta-pulse inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold">
+                  <span className="tour-cta-dot" />
                   {t.heroSecondary}
+                  <ArrowRight size={16} />
                 </a>
               </div>
 
@@ -1509,12 +1606,13 @@ function App() {
                 </div>
 
                 <div className="relative overflow-hidden rounded-xl border border-[#d7e5ff] bg-white">
-                  <img
+                  <SmartImage
                     key={activeShot.src}
                     src={activeShot.src}
                     alt={`${pick(activeShotI18n.title)} - ${pick(activeShotI18n.module)}`}
                     loading="eager"
                     decoding="async"
+                    fetchPriority="high"
                     className="h-[300px] w-full object-cover object-top md:h-[360px]"
                   />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0f2345]/45 to-transparent" />
@@ -1588,8 +1686,8 @@ function App() {
           </div>
         </section>
 
-        <section id="about" className="py-16 md:py-24">
-          <SectionTitle eyebrow={t.aboutEyebrow} title={t.aboutTitle} subtitle={t.aboutSubtitle} />
+        <section id="about" aria-labelledby="about-heading" className="py-16 md:py-24">
+          <SectionTitle headingId="about-heading" eyebrow={t.aboutEyebrow} title={t.aboutTitle} subtitle={t.aboutSubtitle} />
           <div className="grid gap-6 lg:grid-cols-[1.05fr_1fr]">
             <motion.article
               initial={{ opacity: 0, y: 18 }}
@@ -1609,7 +1707,7 @@ function App() {
                 ))}
               </div>
               <div className="mt-8 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white">
-                <img
+                <SmartImage
                   src="/screenshots/2-home-page.PNG"
                   alt={lang === 'es' ? 'Panel principal unificado de EPIX' : 'EPIX Unified Home Dashboard'}
                   loading="lazy"
@@ -1640,8 +1738,8 @@ function App() {
           </div>
         </section>
 
-        <section id="flows" className="py-16 md:py-24">
-          <SectionTitle eyebrow={flowText.eyebrow} title={flowText.title} subtitle={flowText.subtitle} />
+        <section id="flows" aria-labelledby="flows-heading" className="py-16 md:py-24">
+          <SectionTitle headingId="flows-heading" eyebrow={flowText.eyebrow} title={flowText.title} subtitle={flowText.subtitle} />
           <div className="flow-stage rounded-3xl border border-[#ceddff] p-5 md:p-7">
             <div className="flex flex-wrap gap-2">
               {smartFlows.map((flow) => (
@@ -1707,7 +1805,7 @@ function App() {
                       <h4 className="font-display text-lg font-semibold text-[var(--text)]">{pick(step.title)}</h4>
                       <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{pick(step.detail)}</p>
                       <div className="mt-4 overflow-hidden rounded-xl border border-[#dce8ff] bg-[#edf4ff]">
-                        <img
+                        <SmartImage
                           src={step.screenshotSrc}
                           alt={`${pick(step.title)} - ${pick(shotI18n.title)}`}
                           loading="lazy"
@@ -1727,18 +1825,18 @@ function App() {
           </div>
         </section>
 
-        <section id="ai" className="py-16 md:py-24">
+        <section id="ai" aria-labelledby="ai-heading" className="py-16 md:py-24">
           <div className="ai-section-glow grid gap-6 rounded-3xl border border-[#d5e2ff] bg-gradient-to-r from-[#f4f8ff] to-[#eef8f8] p-6 md:grid-cols-[1fr_1fr] md:p-10">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#2f62d8]">{t.aiTag}</p>
-              <h3 className="mt-3 font-display text-3xl font-bold text-[var(--text)] md:text-4xl">{t.aiTitle}</h3>
+              <h2 id="ai-heading" className="mt-3 font-display text-3xl font-bold text-[var(--text)] md:text-4xl">{t.aiTitle}</h2>
               <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.aiText}</p>
               <a href={`/ai?lang=${lang}`} className="hero-cta-primary mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold">
                 {t.aiCta}
                 <ArrowRight size={16} />
               </a>
               <div className="mt-6 overflow-hidden rounded-xl border border-[#d7e5ff]">
-                <img
+                <SmartImage
                   src="/screenshots/4-chart-builder.PNG"
                   alt={lang === 'es' ? 'Constructor analítico de gráficos de EPIX' : 'EPIX Analytics Chart Builder'}
                   loading="lazy"
@@ -1765,8 +1863,8 @@ function App() {
           </div>
         </section>
 
-        <section id="industries" className="py-16 md:py-24">
-          <SectionTitle eyebrow={t.industriesEyebrow} title={t.industriesTitle} subtitle={t.industriesSubtitle} />
+        <section id="industries" aria-labelledby="industries-heading" className="py-16 md:py-24">
+          <SectionTitle headingId="industries-heading" eyebrow={t.industriesEyebrow} title={t.industriesTitle} subtitle={t.industriesSubtitle} />
           <div className="grid gap-4 md:grid-cols-2">
             {industries.map(({ title, text, icon: Icon }, index) => (
               <motion.div
@@ -1787,8 +1885,8 @@ function App() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
-          <SectionTitle eyebrow={t.whyEyebrow} title={t.whyTitle} subtitle={t.whySubtitle} />
+        <section aria-labelledby="why-heading" className="py-16 md:py-24">
+          <SectionTitle headingId="why-heading" eyebrow={t.whyEyebrow} title={t.whyTitle} subtitle={t.whySubtitle} />
           <div className="grid gap-4 md:grid-cols-4">
             {stats.map((item) => (
               <InView key={item.label.en} triggerOnce>
@@ -1806,15 +1904,46 @@ function App() {
           </div>
         </section>
 
-        <section id="contact" className="py-16 md:py-24">
+        <section id="blog" aria-labelledby="blog-heading" className="py-16 md:py-24">
+          <SectionTitle
+            headingId="blog-heading"
+            eyebrow={blogSectionCopy[lang].eyebrow}
+            title={blogSectionCopy[lang].title}
+            subtitle={blogSectionCopy[lang].subtitle}
+          />
+          <div className="grid gap-4 md:grid-cols-3">
+            {['what-is-erp', 'erp-implementation-guide', 'how-ai-is-transforming-erp'].map((slug) => {
+              const post = blogPostBySlug[slug]
+              return (
+                <article key={slug} className="rounded-2xl border border-[var(--line)] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#c6d7ff] hover:shadow-md">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#5678b3]">{pickLocalized(post.category, lang)}</p>
+                  <h3 className="mt-2 font-display text-xl font-bold text-[var(--text)]">{pickLocalized(post.title, lang)}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{pickLocalized(post.description, lang)}</p>
+                  <a href={lang === 'en' ? `/blog/${slug}` : `/blog/${slug}?lang=${lang}`} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline">
+                    {blogSectionCopy[lang].cta}
+                    <ArrowRight size={14} />
+                  </a>
+                </article>
+              )
+            })}
+          </div>
+          <div className="mt-6">
+            <a href={lang === 'en' ? '/blog' : `/blog?lang=${lang}`} className="hero-cta-primary inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold">
+              {blogSectionCopy[lang].cta}
+              <ArrowRight size={16} />
+            </a>
+          </div>
+        </section>
+
+        <section id="contact" aria-labelledby="contact-heading" className="py-16 md:py-24">
           <div className="ai-section-glow rounded-3xl border border-[#cddcff] bg-gradient-to-r from-[#f4f8ff] to-[#f8fcff] p-7 md:p-10">
-            <SectionTitle eyebrow={t.contactEyebrow} title={t.contactTitle} subtitle={t.contactSubtitle} />
-            <form ref={formRef} onSubmit={handleContactSubmit} className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
-              <input name="from_name" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.fullName} />
-              <input name="from_email" type="email" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.workEmail} />
-              <input name="phone" type="tel" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.phone} />
-              <input name="company" className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.company} />
-              <textarea name="message" required className="min-h-32 rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.priorities} />
+            <SectionTitle headingId="contact-heading" eyebrow={t.contactEyebrow} title={t.contactTitle} subtitle={t.contactSubtitle} />
+            <form ref={formRef} onSubmit={handleContactSubmit} aria-label={t.contactTitle} className="mx-auto grid max-w-3xl gap-4 md:grid-cols-2">
+              <input aria-label={t.placeholders.fullName} name="from_name" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.fullName} />
+              <input aria-label={t.placeholders.workEmail} name="from_email" type="email" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.workEmail} />
+              <input aria-label={t.placeholders.phone} name="phone" type="tel" required className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.phone} />
+              <input aria-label={t.placeholders.company} name="company" className="rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)]" placeholder={t.placeholders.company} />
+              <textarea aria-label={t.placeholders.priorities} name="message" required className="min-h-32 rounded-xl border border-[#ccd9f3] bg-white/80 px-4 py-3 backdrop-blur-sm transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[rgba(29,93,242,0.15)] md:col-span-2" placeholder={t.placeholders.priorities} />
               <button
                 type="submit"
                 disabled={formStatus === 'sending'}
@@ -1833,12 +1962,12 @@ function App() {
                 )}
               </button>
               {formStatus === 'success' && (
-                <p className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 md:col-span-2">
+                <p role="status" aria-live="polite" className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 md:col-span-2">
                   <CheckCircle2 size={16} /> {t.messageSuccess}
                 </p>
               )}
               {formStatus === 'error' && (
-                <p className="flex items-center justify-center gap-2 text-sm font-medium text-red-500 md:col-span-2">
+                <p role="alert" className="flex items-center justify-center gap-2 text-sm font-medium text-red-500 md:col-span-2">
                   {t.messageError}
                 </p>
               )}
@@ -1868,6 +1997,17 @@ function App() {
           <div className="flex flex-col items-center gap-3 md:items-start">
             <img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" />
             <p className="text-sm text-[var(--text-muted)]">© {new Date().getFullYear()} EPIX ERP. {t.rightsReserved}</p>
+            <div className="flex flex-wrap items-center gap-3 text-sm">
+              <a href={lang === 'en' ? '/blog' : `/blog?lang=${lang}`} className="font-semibold text-[var(--brand)] hover:underline">
+                Blog
+              </a>
+              <a href={lang === 'en' ? '/product-tour' : `/product-tour?lang=${lang}`} className="font-semibold text-[var(--brand)] hover:underline">
+                Product Tour
+              </a>
+              <a href={lang === 'en' ? '/ai-capabilities' : `/ai-capabilities?lang=${lang}`} className="font-semibold text-[var(--brand)] hover:underline">
+                AI Capabilities
+              </a>
+            </div>
           </div>
           <p className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)]">
             {t.footer}

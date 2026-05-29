@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef } from 'react'
 
 type Props = {
   open: boolean
@@ -12,6 +12,8 @@ type Props = {
 
 export function AccessibleImageModal({ open, onClose, title, imageSrc, imageAlt, closeLabel, subtitle }: Props) {
   const dialogRef = useRef<HTMLDivElement | null>(null)
+  const titleId = useId()
+  const descriptionId = useId()
 
   useEffect(() => {
     if (!open || !dialogRef.current) {
@@ -64,17 +66,19 @@ export function AccessibleImageModal({ open, onClose, title, imageSrc, imageAlt,
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label={title}
+        aria-labelledby={titleId}
+        aria-describedby={subtitle ? descriptionId : undefined}
         className="max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl border border-[#33538d] bg-white shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
           <div>
-            <p className="font-display text-lg font-semibold text-[var(--text)]">{title}</p>
-            {subtitle ? <p className="text-sm text-[var(--text-muted)]">{subtitle}</p> : null}
+            <p id={titleId} className="font-display text-lg font-semibold text-[var(--text)]">{title}</p>
+            {subtitle ? <p id={descriptionId} className="text-sm text-[var(--text-muted)]">{subtitle}</p> : null}
           </div>
           <button
             type="button"
+            aria-label={closeLabel}
             className="rounded-lg border border-[var(--line)] px-3 py-1 text-sm font-semibold text-[var(--text-muted)]"
             onClick={onClose}
           >

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
+import { SmartImage } from '../components/SmartImage'
 import { moduleSpanishText } from './moduleSpanish'
 import {
   ArrowRight,
@@ -484,7 +485,8 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
-      <section className="tour-hero relative overflow-hidden pb-20 pt-12 md:pb-32 md:pt-16">
+      <main aria-label="Product tour content">
+      <section aria-labelledby="tour-hero-heading" className="tour-hero relative overflow-hidden pb-20 pt-12 md:pb-32 md:pt-16">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           {/* Back link */}
           <a href={`/?lang=${lang}`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline">
@@ -504,7 +506,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
               <Play size={12} fill="currentColor" />
               {t.heroEyebrow}
             </span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
+            <h1 id="tour-hero-heading" className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
               {t.heroTitle}
             </h1>
             <p className="mt-3 font-display text-xl font-semibold text-[var(--brand)] md:text-2xl">
@@ -544,14 +546,14 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="tour-mosaic mt-14 grid grid-cols-3 gap-3 md:gap-5"
           >
             <div className="col-span-2 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-2xl">
-              <img src="/screenshots/2-home-page.PNG" alt={tr('EPIX Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
+              <SmartImage src="/screenshots/2-home-page.PNG" alt={tr('EPIX Dashboard')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
             </div>
             <div className="flex flex-col gap-3 md:gap-5">
               <div className="flex-1 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl">
-                <img src="/screenshots/4-chart-builder.PNG" alt={tr('Chart Builder')} className="h-full w-full object-cover object-top" loading="eager" />
+                <SmartImage src="/screenshots/4-chart-builder.PNG" alt={tr('Chart Builder')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
               </div>
               <div className="flex-1 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl">
-                <img src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt={tr('HR Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
+                <SmartImage src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt={tr('HR Dashboard')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
               </div>
             </div>
           </motion.div>
@@ -574,7 +576,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
       </section>
 
           {/* SECTION 2: STEP-BY-STEP TOUR */}
-      <section className="tour-section-alt mx-auto w-full max-w-7xl px-5 py-20 md:px-8 md:py-28">
+      <section aria-labelledby="tour-steps-heading" className="tour-section-alt mx-auto w-full max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -584,7 +586,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
               <Eye size={12} /> {lang === 'ar' ? 'جولة داخل المنصة' : lang === 'fr' ? 'Parcours plateforme' : lang === 'es' ? 'Recorrido de la plataforma' : 'Platform Walkthrough'}
           </span>
-          <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.stepsTitle}</h2>
+          <h2 id="tour-steps-heading" className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.stepsTitle}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.stepsSubtitle}</p>
         </motion.div>
 
@@ -618,9 +620,10 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                   <button
                     type="button"
                     onClick={() => setSelected({ src: step.screenshot, title: pick(step.title) })}
+                    aria-label={lang === 'es' ? `Abrir captura ${pick(step.title)}` : `Open screenshot ${pick(step.title)}`}
                     className="block w-full"
                   >
-                    <img
+                    <SmartImage
                       src={step.screenshot}
                       alt={pick(step.title)}
                       loading="lazy"
@@ -637,7 +640,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
       </section>
 
           {/* SECTION 3: END-TO-END FLOW */}
-      <section className="tour-flow-section relative overflow-hidden py-20 md:py-28">
+      <section aria-labelledby="tour-flow-heading" className="tour-flow-section relative overflow-hidden py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -648,7 +651,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
               <Zap size={12} /> {lang === 'ar' ? 'تكامل سلس' : lang === 'fr' ? 'Intégration fluide' : lang === 'es' ? 'Integración fluida' : 'Seamless Integration'}
             </span>
-            <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.flowTitle}</h2>
+            <h2 id="tour-flow-heading" className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.flowTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.flowSubtitle}</p>
           </motion.div>
 
@@ -693,18 +696,18 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             transition={{ delay: 0.5 }}
             className="mx-auto mt-14 grid max-w-6xl gap-4 md:grid-cols-2"
           >
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/72-payable-outstanding-summary.PNG', title: tr('Payables Outstanding') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/72-payable-outstanding-summary.PNG" alt={tr('Payables flow')} loading="lazy" decoding="async" className="w-full object-cover object-top" />
+            <button type="button" aria-label={lang === 'es' ? 'Abrir captura de cuentas por pagar pendientes' : 'Open payables outstanding screenshot'} onClick={() => setSelected({ src: '/screenshots/72-payable-outstanding-summary.PNG', title: tr('Payables Outstanding') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <SmartImage src="/screenshots/72-payable-outstanding-summary.PNG" alt={tr('Payables flow')} loading="lazy" decoding="async" className="w-full object-cover object-top" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/82-receivable-outstanding-summary.PNG', title: tr('Receivables Outstanding') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/82-receivable-outstanding-summary.PNG" alt={tr('Receivables flow')} loading="lazy" decoding="async" className="w-full object-cover object-top" />
+            <button type="button" aria-label={lang === 'es' ? 'Abrir captura de cuentas por cobrar pendientes' : 'Open receivables outstanding screenshot'} onClick={() => setSelected({ src: '/screenshots/82-receivable-outstanding-summary.PNG', title: tr('Receivables Outstanding') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <SmartImage src="/screenshots/82-receivable-outstanding-summary.PNG" alt={tr('Receivables flow')} loading="lazy" decoding="async" className="w-full object-cover object-top" />
             </button>
           </motion.div>
         </div>
       </section>
 
           {/* SECTION 4: COMPLETE MODULE SUITE (13 Modules) */}
-      <section className="tour-modules-mega-section py-20 md:py-28">
+      <section aria-labelledby="tour-modules-heading" className="tour-modules-mega-section py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -715,7 +718,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
               <Layers size={12} /> {lang === 'ar' ? 'المجموعة الكاملة' : lang === 'fr' ? 'Suite complète' : lang === 'es' ? 'Suite completa' : 'Full Suite'}
             </span>
-            <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.modulesTitle}</h2>
+            <h2 id="tour-modules-heading" className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.modulesTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.modulesSubtitle}</p>
           </motion.div>
 
@@ -733,7 +736,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                 >
                   {/* Screenshot header */}
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-[#f0f4ff] to-[#e8f8f8]">
-                    <img
+                    <SmartImage
                       src={mod.screenshot}
                       alt={pick(mod.name)}
                       loading="lazy"
@@ -786,7 +789,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
       </section>
 
           {/* SECTION 5: DIFFERENTIATORS */}
-      <section className="tour-diff-section py-20 md:py-28">
+      <section aria-labelledby="tour-diff-heading" className="tour-diff-section py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -797,7 +800,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
               <Star size={12} /> {lang === 'ar' ? 'لماذا EPIX' : lang === 'fr' ? 'Pourquoi EPIX' : lang === 'es' ? 'Por qué EPIX' : 'Why EPIX'}
             </span>
-            <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.diffTitle}</h2>
+            <h2 id="tour-diff-heading" className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.diffTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.diffSubtitle}</p>
           </motion.div>
 
@@ -826,7 +829,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
       </section>
 
           {/* SECTION 6: SCREENSHOT GALLERY (ALL SCREENSHOTS) */}
-      <section className="tour-gallery-section py-20 md:py-28">
+      <section aria-labelledby="tour-gallery-heading" className="tour-gallery-section py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -837,7 +840,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
               <Monitor size={12} /> {lang === 'ar' ? 'المنصة الحية' : lang === 'fr' ? 'Plateforme en direct' : lang === 'es' ? 'Plataforma en vivo' : 'Live Platform'}
             </span>
-            <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.galleryTitle}</h2>
+            <h2 id="tour-gallery-heading" className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.galleryTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.gallerySubtitle}</p>
           </motion.div>
 
@@ -847,6 +850,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                 key={shot.src}
                 type="button"
                 onClick={() => setSelected({ src: shot.src, title: pick(shot.title) })}
+                aria-label={lang === 'es' ? `Abrir captura ${pick(shot.title)}` : `Open screenshot ${pick(shot.title)}`}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-20px' }}
@@ -872,14 +876,14 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
       </section>
 
           {/* SECTION 7: FINAL CTA */}
-      <section className="tour-cta-section relative overflow-hidden py-24 md:py-32">
+      <section aria-labelledby="tour-cta-heading" className="tour-cta-section relative overflow-hidden py-24 md:py-32">
         <div className="mx-auto w-full max-w-4xl px-5 text-center md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-display text-3xl font-extrabold md:text-5xl">{t.ctaTitle}</h2>
+            <h2 id="tour-cta-heading" className="font-display text-3xl font-extrabold md:text-5xl">{t.ctaTitle}</h2>
             <p className="mx-auto mt-4 max-w-xl text-sm text-[var(--text-muted)] md:text-base">{t.ctaDesc}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <a href={`/?lang=${lang}#contact`} className="hero-cta-primary inline-flex items-center gap-2 rounded-xl px-7 py-3.5 font-semibold shadow-lg">
@@ -915,6 +919,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
           closeLabel={t.close}
         />
       )}
+      </main>
     </div>
   )
 }

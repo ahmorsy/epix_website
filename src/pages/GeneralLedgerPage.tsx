@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { moduleEsObject, moduleEsText } from './moduleEs'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
+import { SmartImage } from '../components/SmartImage'
 import { ArrowRight, CheckCircle2, Landmark } from 'lucide-react'
 
 type ContentLang = 'en' | 'fr' | 'ar'
@@ -116,9 +117,9 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
           <a href={`/?lang=${lang}`}><img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" /></a>
         </div>
 
-        <section className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">
+        <section aria-labelledby="gl-hero-heading" className="module-hero mt-6 rounded-3xl border border-[#d7e4ff] p-7 md:p-10">
           <p className="relative text-xs font-bold uppercase tracking-[0.22em] text-[#3c67b7]">General Ledger</p>
-          <h1 className="relative mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.title}</h1>
+          <h1 id="gl-hero-heading" className="relative mt-3 font-display text-4xl font-extrabold leading-tight md:text-6xl">{t.title}</h1>
           <p className="relative mt-4 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{t.desc}</p>
           <div className="relative mt-8 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-lg">
             <img
@@ -132,9 +133,9 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
           </div>
         </section>
 
-        <section className="mt-8 grid gap-5 lg:grid-cols-2">
+        <section aria-labelledby="gl-capabilities-heading" className="mt-8 grid gap-5 lg:grid-cols-2">
           <div className="rounded-2xl border border-[var(--line)] bg-white p-6">
-            <h2 className="font-display text-2xl font-bold">{t.capabilitiesTitle}</h2>
+            <h2 id="gl-capabilities-heading" className="font-display text-2xl font-bold">{t.capabilitiesTitle}</h2>
             <ul className="mt-4 space-y-3">
               {t.capabilities.map((line) => (
                 <li key={line} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
@@ -145,7 +146,7 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
             </ul>
           </div>
           <div className="rounded-2xl border border-[var(--line)] bg-white p-6">
-            <h2 className="font-display text-2xl font-bold">{t.flowTitle}</h2>
+            <h2 id="gl-flow-heading" className="font-display text-2xl font-bold">{t.flowTitle}</h2>
             <div className="flow-pipeline mt-5">
               {t.flow.map((step, idx) => (
                 <div key={step} className="flow-pipeline-step">
@@ -161,14 +162,14 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
           </div>
         </section>
 
-        <section className="mt-8">
-          <h2 className="font-display text-2xl font-bold">{t.galleryTitle}</h2>
+        <section aria-labelledby="gl-gallery-heading" className="mt-8">
+          <h2 id="gl-gallery-heading" className="font-display text-2xl font-bold">{t.galleryTitle}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {shots.map((shot, index) => (
               <motion.article key={shot.src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
                 <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left">
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]">
-                    <img src={shot.src} alt={text(shot.title[contentLang])} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
+                    <SmartImage src={shot.src} alt={text(shot.title[contentLang])} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" />
                     <span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">GL</span>
                   </div>
@@ -182,11 +183,11 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
           </div>
         </section>
 
-        <section className="mt-8 rounded-2xl border border-[#d5e2ff] bg-gradient-to-r from-[#f7fbff] to-[#eef6ff] p-6">
+        <section aria-labelledby="gl-outcomes-heading" className="mt-8 rounded-2xl border border-[#d5e2ff] bg-gradient-to-r from-[#f7fbff] to-[#eef6ff] p-6">
           <div className="flex items-start gap-3">
             <Landmark className="mt-1 text-[var(--brand)]" />
             <div>
-              <h2 className="font-display text-2xl font-bold">{t.outcomesTitle}</h2>
+              <h2 id="gl-outcomes-heading" className="font-display text-2xl font-bold">{t.outcomesTitle}</h2>
               <div className="mt-3 grid gap-3 md:grid-cols-3">
                 {t.outcomes.map((item) => (
                   <div key={item} className="rounded-xl border border-[#dbe7ff] bg-white px-4 py-3 text-sm text-[var(--text-muted)]">{item}</div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
+import { SmartImage } from '../components/SmartImage'
 import { moduleSpanishText } from './moduleSpanish'
 import {
   ArrowRight,
@@ -191,7 +192,8 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
-      <section className="ai-page-hero relative overflow-hidden pb-20 pt-12 md:pb-28 md:pt-16">
+      <main aria-label="AI capabilities content">
+      <section aria-labelledby="ai-hero-heading" className="ai-page-hero relative overflow-hidden pb-20 pt-12 md:pb-28 md:pt-16">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <a href={`/?lang=${lang}`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline">
             <ArrowRight size={14} className="rotate-180" />
@@ -209,7 +211,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
               <BarChart3 size={12} />
               {t.heroEyebrow}
             </span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl lg:text-7xl whitespace-pre-line">
+            <h1 id="ai-hero-heading" className="mt-5 font-display text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl lg:text-7xl whitespace-pre-line">
               {t.heroTitle}
             </h1>
             <p className="mt-4 font-display text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#6d28d9] to-[#0ea5a8] md:text-2xl">
@@ -248,17 +250,17 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
             transition={{ duration: 0.9, delay: 0.5 }}
             className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5"
           >
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/93-HR_Dashboard_2026-05-03.png', title: tr('Executive Dashboard') })} className="col-span-2 md:col-span-1 md:row-span-2 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt={tr('Executive Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" aria-label={lang === 'es' ? 'Abrir captura del panel ejecutivo' : 'Open executive dashboard screenshot'} onClick={() => setSelected({ src: '/screenshots/93-HR_Dashboard_2026-05-03.png', title: tr('Executive Dashboard') })} className="col-span-2 md:col-span-1 md:row-span-2 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <SmartImage src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt={tr('Executive Dashboard')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/4-chart-builder.PNG', title: tr('Custom Chart Builder') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/4-chart-builder.PNG" alt={tr('Chart Builder')} className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" aria-label={lang === 'es' ? 'Abrir captura del constructor de gráficos' : 'Open chart builder screenshot'} onClick={() => setSelected({ src: '/screenshots/4-chart-builder.PNG', title: tr('Custom Chart Builder') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <SmartImage src="/screenshots/4-chart-builder.PNG" alt={tr('Chart Builder')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/5-FA_Dashboard_2026-05-03.png', title: tr('Assets Dashboard') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/5-FA_Dashboard_2026-05-03.png" alt={tr('Assets Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" aria-label={lang === 'es' ? 'Abrir captura del panel de activos' : 'Open assets dashboard screenshot'} onClick={() => setSelected({ src: '/screenshots/5-FA_Dashboard_2026-05-03.png', title: tr('Assets Dashboard') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <SmartImage src="/screenshots/5-FA_Dashboard_2026-05-03.png" alt={tr('Assets Dashboard')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/4-chart-builder2.PNG', title: tr('Advanced Analytics') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/4-chart-builder2.PNG" alt={tr('Advanced Analytics')} className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" aria-label={lang === 'es' ? 'Abrir captura de analítica avanzada' : 'Open advanced analytics screenshot'} onClick={() => setSelected({ src: '/screenshots/4-chart-builder2.PNG', title: tr('Advanced Analytics') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <SmartImage src="/screenshots/4-chart-builder2.PNG" alt={tr('Advanced Analytics')} className="h-full w-full object-cover object-top" loading="eager" fetchPriority="high" />
             </button>
           </motion.div>
 
@@ -280,6 +282,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
         const isEven = pIdx % 2 === 0
         return (
           <section
+            aria-labelledby={`ai-pillar-${pillar.id}-heading`}
             key={pillar.id}
             className={`relative overflow-hidden py-20 md:py-28 ${isEven ? '' : 'ai-pipeline-section'}`}
           >
@@ -297,7 +300,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
                 <span className="mt-5 block text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">
                   {lang === 'ar' ? `الركيزة ${pIdx + 1}` : lang === 'fr' ? `Pilier ${pIdx + 1}` : lang === 'es' ? `Pilar ${pIdx + 1}` : `Pillar ${pIdx + 1}`}
                 </span>
-                <h2 className="mt-2 font-display text-3xl font-extrabold md:text-5xl">{pick(pillar.title)}</h2>
+                <h2 id={`ai-pillar-${pillar.id}-heading`} className="mt-2 font-display text-3xl font-extrabold md:text-5xl">{pick(pillar.title)}</h2>
                 <p className="mt-2 font-display text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#6d28d9] to-[#0ea5a8]">{pick(pillar.subtitle)}</p>
                 <p className="mt-4 text-base leading-relaxed text-[var(--text-muted)] md:text-lg">{pick(pillar.desc)}</p>
               </motion.div>
@@ -344,6 +347,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
                       key={sIdx}
                       type="button"
                       onClick={() => setSelected(shot)}
+                      aria-label={lang === 'es' ? `Abrir captura ${shot.title}` : `Open screenshot ${shot.title}`}
                       initial={{ opacity: 0, scale: 0.95 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
@@ -373,13 +377,13 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
       })}
 
           {/* SECTION 3: JOURNEY / FLOW */}
-      <section className="ai-diff-section relative overflow-hidden py-20 md:py-28">
+      <section aria-labelledby="ai-journey-heading" className="ai-diff-section relative overflow-hidden py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#f3eeff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#6d28d9]">
               <GitMerge size={12} /> {lang === 'ar' ? 'مسارك القادم' : lang === 'fr' ? 'Votre parcours' : lang === 'es' ? 'Tu camino a seguir' : 'Your Path Forward'}
             </span>
-            <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.journeyTitle}</h2>
+            <h2 id="ai-journey-heading" className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.journeyTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.journeySubtitle}</p>
           </motion.div>
 
@@ -446,10 +450,10 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
       </section>
 
           {/* SECTION 4: CTA */}
-      <section className="ai-cta-section relative overflow-hidden py-24 md:py-32">
+      <section aria-labelledby="ai-cta-heading" className="ai-cta-section relative overflow-hidden py-24 md:py-32">
         <div className="mx-auto w-full max-w-4xl px-5 text-center md:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="font-display text-3xl font-extrabold md:text-5xl">{t.ctaTitle}</h2>
+            <h2 id="ai-cta-heading" className="font-display text-3xl font-extrabold md:text-5xl">{t.ctaTitle}</h2>
             <p className="mx-auto mt-4 max-w-xl text-sm text-[var(--text-muted)] md:text-base">{t.ctaDesc}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <a href={`/?lang=${lang}#contact`} className="hero-cta-primary inline-flex items-center gap-2 rounded-xl px-7 py-3.5 font-semibold shadow-lg">
@@ -482,6 +486,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
           closeLabel={t.close}
         />
       )}
+      </main>
     </div>
   )
 }

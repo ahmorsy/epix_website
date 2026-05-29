@@ -1,0 +1,23 @@
+# EPIX ERP
+
+EPIX ERP is an enterprise resource planning platform for finance, operations, HR, inventory, and manufacturing.
+
+## Primary audience
+- Enterprise executives
+- Finance and operations leaders
+- Digital transformation teams in Africa, Europe, GCC, and Middle East markets
+
+## Canonical site
+https://www.e-pix.io
+
+## Key URLs
+- https://www.e-pix.io/
+- https://www.e-pix.io/product-tour
+- https://www.e-pix.io/ai-capabilities
+- https://www.e-pix.io/blog
+- https://www.e-pix.io/blog/what-is-erp
+- https://www.e-pix.io/blog/erp-implementation-guide
+- https://www.e-pix.io/blog/how-ai-is-transforming-erp
+- https://www.e-pix.io/blog/erp-for-manufacturing
+- https://www.e-pix.io/blog/digital-transformation-africa
+- https://www.e-pix.io/blog/digital-transformation-middle-east

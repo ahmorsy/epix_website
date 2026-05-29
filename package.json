@@ -5,7 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "seo:generate": "node scripts/generate-seo-files.mjs",
+    "prerender:routes": "node scripts/prerender-routes.mjs",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "prebuild": "npm run images:optimize && npm run seo:generate",
     "build": "tsc -b && vite build",
+    "postbuild": "npm run prerender:routes && npm run seo:audit",
+    "build:ci": "npm run build && npm run lint",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "serve -s dist -l $PORT"
@@ -35,6 +42,8 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "postcss": "^8.5.15",
+    "puppeteer": "^24.11.2",
+    "sharp": "^0.34.2",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",

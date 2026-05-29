@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.e-pix.io/sitemap.xml
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /

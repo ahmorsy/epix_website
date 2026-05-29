@@ -10,5 +10,14 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          motion: ['framer-motion'],
+          icons: ['lucide-react', 'react-icons'],
+          email: ['@emailjs/browser'],
+        },
+      },
+    },
   },
 })

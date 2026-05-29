@@ -147,6 +147,49 @@ textarea:focus {
   transform: translateY(-1px); background: #fff; border-color: rgba(29,93,242,.45);
 }
 
+/* ===== Explore Product Tour — Pulsing CTA ===== */
+.tour-cta-pulse {
+  position: relative;
+  background: linear-gradient(135deg, #6d28d9, #4f46e5, #1d5df2);
+  color: #fff;
+  border: none;
+  box-shadow:
+    0 0 0 0 rgba(109, 40, 217, 0.5),
+    0 4px 14px -3px rgba(109, 40, 217, 0.4);
+  animation: tourPulseGlow 2.2s ease-in-out infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.tour-cta-pulse:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 0 0 0 rgba(109, 40, 217, 0),
+    0 8px 24px -4px rgba(109, 40, 217, 0.5);
+  animation: none;
+}
+.tour-cta-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: tourDotBlink 1.4s ease-in-out infinite;
+}
+@keyframes tourPulseGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 rgba(109, 40, 217, 0.4),
+      0 4px 14px -3px rgba(109, 40, 217, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(109, 40, 217, 0),
+      0 6px 20px -2px rgba(109, 40, 217, 0.55);
+  }
+}
+@keyframes tourDotBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.6); }
+}
+
 .hero-pill {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(6px);
