@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
+import { moduleSpanishText } from './moduleSpanish'
 import {
   ArrowRight,
   Play,
@@ -35,22 +36,20 @@ import {
   Star,
 } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'ar'
-
-/* ═══════════════════════════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════════════════════════ */
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 
 /* ---------- Tour Steps ---------- */
 const tourSteps = [
   {
     id: 'login',
     icon: Lock,
-    title: { en: 'Secure Login & Access', fr: 'Connexion Sécurisée', ar: 'تسجيل دخول آمن' },
+    title: { en: 'Secure Login & Access', fr: 'Connexion Sécurisée', ar: 'تسجيل دخول آمن', es: 'Inicio de sesión y acceso seguros' },
     desc: {
       en: 'Multi-factor authentication, role-based access control, and session governance ensure every user enters a secure, personalized workspace.',
       fr: "Authentification multi-facteur, contrôle d'accès par rôle et gestion des sessions pour un espace sécurisé.",
       ar: 'مصادقة متعددة العوامل وتحكم بالوصول حسب الدور وإدارة الجلسات لضمان بيئة عمل آمنة.',
+      es: 'La autenticación multifactor, el control de acceso basado en roles y la gobernanza de sesiones garantizan un espacio de trabajo seguro y personalizado para cada usuario.',
     },
     screenshot: '/screenshots/1-Login.PNG',
     badge: 'Step 1',
@@ -147,8 +146,13 @@ const differentiators = [
   },
   {
     icon: Users,
-    title: { en: 'Role-Based Access Control', fr: "Contrôle D'Accès Par Rôle", ar: 'تحكم بالوصول حسب الدور' },
-    desc: { en: 'Granular permissions down to field level. Users see only what they need.', fr: 'Permissions granulaires au niveau du champ. Accès minimum nécessaire.', ar: 'صلاحيات دقيقة حتى مستوى الحقل. المستخدم يرى فقط ما يحتاجه.' },
+    title: { en: 'Role-Based Access Control', fr: "Contrôle D'Accès Par Rôle", ar: 'تحكم بالوصول حسب الدور', es: 'Control de acceso basado en roles' },
+    desc: {
+      en: 'Granular permissions down to field level. Users see only what they need.',
+      fr: 'Permissions granulaires au niveau du champ. Accès minimum nécessaire.',
+      ar: 'صلاحيات دقيقة حتى مستوى الحقل. المستخدم يرى فقط ما يحتاجه.',
+      es: 'Permisos granulares hasta el nivel de campo. Cada usuario ve solo lo que necesita.',
+    },
   },
   {
     icon: Zap,
@@ -181,7 +185,12 @@ const fullModules = [
     slug: 'general-ledger',
     icon: Landmark,
     name: { en: 'General Ledger', fr: 'Grand Livre', ar: 'دفتر الأستاذ العام' },
-    executive: { en: 'Financial backbone for journal governance, posting discipline, and multi-currency reporting.', fr: 'Backbone financier pour gouvernance journaux, discipline comptabilisation et reporting multidevise.', ar: 'عمود مالي أساسي لحوكمة القيود وانضباط الترحيل والتقارير متعددة العملات.' },
+    executive: {
+      en: 'Financial backbone for journal governance, posting discipline, and multi-currency reporting.',
+      fr: 'Backbone financier pour gouvernance journaux, discipline comptabilisation et reporting multidevise.',
+      ar: 'عمود مالي أساسي لحوكمة القيود وانضباط الترحيل والتقارير متعددة العملات.',
+      es: 'Columna vertebral financiera para la gobernanza de asientos, disciplina contable e informes multidivisa.',
+    },
     details: [
       { en: 'COA & account-combination governance', fr: 'Gouvernance plan de comptes', ar: 'حوكمة دليل الحسابات' },
       { en: 'Journal approvals & reversals', fr: 'Approbations journaux et contrepassation', ar: 'موافقات القيود والقيود العكسية' },
@@ -339,7 +348,7 @@ const fullModules = [
 const screenshotGallery = [
   { src: '/screenshots/2-home-page.PNG', title: { en: 'Unified Home Dashboard', fr: "Tableau de bord d'accueil", ar: 'لوحة رئيسية موحدة' }, category: { en: 'Platform', fr: 'Plateforme', ar: 'المنصة' } },
   { src: '/screenshots/4-chart-builder.PNG', title: { en: 'Interactive Chart Builder', fr: 'Générateur de graphiques', ar: 'منشئ الرسوم البيانية' }, category: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات' } },
-  { src: '/screenshots/4-chart-builder2.PNG', title: { en: 'Advanced Chart Config', fr: 'Configuration graphiques avancée', ar: 'تهيئة رسوم متقدمة' }, category: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات' } },
+  { src: '/screenshots/4-chart-builder2.PNG', title: { en: 'Advanced Chart Config', fr: 'Configuration graphiques avancée', ar: 'تهيئة متقدمة للرسوم البيانية' }, category: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات' } },
   { src: '/screenshots/5-FA_Dashboard_2026-05-03.png', title: { en: 'Fixed Assets Dashboard', fr: 'Tableau de bord immobilisations', ar: 'لوحة الأصول الثابتة' }, category: { en: 'Fixed Assets', fr: 'Immobilisations', ar: 'أصول ثابتة' } },
   { src: '/screenshots/93-HR_Dashboard_2026-05-03.png', title: { en: 'HR Executive Dashboard', fr: 'Tableau de bord RH', ar: 'لوحة الموارد البشرية' }, category: { en: 'HR & Payroll', fr: 'RH et Paie', ar: 'موارد بشرية' } },
   { src: '/screenshots/71-payable-volume-summary.PNG', title: { en: 'Payables Volume Summary', fr: 'Synthèse volume fournisseurs', ar: 'ملخص حجم المدفوعات' }, category: { en: 'Accounts Payable', fr: 'Fournisseurs', ar: 'الدائنون' } },
@@ -442,19 +451,39 @@ const copy = {
   },
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
+const copyEs: typeof copy.en = {
+  backToHome: 'Volver al inicio',
+  heroEyebrow: 'Recorrido completo del producto',
+  heroTitle: 'La experiencia completa EPIX',
+  heroSubtitle: 'Una plataforma. Todos los módulos. Control total.',
+  heroDesc: 'Explora toda la suite ERP de EPIX, desde autenticación segura hasta analítica ejecutiva en una experiencia integrada.',
+  heroCta: 'Reservar demo en vivo',
+  stepsTitle: 'Tu recorrido por EPIX',
+  stepsSubtitle: 'Cada paso muestra cómo la plataforma sirve a tu equipo con precisión.',
+  flowTitle: 'Flujo de negocio de punta a punta',
+  flowSubtitle: 'Una transacción recorre toda la plataforma sin exportaciones ni retrabajo.',
+  diffTitle: 'Qué hace diferente a EPIX',
+  diffSubtitle: 'Diseñado para equipos profesionales que exigen velocidad y transparencia.',
+  modulesTitle: 'Suite completa de módulos',
+  modulesSubtitle: '13 módulos integrados para cubrir toda la operación empresarial.',
+  galleryTitle: 'Capturas del producto',
+  gallerySubtitle: 'Capturas reales de la plataforma en vivo.',
+  ctaTitle: '¿Listo para vivir EPIX?',
+  ctaDesc: 'Agenda una demo personalizada y descubre cómo EPIX se adapta a tu negocio.',
+  ctaButton: 'Reservar demo en vivo',
+  ctaSecondary: 'Contactar al equipo',
+  viewModule: 'Ver módulo',
+  close: 'Cerrar',
+}
 export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
   const [selected, setSelected] = useState<{ src: string; title: string } | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? copyEs : copy[contentLang]
+  const tr = (value: string) => (lang === 'es' ? moduleSpanishText(value) : value)
+  const pick = (value: { en: string; fr: string; ar: string; es?: string }) => (lang === 'es' ? value.es ?? moduleSpanishText(value.en) : value[contentLang])
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
-
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 1: HERO
-          ═══════════════════════════════════════════════════════════ */}
       <section className="tour-hero relative overflow-hidden pb-20 pt-12 md:pb-32 md:pt-16">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           {/* Back link */}
@@ -502,7 +531,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             {stats.map((s) => (
               <div key={s.value} className="tour-stat-card rounded-2xl border border-[#d7e5ff]/60 bg-white/80 p-5 text-center shadow-sm backdrop-blur-sm">
                 <div className="font-display text-3xl font-extrabold text-[var(--brand)] md:text-4xl">{s.value}</div>
-                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">{s.label[lang]}</div>
+                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">{pick(s.label)}</div>
               </div>
             ))}
           </motion.div>
@@ -515,14 +544,14 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="tour-mosaic mt-14 grid grid-cols-3 gap-3 md:gap-5"
           >
             <div className="col-span-2 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-2xl">
-              <img src="/screenshots/2-home-page.PNG" alt="EPIX Dashboard" className="h-full w-full object-cover object-top" loading="eager" />
+              <img src="/screenshots/2-home-page.PNG" alt={tr('EPIX Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
             </div>
             <div className="flex flex-col gap-3 md:gap-5">
               <div className="flex-1 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl">
-                <img src="/screenshots/4-chart-builder.PNG" alt="Chart Builder" className="h-full w-full object-cover object-top" loading="eager" />
+                <img src="/screenshots/4-chart-builder.PNG" alt={tr('Chart Builder')} className="h-full w-full object-cover object-top" loading="eager" />
               </div>
               <div className="flex-1 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl">
-                <img src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt="HR Dashboard" className="h-full w-full object-cover object-top" loading="eager" />
+                <img src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt={tr('HR Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
               </div>
             </div>
           </motion.div>
@@ -535,7 +564,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="mt-12 flex justify-center"
           >
             <div className="flex flex-col items-center gap-2 text-xs font-medium text-[var(--text-muted)]">
-              <span>Scroll to explore</span>
+              <span>{lang === 'ar' ? 'مرر للاستكشاف' : lang === 'fr' ? 'Défiler pour explorer' : lang === 'es' ? 'Desliza para explorar' : 'Scroll to explore'}</span>
               <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
                 <ArrowDown size={16} />
               </motion.div>
@@ -544,9 +573,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 2: STEP-BY-STEP TOUR
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 2: STEP-BY-STEP TOUR */}
       <section className="tour-section-alt mx-auto w-full max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -554,8 +581,8 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
           viewport={{ once: true }}
           className="text-center"
         >
-          <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
-            <Eye size={12} /> Platform Walkthrough
+            <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
+              <Eye size={12} /> {lang === 'ar' ? 'جولة داخل المنصة' : lang === 'fr' ? 'Parcours plateforme' : lang === 'es' ? 'Recorrido de la plataforma' : 'Platform Walkthrough'}
           </span>
           <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.stepsTitle}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.stepsSubtitle}</p>
@@ -580,22 +607,22 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                     <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#1d5df2] to-[#0ea5a8] text-white shadow-lg">
                       <Icon size={22} />
                     </span>
-                    <span className="rounded-full bg-gradient-to-r from-[#1d5df2] to-[#0ea5a8] px-4 py-1 text-xs font-bold text-white shadow-sm">{step.badge}</span>
+                    <span className="rounded-full bg-gradient-to-r from-[#1d5df2] to-[#0ea5a8] px-4 py-1 text-xs font-bold text-white shadow-sm">{lang === 'es' ? `Paso ${idx + 1}` : step.badge}</span>
                   </div>
-                  <h3 className="font-display text-2xl font-bold md:text-3xl">{step.title[lang]}</h3>
-                  <p className="text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{step.desc[lang]}</p>
+                  <h3 className="font-display text-2xl font-bold md:text-3xl">{pick(step.title)}</h3>
+                  <p className="text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{pick(step.desc)}</p>
                 </div>
 
                 {/* Screenshot side */}
                 <div className={`tour-step-screenshot relative overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-500 group-hover:scale-[1.02] ${!isEven ? 'md:[direction:ltr]' : ''}`}>
                   <button
                     type="button"
-                    onClick={() => setSelected({ src: step.screenshot, title: step.title[lang] })}
+                    onClick={() => setSelected({ src: step.screenshot, title: pick(step.title) })}
                     className="block w-full"
                   >
                     <img
                       src={step.screenshot}
-                      alt={step.title[lang]}
+                      alt={pick(step.title)}
                       loading="lazy"
                       decoding="async"
                       className="aspect-[16/10] w-full object-cover object-top"
@@ -609,9 +636,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 3: END-TO-END FLOW
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 3: END-TO-END FLOW */}
       <section className="tour-flow-section relative overflow-hidden py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
@@ -621,7 +646,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="text-center"
           >
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
-              <Zap size={12} /> Seamless Integration
+              <Zap size={12} /> {lang === 'ar' ? 'تكامل سلس' : lang === 'fr' ? 'Intégration fluide' : lang === 'es' ? 'Integración fluida' : 'Seamless Integration'}
             </span>
             <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.flowTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.flowSubtitle}</p>
@@ -651,7 +676,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                       {idx + 1}
                     </span>
                   </motion.div>
-                  <span className="mt-3 text-center text-xs font-semibold text-[var(--text)] md:text-sm">{node.label[lang]}</span>
+                  <span className="mt-3 text-center text-xs font-semibold text-[var(--text)] md:text-sm">{pick(node.label)}</span>
                   {idx < e2eFlow.length - 1 && (
                     <div className="tour-e2e-connector my-2 h-6 w-0.5 bg-gradient-to-b from-[#1d5df2] to-[#0ea5a8] md:hidden" />
                   )}
@@ -668,19 +693,17 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             transition={{ delay: 0.5 }}
             className="mx-auto mt-14 grid max-w-6xl gap-4 md:grid-cols-2"
           >
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/72-payable-outstanding-summary.PNG', title: 'Payables Outstanding' })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/72-payable-outstanding-summary.PNG" alt="Payables flow" loading="lazy" decoding="async" className="w-full object-cover object-top" />
+            <button type="button" onClick={() => setSelected({ src: '/screenshots/72-payable-outstanding-summary.PNG', title: tr('Payables Outstanding') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <img src="/screenshots/72-payable-outstanding-summary.PNG" alt={tr('Payables flow')} loading="lazy" decoding="async" className="w-full object-cover object-top" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/82-receivable-outstanding-summary.PNG', title: 'Receivables Outstanding' })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/82-receivable-outstanding-summary.PNG" alt="Receivables flow" loading="lazy" decoding="async" className="w-full object-cover object-top" />
+            <button type="button" onClick={() => setSelected({ src: '/screenshots/82-receivable-outstanding-summary.PNG', title: tr('Receivables Outstanding') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <img src="/screenshots/82-receivable-outstanding-summary.PNG" alt={tr('Receivables flow')} loading="lazy" decoding="async" className="w-full object-cover object-top" />
             </button>
           </motion.div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 4: COMPLETE MODULE SUITE (13 Modules)
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 4: COMPLETE MODULE SUITE (13 Modules) */}
       <section className="tour-modules-mega-section py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
@@ -690,7 +713,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="text-center"
           >
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
-              <Layers size={12} /> Full Suite
+              <Layers size={12} /> {lang === 'ar' ? 'المجموعة الكاملة' : lang === 'fr' ? 'Suite complète' : lang === 'es' ? 'Suite completa' : 'Full Suite'}
             </span>
             <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.modulesTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.modulesSubtitle}</p>
@@ -712,7 +735,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-[#f0f4ff] to-[#e8f8f8]">
                     <img
                       src={mod.screenshot}
-                      alt={mod.name[lang]}
+                      alt={pick(mod.name)}
                       loading="lazy"
                       decoding="async"
                       className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.08]"
@@ -725,23 +748,23 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                     {/* Click to zoom */}
                     <button
                       type="button"
-                      onClick={() => setSelected({ src: mod.screenshot, title: mod.name[lang] })}
+                      onClick={() => setSelected({ src: mod.screenshot, title: pick(mod.name) })}
                       className="absolute inset-0 z-10"
-                      aria-label={`View ${mod.name.en} screenshot`}
+                      aria-label={lang === 'es' ? `Ver captura de ${pick(mod.name)}` : `View ${mod.name.en} screenshot`}
                     />
                   </div>
 
                   {/* Content */}
                   <div className="p-5">
-                    <h3 className="font-display text-lg font-bold">{mod.name[lang]}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{mod.executive[lang]}</p>
+                    <h3 className="font-display text-lg font-bold">{pick(mod.name)}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{pick(mod.executive)}</p>
                     
                     {/* Feature bullets */}
                     <ul className="mt-4 space-y-2">
                       {mod.details.map((d, i) => (
                         <li key={i} className="flex items-start gap-2 text-xs text-[var(--text-muted)]">
                           <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-500" />
-                          <span>{d[lang]}</span>
+                          <span>{pick(d)}</span>
                         </li>
                       ))}
                     </ul>
@@ -762,9 +785,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 5: DIFFERENTIATORS
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 5: DIFFERENTIATORS */}
       <section className="tour-diff-section py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
@@ -774,7 +795,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="text-center"
           >
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
-              <Star size={12} /> Why EPIX
+              <Star size={12} /> {lang === 'ar' ? 'لماذا EPIX' : lang === 'fr' ? 'Pourquoi EPIX' : lang === 'es' ? 'Por qué EPIX' : 'Why EPIX'}
             </span>
             <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.diffTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.diffSubtitle}</p>
@@ -795,8 +816,8 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                   <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#edf3ff] to-[#e8f8f8] text-[#1d5df2] transition-transform duration-300 group-hover:scale-110">
                     <Icon size={24} />
                   </div>
-                  <h3 className="mt-4 font-display text-lg font-bold">{diff.title[lang]}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{diff.desc[lang]}</p>
+                  <h3 className="mt-4 font-display text-lg font-bold">{pick(diff.title)}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{pick(diff.desc)}</p>
                 </motion.div>
               )
             })}
@@ -804,9 +825,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 6: SCREENSHOT GALLERY (ALL SCREENSHOTS)
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 6: SCREENSHOT GALLERY (ALL SCREENSHOTS) */}
       <section className="tour-gallery-section py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div
@@ -816,7 +835,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             className="text-center"
           >
             <span className="tour-section-badge inline-flex items-center gap-2 rounded-full bg-[#edf3ff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1d5df2]">
-              <Monitor size={12} /> Live Platform
+              <Monitor size={12} /> {lang === 'ar' ? 'المنصة الحية' : lang === 'fr' ? 'Plateforme en direct' : lang === 'es' ? 'Plataforma en vivo' : 'Live Platform'}
             </span>
             <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.galleryTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.gallerySubtitle}</p>
@@ -827,7 +846,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
               <motion.button
                 key={shot.src}
                 type="button"
-                onClick={() => setSelected({ src: shot.src, title: shot.title[lang] })}
+                onClick={() => setSelected({ src: shot.src, title: pick(shot.title) })}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-20px' }}
@@ -836,15 +855,15 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
               >
                 <img
                   src={shot.src}
-                  alt={shot.title[lang]}
+                  alt={pick(shot.title)}
                   loading="lazy"
                   decoding="async"
                   className="w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a1e3d]/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <span className="block text-left text-xs font-semibold text-white/80">{shot.category[lang]}</span>
-                  <span className="block text-left text-sm font-bold text-white">{shot.title[lang]}</span>
+                  <span className="block text-left text-xs font-semibold text-white/80">{pick(shot.category)}</span>
+                  <span className="block text-left text-sm font-bold text-white">{pick(shot.title)}</span>
                 </div>
               </motion.button>
             ))}
@@ -852,9 +871,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 7: FINAL CTA
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 7: FINAL CTA */}
       <section className="tour-cta-section relative overflow-hidden py-24 md:py-32">
         <div className="mx-auto w-full max-w-4xl px-5 text-center md:px-8">
           <motion.div
@@ -876,18 +893,18 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
 
             {/* Trust badges */}
             <div className="mt-12 flex flex-wrap justify-center gap-6 text-xs text-[var(--text-muted)]">
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> SOC 2 Ready</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> 99.9% Uptime</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> Enterprise Grade</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> Multi-Region</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> Full Audit Trail</span>
-              <span className="flex items-center gap-1.5"><Clock size={14} className="text-blue-500" /> 24/7 Support</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'es' ? 'Listo para SOC 2' : 'SOC 2 Ready'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'es' ? '99.9% de disponibilidad' : '99.9% Uptime'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'es' ? 'Nivel empresarial' : 'Enterprise Grade'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'es' ? 'Multirregión' : 'Multi-Region'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'es' ? 'Trazabilidad de auditoría completa' : 'Full Audit Trail'}</span>
+              <span className="flex items-center gap-1.5"><Clock size={14} className="text-blue-500" /> {lang === 'es' ? 'Soporte 24/7' : '24/7 Support'}</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Image Modal ─── */}
+      {/* â”€â”€â”€ Image Modal â”€â”€â”€ */}
       {selected && (
         <AccessibleImageModal
           open={Boolean(selected)}

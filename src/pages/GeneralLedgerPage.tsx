@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { moduleEsObject, moduleEsText } from './moduleEs'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
 import { ArrowRight, CheckCircle2, Landmark } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'ar'
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 type Localized = { en: string; fr: string; ar: string }
 type Shot = { src: string; title: Localized; caption: Localized }
 
@@ -47,59 +49,61 @@ const copy = {
     close: 'Fermer',
   },
   ar: {
-    backToHome: 'ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ط±ط¦ظٹط³ظٹط©',
-    title: 'ط¯ظپطھط± ط£ط³طھط§ط° ط¹ط§ظ… ظ…طµظ…ظ… ظ„ط¥ط؛ظ„ط§ظ‚ ط£ط³ط±ط¹ ظˆطھط­ظƒظ… ظ…ط§ظ„ظٹ ط£ظ‚ظˆظ‰',
-    desc: 'ظٹظˆظپط± ط¯ظپطھط± ط§ظ„ط£ط³طھط§ط° ط§ظ„ط¹ط§ظ… ظپظٹ EPIX ظ†ظ…ظˆط°ط¬ طھط±ط­ظٹظ„ ظ…ط­ظƒظ… ظˆظ‚ط§ط¨ظ„ ظ„ظ„طھط¯ظ‚ظٹظ‚ ظ…ط¹ طھظ‚ط§ط±ظٹط± ظ…طھط¹ط¯ط¯ط© ط§ظ„ط¹ظ…ظ„ط§طھ ظˆط¶ظˆط§ط¨ط· ط¥ط¹ط§ط¯ط© ط§ظ„طھظ‚ظٹظٹظ… ظˆطھط³ط±ظٹط¹ ط§ظ„ط¥ط؛ظ„ط§ظ‚ ط§ظ„ط¯ظˆط±ظٹ.',
-    capabilitiesTitle: 'ظ‚ط¯ط±ط§طھ ط¯ظپطھط± ط§ظ„ط£ط³طھط§ط° ط§ظ„ط¹ط§ظ…',
+    backToHome: 'العودة للرئيسية',
+    title: 'دفتر أستاذ عام مصمم لإغلاق أسرع وتحكم مالي أقوى',
+    desc: 'يوفر دفتر الأستاذ العام في EPIX نموذج ترحيل محكم وقابل للتدقيق مع تقارير متعددة العملات وضوابط إعادة التقييم وتسريع الإغلاق الدوري.',
+    capabilitiesTitle: 'قدرات دفتر الأستاذ العام',
     capabilities: [
-      'ط­ظˆظƒظ…ط© ط¯ظ„ظٹظ„ ط§ظ„ط­ط³ط§ط¨ط§طھ ظˆطھط±ظƒظٹط¨ط§طھ ط§ظ„ط­ط³ط§ط¨ط§طھ.',
-      'ط¶ط¨ط· ط¯ظپط¹ط§طھ ط§ظ„ظ‚ظٹظˆط¯ ظ…ط¹ ط§ظ„ظ…ظˆط§ظپظ‚ط§طھ ظˆط§ظ†ط¶ط¨ط§ط· ط§ظ„طھط±ط­ظٹظ„.',
-      'ط¥ط¯ط§ط±ط© ط§ظ„طھظ‚ظˆظٹظ… ط§ظ„ظ…ط§ظ„ظٹ ظˆط§ظ„ط¥ط؛ظ„ط§ظ‚ ظˆط§ظ„ظ‚ظٹظˆط¯ ط§ظ„ط¹ظƒط³ظٹط©.',
-      'ظ…ظٹط²ط§ظ† ظ…ط±ط§ط¬ط¹ط© ظ…طھط¹ط¯ط¯ ط§ظ„ط¹ظ…ظ„ط§طھ ظˆطھظ‚ط§ط±ظٹط± ظ…ط§ظ„ظٹط© ط¯ظ‚ظٹظ‚ط©.',
-      'ط¥ط¹ط¯ط§ط¯ ظˆطھظ†ظپظٹط° ط¥ط¹ط§ط¯ط© ط§ظ„طھظ‚ظٹظٹظ… ظ…ط¹ طھطھط¨ط¹ ظˆط§ط¶ط­.',
+      'حوكمة دليل الحسابات وتركيبات الحسابات.',
+      'ضبط دفعات القيود مع الموافقات وانضباط الترحيل.',
+      'إدارة التقويم المالي والإغلاق والقيود العكسية.',
+      'ميزان مراجعة متعدد العملات وتقارير مالية دقيقة.',
+      'إعداد وتنفيذ إعادة التقييم مع تتبع واضح.',
     ],
-    flowTitle: 'ط§ظ„طھط¯ظپظ‚ ط§ظ„ظ…ط§ظ„ظٹ ظپظٹ GL',
-    flow: ['طھظ‡ظٹط¦ط© ط§ظ„ط¯ظپطھط± ظˆط§ظ„ظپطھط±ط§طھ ط§ظ„ظ…ط§ظ„ظٹط©', 'ط¥ط¯ط®ط§ظ„ ط§ظ„ظ‚ظٹظˆط¯ ظˆط§ظ„طھط­ظ‚ظ‚ ظ…ظ†ظ‡ط§', 'ط§ط¹طھظ…ط§ط¯ ط§ظ„ظ…ط¹ط§ظ…ظ„ط§طھ ظˆطھط±ط­ظٹظ„ظ‡ط§', 'طھط´ط؛ظٹظ„ ظ…ظٹط²ط§ظ† ط§ظ„ظ…ط±ط§ط¬ط¹ط© ظˆط¥ط¹ط§ط¯ط© ط§ظ„طھظ‚ظٹظٹظ…', 'ط¥ط؛ظ„ط§ظ‚ ط§ظ„ظپطھط±ط© ظ…ط¹ ط£ط«ط± طھط¯ظ‚ظٹظ‚ظٹ'],
-    galleryTitle: 'ط´ط§ط´ط§طھ ط¯ظپطھط± ط§ظ„ط£ط³طھط§ط° ط§ظ„ط¹ط§ظ…',
-    outcomesTitle: 'ظ†طھط§ط¦ط¬ ط§ظ„ط£ط¹ظ…ط§ظ„',
-    outcomes: ['ط¥ط؛ظ„ط§ظ‚ ط´ظ‡ط±ظٹ ط£ط³ط±ط¹', 'ط¯ظ‚ط© ط£ط¹ظ„ظ‰ ظپظٹ ط§ظ„طھط±ط­ظٹظ„', 'ط³ط¬ظ„ط§طھ ظ…ط§ظ„ظٹط© ط¬ط§ظ‡ط²ط© ظ„ظ„طھط¯ظ‚ظٹظ‚'],
-    close: 'ط¥ط؛ظ„ط§ظ‚',
+    flowTitle: 'التدفق المالي في GL',
+    flow: ['تهيئة الدفتر والفترات المالية', 'إدخال القيود والتحقق منها', 'اعتماد المعاملات وترحيلها', 'تشغيل ميزان المراجعة وإعادة التقييم', 'إغلاق الفترة مع أثر تدقيقي'],
+    galleryTitle: 'شاشات دفتر الأستاذ العام',
+    outcomesTitle: 'نتائج الأعمال',
+    outcomes: ['إغلاق شهري أسرع', 'دقة أعلى في الترحيل', 'سجلات مالية جاهزة للتدقيق'],
+    close: 'إغلاق',
   },
 } as const
 
 const shots: Shot[] = [
   {
     src: '/screenshots/9-GL-Journals.PNG',
-    title: { en: 'GL Journals Control', fr: 'Controle des journaux GL', ar: 'ط§ظ„طھط­ظƒظ… ظپظٹ ظ‚ظٹظˆط¯ GL' },
+    title: { en: 'GL Journals Control', fr: 'Controle des journaux GL', ar: 'التحكم في قيود GL' },
     caption: {
       en: 'Journal posting workspace with disciplined accounting controls.',
       fr: 'Espace de comptabilisation des journaux avec controles rigoureux.',
-      ar: 'ظ…ط³ط§ط­ط© طھط±ط­ظٹظ„ ط§ظ„ظ‚ظٹظˆط¯ ظ…ط¹ ط¶ظˆط§ط¨ط· ظ…ط­ط§ط³ط¨ظٹط© ظ…ط­ظƒظ…ط©.',
+      ar: 'مساحة ترحيل القيود مع ضوابط محاسبية محكمة.',
     },
   },
   {
     src: '/screenshots/4-chart-builder.PNG',
-    title: { en: 'Financial Visualization', fr: 'Visualisation financiere', ar: 'طھطµظˆط± ظ…ط§ظ„ظٹ' },
+    title: { en: 'Financial Visualization', fr: 'Visualisation financiere', ar: 'تصور مالي' },
     caption: {
       en: 'Interactive views for trial balance and period performance analytics.',
       fr: 'Vues interactives pour la balance et la performance de periode.',
-      ar: 'ط¹ط±ظˆط¶ طھظپط§ط¹ظ„ظٹط© ظ„ظ…ظٹط²ط§ظ† ط§ظ„ظ…ط±ط§ط¬ط¹ط© ظˆط£ط¯ط§ط، ط§ظ„ظپطھط±ط§طھ ط§ظ„ظ…ط§ظ„ظٹط©.',
+      ar: 'عروض تفاعلية لميزان المراجعة وأداء الفترات المالية.',
     },
   },
   {
     src: '/screenshots/4-chart-builder2.PNG',
-    title: { en: 'Advanced Reporting Layer', fr: 'Couche de reporting avancee', ar: 'ط·ط¨ظ‚ط© طھظ‚ط§ط±ظٹط± ظ…طھظ‚ط¯ظ…ط©' },
+    title: { en: 'Advanced Reporting Layer', fr: 'Couche de reporting avancee', ar: 'طبقة تقارير متقدمة' },
     caption: {
       en: 'Configurable finance dashboards for management and audit teams.',
       fr: 'Tableaux de bord financiers configurables pour gestion et audit.',
-      ar: 'ظ„ظˆط­ط§طھ ظ…ط§ظ„ظٹط© ظ‚ط§ط¨ظ„ط© ظ„ظ„طھظ‡ظٹط¦ط© ظ„ظ„ط¥ط¯ط§ط±ط© ظˆظپط±ظ‚ ط§ظ„طھط¯ظ‚ظٹظ‚.',
+      ar: 'لوحات مالية قابلة للتهيئة للإدارة وفرق التدقيق.',
     },
   },
 ]
 
 export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
   const [selected, setSelected] = useState<Shot | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? moduleEsObject(copy.en) : copy[contentLang]
+  const text = (value: string) => (lang === 'es' ? moduleEsText(value) : value)
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
@@ -164,14 +168,14 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
               <motion.article key={shot.src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
                 <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left">
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]">
-                    <img src={shot.src} alt={shot.title[lang]} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
+                    <img src={shot.src} alt={text(shot.title[contentLang])} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" />
                     <span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">GL</span>
                   </div>
                 </button>
                 <div className="p-4">
-                  <h3 className="font-display text-lg font-semibold">{shot.title[lang]}</h3>
-                  <p className="mt-2 text-sm text-[var(--text-muted)]">{shot.caption[lang]}</p>
+                  <h3 className="font-display text-lg font-semibold">{text(shot.title[contentLang])}</h3>
+                  <p className="mt-2 text-sm text-[var(--text-muted)]">{text(shot.caption[contentLang])}</p>
                 </div>
               </motion.article>
             ))}
@@ -197,11 +201,11 @@ export function GeneralLedgerPage({ lang = 'en' }: { lang?: Lang }) {
         <AccessibleImageModal
           open={Boolean(selected)}
           onClose={() => setSelected(null)}
-          title={selected.title[lang]}
+          title={text(selected.title[contentLang])}
           imageSrc={selected.src}
-          imageAlt={selected.title[lang]}
+          imageAlt={text(selected.title[contentLang])}
           closeLabel={t.close}
-          subtitle={selected.caption[lang]}
+          subtitle={text(selected.caption[contentLang])}
         />
       )}
     </div>

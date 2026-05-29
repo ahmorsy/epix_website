@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { moduleEsObject, moduleEsText } from './moduleEs'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
 import { ArrowRight, BarChart3, CheckCircle2 } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'ar'
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 type Localized = { en: string; fr: string; ar: string }
 type Shot = { src: string; title: Localized; caption: Localized }
 
@@ -47,47 +49,49 @@ const copy = {
     close: 'Fermer',
   },
   ar: {
-    backToHome: 'ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ط±ط¦ظٹط³ظٹط©',
-    title: 'ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط© ظˆط§ظ„ط±ظˆط§طھط¨ ط¨ط¯ظ‚ط© طھط´ط؛ظٹظ„ظٹط© ط¹ط§ظ„ظٹط©',
-    desc: 'طھظˆط­ظ‘ط¯ ظˆط­ط¯ط© ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط© ظپظٹ EPIX ط¨ظٹط§ظ†ط§طھ ط§ظ„ظ…ظˆط¸ظپظٹظ† ظˆط§ظ„ط­ط¶ظˆط± ظˆط§ظ„ط¥ط¬ط§ط²ط§طھ ظˆط§ظ„ط¹ظ…ظ„ ط§ظ„ط¥ط¶ط§ظپظٹ ظˆطھط´ط؛ظٹظ„ ط§ظ„ط±ظˆط§طھط¨ ط¶ظ…ظ† ط³ظٹط± ط¹ظ…ظ„ ظ…ط­ظƒظˆظ….',
-    capabilitiesTitle: 'ظ‚ط¯ط±ط§طھ ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط© ظˆط§ظ„ط±ظˆط§طھط¨',
+    backToHome: 'العودة للرئيسية',
+    title: 'الموارد البشرية والرواتب بدقة تشغيلية عالية',
+    desc: 'توحّد وحدة الموارد البشرية في EPIX بيانات الموظفين والحضور والإجازات والعمل الإضافي وتشغيل الرواتب ضمن سير عمل محكوم.',
+    capabilitiesTitle: 'قدرات الموارد البشرية والرواتب',
     capabilities: [
-      'ط¥ط¯ط§ط±ط© ط¯ظˆط±ط© ط­ظٹط§ط© ط§ظ„ظ…ظˆط¸ظپ ظ…ظ† ط§ظ„طھط¹ظٹظٹظ† ط­طھظ‰ ط§ظ„ط³ط¬ظ„ ط§ظ„ظˆط¸ظٹظپظٹ.',
-      'طھط¯ظپظ‚ط§طھ ط§ظ„ط­ط¶ظˆط± ظˆطھظˆط²ظٹط¹ ط§ظ„ظˆط±ط¯ظٹط§طھ ظˆظ…ط¹ط§ظ„ط¬ط© ط§ظ„ط§ط³طھط«ظ†ط§ط،ط§طھ.',
-      'ط¥ط¬ط±ط§ط،ط§طھ ط§ظ„ط¥ط¬ط§ط²ط§طھ ظˆط§ظ„ط¹ظ…ظ„ ط§ظ„ط¥ط¶ط§ظپظٹ ظˆط§ظ„ظ‚ط±ظˆط¶ ظ…ط¹ ظ…ظˆط§ظپظ‚ط§طھ ظˆط§ط¶ط­ط©.',
-      'ط¥ط¹ط¯ط§ط¯ ظپطھط±ط§طھ ط§ظ„ط±ظˆط§طھط¨ ظˆطھط´ط؛ظٹظ„ظ‡ط§ ظˆط¥طµط¯ط§ط± ظ…ط³ظٹط±ط§طھ ط§ظ„ط±ظˆط§طھط¨.',
-      'طھظ‡ظٹط¦ط© ط§ظ„ط´ط±ط§ط¦ط­ ط§ظ„ط¶ط±ظٹط¨ظٹط© ظˆط±ط¨ط· ظ‚ظٹظˆط¯ ط§ظ„ط±ظˆط§طھط¨ ظ„ظ„ط§ظ„طھط²ط§ظ… ط§ظ„ظ†ط¸ط§ظ…ظٹ.',
+      'إدارة دورة حياة الموظف من التعيين حتى السجل الوظيفي.',
+      'تدفقات الحضور وتوزيع الورديات ومعالجة الاستثناءات.',
+      'إجراءات الإجازات والعمل الإضافي والقروض مع موافقات واضحة.',
+      'إعداد فترات الرواتب وتشغيلها وإصدار مسيرات الرواتب.',
+      'تهيئة الشرائح الضريبية وربط قيود الرواتب للالتزام النظامي.',
     ],
-    flowTitle: 'طھط¯ظپظ‚ ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط© ط¥ظ„ظ‰ ط§ظ„ط±ظˆط§طھط¨',
-    flow: ['طھظ‡ظٹط¦ط© ط§ظ„ظ‡ظٹظƒظ„ ط§ظ„طھظ†ط¸ظٹظ…ظٹ ظˆط§ظ„ظˆط¸ط§ط¦ظپ', 'ط¥ط¯ط§ط±ط© ظ…ظ„ظپط§طھ ط§ظ„ظ…ظˆط¸ظپظٹظ† ظˆط§ظ„ط¬ط¯ط§ظˆظ„', 'طھط³ط¬ظٹظ„ ط§ظ„ط­ط¶ظˆط± ظˆط§ظ„ط¥ط¬ط§ط²ط§طھ ظˆط§ظ„ط¹ظ…ظ„ ط§ظ„ط¥ط¶ط§ظپظٹ', 'طھط´ط؛ظٹظ„ ط§ظ„ط±ظˆط§طھط¨ ظˆط§ظ„طھط­ظ‚ظ‚ ظ…ظ† ط§ظ„ظ†طھط§ط¦ط¬', 'ط¥طµط¯ط§ط± ط§ظ„ظ…ط³ظٹط±ط§طھ ظˆطھط±ط­ظٹظ„ ط§ظ„ظ‚ظٹظˆط¯'],
-    galleryTitle: 'ط´ط§ط´ط§طھ ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط© ظˆط§ظ„ط±ظˆط§طھط¨',
-    outcomesTitle: 'ظ†طھط§ط¦ط¬ ط§ظ„ط£ط¹ظ…ط§ظ„',
-    outcomes: ['طھظ‚ظ„ظٹظ„ ط£ط®ط·ط§ط، ط§ظ„ط±ظˆط§طھط¨', 'ط±ظپط¹ ط§ظ„ط§ظ„طھط²ط§ظ… ط¨ط³ظٹط§ط³ط§طھ ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط©', 'ط±ط¤ظٹط© ط£ظˆط¶ط­ ظ„ظ…ط¤ط´ط±ط§طھ ط§ظ„ظ‚ظˆظ‰ ط§ظ„ط¹ط§ظ…ظ„ط©'],
-    close: 'ط¥ط؛ظ„ط§ظ‚',
+    flowTitle: 'تدفق الموارد البشرية إلى الرواتب',
+    flow: ['تهيئة الهيكل التنظيمي والوظائف', 'إدارة ملفات الموظفين والجداول', 'تسجيل الحضور والإجازات والعمل الإضافي', 'تشغيل الرواتب والتحقق من النتائج', 'إصدار المسيرات وترحيل القيود'],
+    galleryTitle: 'شاشات الموارد البشرية والرواتب',
+    outcomesTitle: 'نتائج الأعمال',
+    outcomes: ['تقليل أخطاء الرواتب', 'رفع الالتزام بسياسات الموارد البشرية', 'رؤية أوضح لمؤشرات القوى العاملة'],
+    close: 'إغلاق',
   },
 } as const
 
 const shots: Shot[] = [
   {
     src: '/screenshots/93-HR_Dashboard_2026-05-03.png',
-    title: { en: 'HR Executive Dashboard', fr: 'Tableau RH executif', ar: 'ظ„ظˆط­ط© طھظ†ظپظٹط°ظٹط© ظ„ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط©' },
-    caption: { en: 'Leadership view of workforce and payroll indicators.', fr: 'Vue direction des indicateurs effectifs et paie.', ar: 'ط±ط¤ظٹط© ظ‚ظٹط§ط¯ظٹط© ظ„ظ…ط¤ط´ط±ط§طھ ط§ظ„ظ‚ظˆظ‰ ط§ظ„ط¹ط§ظ…ظ„ط© ظˆط§ظ„ط±ظˆط§طھط¨.' },
+    title: { en: 'HR Executive Dashboard', fr: 'Tableau RH executif', ar: 'لوحة تنفيذية للموارد البشرية' },
+    caption: { en: 'Leadership view of workforce and payroll indicators.', fr: 'Vue direction des indicateurs effectifs et paie.', ar: 'رؤية قيادية لمؤشرات القوى العاملة والرواتب.' },
   },
   {
     src: '/screenshots/3-grid-data.PNG',
-    title: { en: 'Employee Transaction Grid', fr: 'Grille transactions employes', ar: 'ط¬ط¯ظˆظ„ ظ…ط¹ط§ظ…ظ„ط§طھ ط§ظ„ظ…ظˆط¸ظپظٹظ†' },
-    caption: { en: 'Detailed operational records for HR transactions.', fr: 'Suivi detaille des transactions RH.', ar: 'ط³ط¬ظ„ط§طھ طھط´ط؛ظٹظ„ظٹط© طھظپطµظٹظ„ظٹط© ظ„ظ…ط¹ط§ظ…ظ„ط§طھ ط§ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط©.' },
+    title: { en: 'Employee Transaction Grid', fr: 'Grille transactions employes', ar: 'جدول معاملات الموظفين' },
+    caption: { en: 'Detailed operational records for HR transactions.', fr: 'Suivi detaille des transactions RH.', ar: 'سجلات تشغيلية تفصيلية لمعاملات الموارد البشرية.' },
   },
   {
     src: '/screenshots/2-home-page.PNG',
-    title: { en: 'Unified HR Navigation', fr: 'Navigation RH unifiee', ar: 'طھظ†ظ‚ظ„ ظ…ظˆط­ط¯ ظ„ظ„ظ…ظˆط§ط±ط¯ ط§ظ„ط¨ط´ط±ظٹط©' },
-    caption: { en: 'Fast access to attendance, leave, and payroll flows.', fr: 'Acces rapide aux flux presence, conges et paie.', ar: 'ظˆطµظˆظ„ ط³ط±ظٹط¹ ظ„طھط¯ظپظ‚ط§طھ ط§ظ„ط­ط¶ظˆط± ظˆط§ظ„ط¥ط¬ط§ط²ط§طھ ظˆط§ظ„ط±ظˆط§طھط¨.' },
+    title: { en: 'Unified HR Navigation', fr: 'Navigation RH unifiee', ar: 'تنقل موحد للموارد البشرية' },
+    caption: { en: 'Fast access to attendance, leave, and payroll flows.', fr: 'Acces rapide aux flux presence, conges et paie.', ar: 'وصول سريع لتدفقات الحضور والإجازات والرواتب.' },
   },
 ]
 
 export function HumanResourcesPage({ lang = 'en' }: { lang?: Lang }) {
   const [selected, setSelected] = useState<Shot | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? moduleEsObject(copy.en) : copy[contentLang]
+  const text = (value: string) => (lang === 'es' ? moduleEsText(value) : value)
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
@@ -114,8 +118,8 @@ export function HumanResourcesPage({ lang = 'en' }: { lang?: Lang }) {
 
         <section className="mt-8"><h2 className="font-display text-2xl font-bold">{t.galleryTitle}</h2><div className="mt-4 grid gap-4 md:grid-cols-3">{shots.map((shot, index) => (
           <motion.article key={shot.src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
-            <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left"><div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={shot.title[lang]} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">HR</span></div></button>
-            <div className="p-4"><h3 className="font-display text-lg font-semibold">{shot.title[lang]}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{shot.caption[lang]}</p></div>
+            <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left"><div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={text(shot.title[contentLang])} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">HR</span></div></button>
+            <div className="p-4"><h3 className="font-display text-lg font-semibold">{text(shot.title[contentLang])}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{text(shot.caption[contentLang])}</p></div>
           </motion.article>
         ))}</div></section>
 
@@ -126,11 +130,11 @@ export function HumanResourcesPage({ lang = 'en' }: { lang?: Lang }) {
         <AccessibleImageModal
           open={Boolean(selected)}
           onClose={() => setSelected(null)}
-          title={selected.title[lang]}
+          title={text(selected.title[contentLang])}
           imageSrc={selected.src}
-          imageAlt={selected.title[lang]}
+          imageAlt={text(selected.title[contentLang])}
           closeLabel={t.close}
-          subtitle={selected.caption[lang]}
+          subtitle={text(selected.caption[contentLang])}
         />
       )}
     </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
+import { moduleSpanishText } from './moduleSpanish'
 import {
   ArrowRight,
   BarChart3,
@@ -16,11 +17,8 @@ import {
   GitMerge,
 } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'ar'
-
-/* ═══════════════════════════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════════════════════════ */
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 
 /* ---------- Three Pillars ---------- */
 const pillars = [
@@ -169,19 +167,30 @@ const copy = {
   },
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   COMPONENT
-   ═══════════════════════════════════════════════════════════════ */
+const copyEs: typeof copy.en = {
+  backToHome: 'Volver al inicio',
+  heroEyebrow: 'Inteligencia de negocio y crecimiento',
+  heroTitle: 'Tus Datos.\nTus Insights.\nTu Crecimiento.',
+  heroSubtitle: 'De tableros a ingresos: EPIX convierte datos operativos en resultados.',
+  heroDesc: 'EPIX es más que un ERP. Tras su implementación, se convierte en una plataforma de inteligencia, analítica entre módulos y base para crecer con control de costos.',
+  heroCta: 'Reservar una consultoría',
+  journeyTitle: 'El camino EPIX',
+  journeySubtitle: 'De la implementación al crecimiento medible.',
+  ctaTitle: '¿Listo para desbloquear el potencial de tus datos?',
+  ctaDesc: 'Conversemos cómo EPIX puede entregar tableros, inteligencia entre módulos y una hoja de ruta de crecimiento para tu negocio.',
+  ctaButton: 'Reservar una consultoría',
+  ctaSecondary: 'Contactar al equipo',
+  close: 'Cerrar',
+}
 export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
   const [selected, setSelected] = useState<{ src: string; title: string } | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? copyEs : copy[contentLang]
+  const tr = (value: string) => (lang === 'es' ? moduleSpanishText(value) : value)
+  const pick = (value: { en: string; fr: string; ar: string }) => (lang === 'es' ? moduleSpanishText(value.en) : value[contentLang])
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
-
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 1: HERO
-          ═══════════════════════════════════════════════════════════ */}
       <section className="ai-page-hero relative overflow-hidden pb-20 pt-12 md:pb-28 md:pt-16">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <a href={`/?lang=${lang}`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand)] hover:underline">
@@ -227,7 +236,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
             {stats.map((s) => (
               <div key={s.value} className="ai-stat-card rounded-2xl border border-[#d7e5ff]/60 bg-white/80 p-5 text-center shadow-sm backdrop-blur-sm">
                 <div className="font-display text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#6d28d9] to-[#1d5df2] md:text-4xl">{s.value}</div>
-                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">{s.label[lang]}</div>
+                <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">{pick(s.label)}</div>
               </div>
             ))}
           </motion.div>
@@ -239,24 +248,24 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
             transition={{ duration: 0.9, delay: 0.5 }}
             className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5"
           >
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/93-HR_Dashboard_2026-05-03.png', title: 'Executive Dashboard' })} className="col-span-2 md:col-span-1 md:row-span-2 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt="Executive Dashboard" className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" onClick={() => setSelected({ src: '/screenshots/93-HR_Dashboard_2026-05-03.png', title: tr('Executive Dashboard') })} className="col-span-2 md:col-span-1 md:row-span-2 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <img src="/screenshots/93-HR_Dashboard_2026-05-03.png" alt={tr('Executive Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/4-chart-builder.PNG', title: 'Custom Chart Builder' })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/4-chart-builder.PNG" alt="Chart Builder" className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" onClick={() => setSelected({ src: '/screenshots/4-chart-builder.PNG', title: tr('Custom Chart Builder') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <img src="/screenshots/4-chart-builder.PNG" alt={tr('Chart Builder')} className="h-full w-full object-cover object-top" loading="eager" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/5-FA_Dashboard_2026-05-03.png', title: 'Assets Dashboard' })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/5-FA_Dashboard_2026-05-03.png" alt="Assets Dashboard" className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" onClick={() => setSelected({ src: '/screenshots/5-FA_Dashboard_2026-05-03.png', title: tr('Assets Dashboard') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <img src="/screenshots/5-FA_Dashboard_2026-05-03.png" alt={tr('Assets Dashboard')} className="h-full w-full object-cover object-top" loading="eager" />
             </button>
-            <button type="button" onClick={() => setSelected({ src: '/screenshots/4-chart-builder2.PNG', title: 'Advanced Analytics' })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
-              <img src="/screenshots/4-chart-builder2.PNG" alt="Advanced Analytics" className="h-full w-full object-cover object-top" loading="eager" />
+            <button type="button" onClick={() => setSelected({ src: '/screenshots/4-chart-builder2.PNG', title: tr('Advanced Analytics') })} className="overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+              <img src="/screenshots/4-chart-builder2.PNG" alt={tr('Advanced Analytics')} className="h-full w-full object-cover object-top" loading="eager" />
             </button>
           </motion.div>
 
           {/* Scroll indicator */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="mt-12 flex justify-center">
             <div className="flex flex-col items-center gap-2 text-xs font-medium text-[var(--text-muted)]">
-              <span>{lang === 'ar' ? 'مرر للاستكشاف' : lang === 'fr' ? 'Défiler pour explorer' : 'Scroll to explore'}</span>
+              <span>{lang === 'ar' ? 'مرر للاستكشاف' : lang === 'fr' ? 'Défiler pour explorer' : lang === 'es' ? 'Desliza para explorar' : 'Scroll to explore'}</span>
               <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
                 <ArrowDown size={16} />
               </motion.div>
@@ -265,9 +274,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 2: THE THREE PILLARS
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 2: THE THREE PILLARS */}
       {pillars.map((pillar, pIdx) => {
         const Icon = pillar.icon
         const isEven = pIdx % 2 === 0
@@ -288,11 +295,11 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
                   <Icon size={26} />
                 </div>
                 <span className="mt-5 block text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">
-                  {lang === 'ar' ? `الركيزة ${pIdx + 1}` : lang === 'fr' ? `Pilier ${pIdx + 1}` : `Pillar ${pIdx + 1}`}
+                  {lang === 'ar' ? `الركيزة ${pIdx + 1}` : lang === 'fr' ? `Pilier ${pIdx + 1}` : lang === 'es' ? `Pilar ${pIdx + 1}` : `Pillar ${pIdx + 1}`}
                 </span>
-                <h2 className="mt-2 font-display text-3xl font-extrabold md:text-5xl">{pillar.title[lang]}</h2>
-                <p className="mt-2 font-display text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#6d28d9] to-[#0ea5a8]">{pillar.subtitle[lang]}</p>
-                <p className="mt-4 text-base leading-relaxed text-[var(--text-muted)] md:text-lg">{pillar.desc[lang]}</p>
+                <h2 className="mt-2 font-display text-3xl font-extrabold md:text-5xl">{pick(pillar.title)}</h2>
+                <p className="mt-2 font-display text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#6d28d9] to-[#0ea5a8]">{pick(pillar.subtitle)}</p>
+                <p className="mt-4 text-base leading-relaxed text-[var(--text-muted)] md:text-lg">{pick(pillar.desc)}</p>
               </motion.div>
 
               {/* Content grid: features + screenshots */}
@@ -318,7 +325,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
                         <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${pillar.bgColor}`}>
                           <CheckCircle2 size={16} className="text-[#6d28d9]" />
                         </div>
-                        <span className="text-sm font-medium leading-relaxed text-[var(--text)]">{f[lang]}</span>
+                        <span className="text-sm font-medium leading-relaxed text-[var(--text)]">{pick(f)}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -365,14 +372,12 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
         )
       })}
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 3: JOURNEY / FLOW
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 3: JOURNEY / FLOW */}
       <section className="ai-diff-section relative overflow-hidden py-20 md:py-28">
         <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#f3eeff] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#6d28d9]">
-              <GitMerge size={12} /> Your Path Forward
+              <GitMerge size={12} /> {lang === 'ar' ? 'مسارك القادم' : lang === 'fr' ? 'Votre parcours' : lang === 'es' ? 'Tu camino a seguir' : 'Your Path Forward'}
             </span>
             <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl">{t.journeyTitle}</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] md:text-base">{t.journeySubtitle}</p>
@@ -397,8 +402,8 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
                       {idx + 1}
                     </span>
                   </motion.div>
-                  <span className="mt-3 text-center text-sm font-bold text-[var(--text)]">{step.label[lang]}</span>
-                  <span className="mt-1 max-w-[150px] text-center text-xs text-[var(--text-muted)]">{step.desc[lang]}</span>
+                  <span className="mt-3 text-center text-sm font-bold text-[var(--text)]">{pick(step.label)}</span>
+                  <span className="mt-1 max-w-[150px] text-center text-xs text-[var(--text-muted)]">{pick(step.desc)}</span>
                   {idx < journey.length - 1 && (
                     <div className="my-3 h-8 w-0.5 bg-gradient-to-b from-[#6d28d9] to-[#1d5df2] opacity-40 md:hidden" />
                   )}
@@ -419,30 +424,28 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
               <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#f5f0ff] to-[#eef2ff] text-[#6d28d9]">
                 <LayoutDashboard size={22} />
               </div>
-              <h4 className="mt-3 font-display text-sm font-bold">{lang === 'ar' ? 'رؤية فورية' : lang === 'fr' ? 'Visibilité Immédiate' : 'Immediate Visibility'}</h4>
-              <p className="mt-1 text-xs text-[var(--text-muted)]">{lang === 'ar' ? 'لوحات تحكم تعمل من اليوم الأول' : lang === 'fr' ? 'Tableaux de bord dès le jour 1' : 'Dashboards working from day one'}</p>
+              <h4 className="mt-3 font-display text-sm font-bold">{lang === 'ar' ? 'رؤية فورية' : lang === 'fr' ? 'Visibilité Immédiate' : lang === 'es' ? 'Visibilidad inmediata' : 'Immediate Visibility'}</h4>
+              <p className="mt-1 text-xs text-[var(--text-muted)]">{lang === 'ar' ? 'لوحات تحكم تعمل من اليوم الأول' : lang === 'fr' ? 'Tableaux de bord dès le jour 1' : lang === 'es' ? 'Tableros operativos desde el primer día' : 'Dashboards working from day one'}</p>
             </div>
             <div className="ai-diff-card rounded-2xl border border-[var(--line)] bg-white p-6 text-center">
               <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#f0fdfa] to-[#ecfeff] text-[#0ea5a8]">
                 <Layers size={22} />
               </div>
-              <h4 className="mt-3 font-display text-sm font-bold">{lang === 'ar' ? 'بيانات متكاملة' : lang === 'fr' ? 'Données Unifiées' : 'Unified Data'}</h4>
-              <p className="mt-1 text-xs text-[var(--text-muted)]">{lang === 'ar' ? 'تحليلات عبر جميع الوحدات' : lang === 'fr' ? 'Analytics multi-modules' : 'Cross-module analytics as data grows'}</p>
+              <h4 className="mt-3 font-display text-sm font-bold">{lang === 'ar' ? 'بيانات متكاملة' : lang === 'fr' ? 'Données Unifiées' : lang === 'es' ? 'Datos unificados' : 'Unified Data'}</h4>
+              <p className="mt-1 text-xs text-[var(--text-muted)]">{lang === 'ar' ? 'تحليلات عبر جميع الوحدات' : lang === 'fr' ? 'Analytics multi-modules' : lang === 'es' ? 'Analítica entre módulos conforme crecen los datos' : 'Cross-module analytics as data grows'}</p>
             </div>
             <div className="ai-diff-card rounded-2xl border border-[var(--line)] bg-white p-6 text-center">
               <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#f0fdf4] to-[#ecfdf5] text-[#16a34a]">
                 <TrendingUp size={22} />
               </div>
-              <h4 className="mt-3 font-display text-sm font-bold">{lang === 'ar' ? 'نمو مستمر' : lang === 'fr' ? 'Croissance Continue' : 'Continuous Growth'}</h4>
-              <p className="mt-1 text-xs text-[var(--text-muted)]">{lang === 'ar' ? 'شراكتنا تنمو مع أعمالك' : lang === 'fr' ? 'Notre partenariat grandit avec vous' : 'Our partnership scales with your business'}</p>
+              <h4 className="mt-3 font-display text-sm font-bold">{lang === 'ar' ? 'نمو مستمر' : lang === 'fr' ? 'Croissance Continue' : lang === 'es' ? 'Crecimiento continuo' : 'Continuous Growth'}</h4>
+              <p className="mt-1 text-xs text-[var(--text-muted)]">{lang === 'ar' ? 'شراكتنا تنمو مع أعمالك' : lang === 'fr' ? 'Notre partenariat grandit avec vous' : lang === 'es' ? 'Nuestra alianza escala con tu negocio' : 'Our partnership scales with your business'}</p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          SECTION 4: CTA
-          ═══════════════════════════════════════════════════════════ */}
+          {/* SECTION 4: CTA */}
       <section className="ai-cta-section relative overflow-hidden py-24 md:py-32">
         <div className="mx-auto w-full max-w-4xl px-5 text-center md:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
@@ -459,16 +462,16 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
             </div>
 
             <div className="mt-12 flex flex-wrap justify-center gap-6 text-xs text-[var(--text-muted)]">
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'لوحات تحكم تنفيذية' : lang === 'fr' ? 'Tableaux Exécutifs' : 'Executive Dashboards'}</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'بيانات عبر الوحدات' : lang === 'fr' ? 'Données Multi-Modules' : 'Cross-Module Data'}</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'تحسين الإيرادات' : lang === 'fr' ? 'Optimisation Revenus' : 'Revenue Optimization'}</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'خفض التكاليف' : lang === 'fr' ? 'Réduction Coûts' : 'Cost Reduction'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'لوحات تحكم تنفيذية' : lang === 'fr' ? 'Tableaux Exécutifs' : lang === 'es' ? 'Tableros ejecutivos' : 'Executive Dashboards'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'بيانات عبر الوحدات' : lang === 'fr' ? 'Données Multi-Modules' : lang === 'es' ? 'Datos entre módulos' : 'Cross-Module Data'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'تحسين الإيرادات' : lang === 'fr' ? 'Optimisation Revenus' : lang === 'es' ? 'Optimización de ingresos' : 'Revenue Optimization'}</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-500" /> {lang === 'ar' ? 'خفض التكاليف' : lang === 'fr' ? 'Réduction Coûts' : lang === 'es' ? 'Reducción de costos' : 'Cost Reduction'}</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Image Modal ─── */}
+      {/* â”€â”€â”€ Image Modal â”€â”€â”€ */}
       {selected && (
         <AccessibleImageModal
           open={Boolean(selected)}

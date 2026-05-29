@@ -11,3 +11,14 @@ Public Key: hFKQWjC4ppQtyi_lQ
 Service ID: service_amacsl7
 Template ID: template_xted9nr
 
+
+
+
+e-pix.io		root
+CNAME	@			2m2hxg8z.up.railway.app
+TXT	_railway-verify		railway-verify=e027fcfdb9f07deb0e00d6a4f3cca61040d0acf2788246af265cb1e73d022c38
+
+
+www.e-pix.io		www subdomain
+CNAME	www				kff68o9m.up.railway.app
+TXT	_railway-verify.www		railway-verify=50f11a12f4309cf0e76e074c057df0058ef8f2f4512e7141163327bb187a0dfe

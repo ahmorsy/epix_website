@@ -12,8 +12,10 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { useModalA11y } from '../components/useModalA11y'
+import { moduleEsObject, moduleEsText } from './moduleEs'
 
-type Lang = 'en' | 'fr' | 'ar'
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 
 type Localized = {
   en: string
@@ -237,7 +239,9 @@ const shots: Shot[] = [
 
 export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
   const [selectedShot, setSelectedShot] = useState<Shot | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? moduleEsObject(copy.en) : copy[contentLang]
+  const text = (value: string) => (lang === 'es' ? moduleEsText(value) : value)
   const dialogRef = useRef<HTMLDivElement | null>(null)
   useModalA11y(Boolean(selectedShot), () => setSelectedShot(null), dialogRef)
 
@@ -358,14 +362,14 @@ export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
               >
                 <button type="button" onClick={() => setSelectedShot(shot)} className="block w-full text-left">
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]">
-                    <img loading="lazy" decoding="async" src={shot.src} alt={shot.title[lang]} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
+                    <img loading="lazy" decoding="async" src={shot.src} alt={text(shot.title[contentLang])} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" />
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" />
                     <span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">AP</span>
                   </div>
                 </button>
                 <div className="p-4">
-                  <h4 className="font-display text-lg font-semibold">{shot.title[lang]}</h4>
-                  <p className="mt-2 text-sm text-[var(--text-muted)]">{shot.caption[lang]}</p>
+                  <h4 className="font-display text-lg font-semibold">{text(shot.title[contentLang])}</h4>
+                  <p className="mt-2 text-sm text-[var(--text-muted)]">{text(shot.caption[contentLang])}</p>
                 </div>
               </motion.article>
             ))}
@@ -386,13 +390,13 @@ export function AccountsPayablePage({ lang = 'en' }: { lang?: Lang }) {
         <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#0b1933]/85 px-4 py-8" onClick={() => setSelectedShot(null)}>
           <div ref={dialogRef} role="dialog" aria-modal="true" tabIndex={-1} className="max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl border border-[#33538d] bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
-              <p className="font-display text-lg font-semibold">{selectedShot.title[lang]}</p>
+              <p className="font-display text-lg font-semibold">{text(selectedShot.title[contentLang])}</p>
               <button className="rounded-lg border border-[var(--line)] px-3 py-1 text-sm font-semibold text-[var(--text-muted)]" onClick={() => setSelectedShot(null)}>
                 {t.close}
               </button>
             </div>
             <div className="max-h-[78vh] overflow-auto bg-[#eef4ff] p-3">
-              <img loading="eager" decoding="async" src={selectedShot.src} alt={selectedShot.title[lang]} className="h-auto w-full rounded-xl" />
+              <img loading="eager" decoding="async" src={selectedShot.src} alt={text(selectedShot.title[contentLang])} className="h-auto w-full rounded-xl" />
             </div>
           </div>
         </div>

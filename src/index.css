@@ -208,6 +208,25 @@ textarea:focus {
 
 .lang-ar {
   font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+.lang-ar .font-display {
+  font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+}
+
+.lang-ar .uppercase,
+.lang-ar [class*='uppercase'] {
+  text-transform: none;
+}
+
+.lang-ar [class*='tracking-'] {
+  letter-spacing: 0 !important;
+}
+
+[dir='rtl'] .text-left {
+  text-align: right;
 }
 
 .screenshot-card {

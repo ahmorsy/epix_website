@@ -21,6 +21,7 @@ import { AccessibleImageModal } from './components/AccessibleImageModal'
 import emailjs from '@emailjs/browser'
 import { RouteLoadingState } from './components/RouteLoadingState'
 import { moduleCatalog } from './pages/moduleCatalog'
+import { moduleSpanishText } from './pages/moduleSpanish'
 
 const AccountsPayablePage = lazy(() => import('./pages/AccountsPayablePage').then((m) => ({ default: m.AccountsPayablePage })))
 const AccountsReceivablePage = lazy(() => import('./pages/AccountsReceivablePage').then((m) => ({ default: m.AccountsReceivablePage })))
@@ -38,8 +39,9 @@ const ShipmentManagementPage = lazy(() => import('./pages/ShipmentManagementPage
 const ProductTourPage = lazy(() => import('./pages/ProductTourPage').then((m) => ({ default: m.ProductTourPage })))
 const AICapabilitiesPage = lazy(() => import('./pages/AICapabilitiesPage').then((m) => ({ default: m.AICapabilitiesPage })))
 
-type Lang = 'en' | 'fr' | 'ar'
-type LocalizedText = { en: string; fr: string; ar: string }
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
+type LocalizedText = { en: string; fr: string; ar: string; es?: string }
 
 type NavItem = { id: string; label: LocalizedText }
 
@@ -79,12 +81,12 @@ type SmartFlow = {
 }
 
 const navItems: NavItem[] = [
-  { id: 'home', label: { en: 'Home', fr: 'Accueil', ar: 'الرئيسية' } },
-  { id: 'about', label: { en: 'About', fr: 'À propos', ar: 'حول النظام' } },
-  { id: 'flows', label: { en: 'Flows', fr: 'Flux', ar: 'تدفقات' } },
-  { id: 'ai', label: { en: 'AI', fr: 'IA', ar: 'الذكاء الاصطناعي' } },
-  { id: 'industries', label: { en: 'Industries', fr: 'Secteurs', ar: 'القطاعات' } },
-  { id: 'contact', label: { en: 'Contact', fr: 'Contact', ar: 'تواصل معنا' } },
+  { id: 'home', label: { en: 'Home', fr: 'Accueil', ar: 'الرئيسية', es: 'Inicio' } },
+  { id: 'about', label: { en: 'About', fr: 'À propos', ar: 'حول النظام', es: 'Acerca de' } },
+  { id: 'flows', label: { en: 'Flows', fr: 'Flux', ar: 'تدفقات', es: 'Flujos' } },
+  { id: 'ai', label: { en: 'AI', fr: 'IA', ar: 'الذكاء الاصطناعي', es: 'IA' } },
+  { id: 'industries', label: { en: 'Industries', fr: 'Secteurs', ar: 'القطاعات', es: 'Sectores' } },
+  { id: 'contact', label: { en: 'Contact', fr: 'Contact', ar: 'تواصل معنا', es: 'Contacto' } },
 ]
 
 
@@ -226,8 +228,8 @@ const screenshotItems: ScreenshotItem[] = [
 
 const screenshotLocalized: Record<string, { title: LocalizedText; module: LocalizedText; caption: LocalizedText }> = {
   '/screenshots/1-Login.PNG': {
-    title: { en: 'Secure Login Experience', fr: 'Expérience de connexion sécurisée', ar: 'تجربة تسجيل دخول آمنة' },
-    module: { en: 'Platform Access', fr: 'Accès plateforme', ar: 'الدخول إلى المنصة' },
+    title: { en: 'Secure Login Experience', fr: 'Expérience de connexion sécurisée', ar: 'تجربة تسجيل دخول آمنة', es: 'Experiencia de inicio de sesión seguro' },
+    module: { en: 'Platform Access', fr: 'Accès plateforme', ar: 'الدخول إلى المنصة', es: 'Acceso a la plataforma' },
     caption: {
       en: 'Entry point designed for secure enterprise authentication and role-based access.',
       fr: 'Point d’entrée conçu pour une authentification sécurisée et un accès par rôles.',
@@ -235,8 +237,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/2-home-page.PNG': {
-    title: { en: 'Unified Home Dashboard', fr: 'Tableau de bord d’accueil unifié', ar: 'لوحة رئيسية موحدة' },
-    module: { en: 'Executive Overview', fr: 'Vue exécutive', ar: 'نظرة تنفيذية' },
+    title: { en: 'Unified Home Dashboard', fr: 'Tableau de bord d’accueil unifié', ar: 'لوحة رئيسية موحدة', es: 'Panel principal unificado' },
+    module: { en: 'Executive Overview', fr: 'Vue exécutive', ar: 'نظرة تنفيذية', es: 'Visión ejecutiva' },
     caption: {
       en: 'Cross-module command center with fast navigation and operational visibility.',
       fr: 'Centre de pilotage transversal avec navigation rapide et visibilité opérationnelle.',
@@ -244,8 +246,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/3-grid-data.PNG': {
-    title: { en: 'Grid Data Workbench', fr: 'Espace grille de données', ar: 'مساحة عمل لبيانات الجدول' },
-    module: { en: 'Operations Workspace', fr: 'Espace opérations', ar: 'مساحة العمليات' },
+    title: { en: 'Grid Data Workbench', fr: 'Espace grille de données', ar: 'مساحة عمل لبيانات الجدول', es: 'Área de trabajo de datos en cuadrícula' },
+    module: { en: 'Operations Workspace', fr: 'Espace opérations', ar: 'مساحة العمليات', es: 'Espacio operativo' },
     caption: {
       en: 'High-density transactional workspace for filtering, reviewing, and acting on business data.',
       fr: 'Espace transactionnel dense pour filtrer, revoir et traiter les données métier.',
@@ -253,8 +255,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/4-chart-builder.PNG': {
-    title: { en: 'Interactive Chart Builder', fr: 'Constructeur de graphiques interactif', ar: 'منشئ رسوم بيانية تفاعلي' },
-    module: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات' },
+    title: { en: 'Interactive Chart Builder', fr: 'Constructeur de graphiques interactif', ar: 'منشئ رسوم بيانية تفاعلي', es: 'Constructor interactivo de gráficos' },
+    module: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات', es: 'Analítica' },
     caption: {
       en: 'Decision-ready visual analytics for business leaders and analysts.',
       fr: 'Analytique visuelle prête à la décision pour dirigeants et analystes.',
@@ -262,8 +264,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/4-chart-builder2.PNG': {
-    title: { en: 'Advanced Chart Configuration', fr: 'Configuration avancée des graphiques', ar: 'تهيئة متقدمة للرسوم البيانية' },
-    module: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات' },
+    title: { en: 'Advanced Chart Configuration', fr: 'Configuration avancée des graphiques', ar: 'تهيئة متقدمة للرسوم البيانية', es: 'Configuración avanzada de gráficos' },
+    module: { en: 'Analytics', fr: 'Analytique', ar: 'التحليلات', es: 'Analítica' },
     caption: {
       en: 'Flexible chart design experience for detailed executive and operational reporting.',
       fr: 'Conception flexible de graphiques pour un reporting exécutif et opérationnel détaillé.',
@@ -271,8 +273,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/5-FA_Dashboard_2026-05-03.png': {
-    title: { en: 'Fixed Assets Dashboard', fr: 'Tableau des immobilisations', ar: 'لوحة الأصول الثابتة' },
-    module: { en: 'Fixed Assets', fr: 'Immobilisations', ar: 'الأصول الثابتة' },
+    title: { en: 'Fixed Assets Dashboard', fr: 'Tableau des immobilisations', ar: 'لوحة الأصول الثابتة', es: 'Panel de activos fijos' },
+    module: { en: 'Fixed Assets', fr: 'Immobilisations', ar: 'الأصول الثابتة', es: 'Activos fijos' },
     caption: {
       en: 'Asset lifecycle metrics and control indicators for finance governance.',
       fr: 'Indicateurs de cycle de vie des actifs et de gouvernance financière.',
@@ -280,8 +282,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/6-petty-cash.PNG': {
-    title: { en: 'Petty Cash Operations', fr: 'Opérations de petite caisse', ar: 'عمليات العهدة النقدية' },
-    module: { en: 'Cash Management', fr: 'Gestion de trésorerie', ar: 'إدارة النقد' },
+    title: { en: 'Petty Cash Operations', fr: 'Opérations de petite caisse', ar: 'عمليات العهدة النقدية', es: 'Operaciones de caja chica' },
+    module: { en: 'Cash Management', fr: 'Gestion de trésorerie', ar: 'إدارة النقد', es: 'Gestión de tesorería' },
     caption: {
       en: 'Controlled cash disbursement workflows with approval traceability.',
       fr: 'Workflows contrôlés de décaissement avec traçabilité des validations.',
@@ -298,8 +300,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/9-cash-manag-statement-upload.PNG': {
-    title: { en: 'Bank Statement Upload', fr: 'Import des relevés bancaires', ar: 'رفع كشف الحساب البنكي' },
-    module: { en: 'Cash Management', fr: 'Gestion de trésorerie', ar: 'إدارة النقد' },
+    title: { en: 'Bank Statement Upload', fr: 'Import des relevés bancaires', ar: 'رفع كشف الحساب البنكي', es: 'Carga de extracto bancario' },
+    module: { en: 'Cash Management', fr: 'Gestion de trésorerie', ar: 'إدارة النقد', es: 'Gestión de tesorería' },
     caption: {
       en: 'Streamlined bank statement ingestion to accelerate reconciliation cycles.',
       fr: 'Import simplifié des relevés pour accélérer les rapprochements bancaires.',
@@ -307,8 +309,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/9-GL-Journals.PNG': {
-    title: { en: 'General Ledger Journals', fr: 'Journaux du grand livre', ar: 'قيود دفتر الأستاذ' },
-    module: { en: 'Finance And GL', fr: 'Finance et GL', ar: 'المالية ودفتر الأستاذ' },
+    title: { en: 'General Ledger Journals', fr: 'Journaux du grand livre', ar: 'قيود دفتر الأستاذ', es: 'Asientos de libro mayor' },
+    module: { en: 'Finance And GL', fr: 'Finance et GL', ar: 'المالية ودفتر الأستاذ', es: 'Finanzas y libro mayor' },
     caption: {
       en: 'Journal control surface with robust posting and financial audit support.',
       fr: 'Pilotage des journaux avec comptabilisation robuste et support d’audit.',
@@ -316,8 +318,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/71-payable-volume-summary.PNG': {
-    title: { en: 'Payables Volume Summary', fr: 'Synthèse volume fournisseurs', ar: 'ملخص حجم الحسابات الدائنة' },
-    module: { en: 'Accounts Payable', fr: 'Comptes fournisseurs', ar: 'الحسابات الدائنة' },
+    title: { en: 'Payables Volume Summary', fr: 'Synthèse volume fournisseurs', ar: 'ملخص حجم الحسابات الدائنة', es: 'Resumen de volumen de cuentas por pagar' },
+    module: { en: 'Accounts Payable', fr: 'Comptes fournisseurs', ar: 'الحسابات الدائنة', es: 'Cuentas por pagar' },
     caption: {
       en: 'Executive payables throughput visibility for liability planning.',
       fr: 'Visibilité exécutive des volumes fournisseurs pour planifier les engagements.',
@@ -325,8 +327,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/72-payable-outstanding-summary.PNG': {
-    title: { en: 'Payables Outstanding Summary', fr: 'Synthèse des soldes fournisseurs', ar: 'ملخص الأرصدة الدائنة القائمة' },
-    module: { en: 'Accounts Payable', fr: 'Comptes fournisseurs', ar: 'الحسابات الدائنة' },
+    title: { en: 'Payables Outstanding Summary', fr: 'Synthèse des soldes fournisseurs', ar: 'ملخص الأرصدة الدائنة القائمة', es: 'Resumen de pendientes de cuentas por pagar' },
+    module: { en: 'Accounts Payable', fr: 'Comptes fournisseurs', ar: 'الحسابات الدائنة', es: 'Cuentas por pagar' },
     caption: {
       en: 'Outstanding supplier commitments summarized for treasury and finance leadership.',
       fr: 'Engagements fournisseurs résumés pour les équipes finance et trésorerie.',
@@ -334,8 +336,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/73-payable-aging-summary.PNG': {
-    title: { en: 'Payables Aging Summary', fr: 'Analyse d’ancienneté fournisseurs', ar: 'تحليل أعمار الحسابات الدائنة' },
-    module: { en: 'Accounts Payable', fr: 'Comptes fournisseurs', ar: 'الحسابات الدائنة' },
+    title: { en: 'Payables Aging Summary', fr: 'Analyse d’ancienneté fournisseurs', ar: 'تحليل أعمار الحسابات الدائنة', es: 'Resumen de antigüedad de cuentas por pagar' },
+    module: { en: 'Accounts Payable', fr: 'Comptes fournisseurs', ar: 'الحسابات الدائنة', es: 'Cuentas por pagar' },
     caption: {
       en: 'Aging analysis to prioritize settlement and improve supplier relationship control.',
       fr: 'Analyse d’ancienneté pour prioriser les paiements et piloter la relation fournisseur.',
@@ -343,8 +345,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/81-receivable-volume-summary.PNG': {
-    title: { en: 'Receivable Volume Summary', fr: 'Synthèse volume clients', ar: 'ملخص حجم الحسابات المدينة' },
-    module: { en: 'Accounts Receivable', fr: 'Comptes clients', ar: 'الحسابات المدينة' },
+    title: { en: 'Receivable Volume Summary', fr: 'Synthèse volume clients', ar: 'ملخص حجم الحسابات المدينة', es: 'Resumen de volumen de cuentas por cobrar' },
+    module: { en: 'Accounts Receivable', fr: 'Comptes clients', ar: 'الحسابات المدينة', es: 'Cuentas por cobrar' },
     caption: {
       en: 'Receivables throughput indicators for revenue cycle management.',
       fr: 'Indicateurs de flux clients pour piloter le cycle de revenus.',
@@ -352,8 +354,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/82-receivable-outstanding-summary.PNG': {
-    title: { en: 'Receivable Outstanding Summary', fr: 'Synthèse des soldes clients', ar: 'ملخص الأرصدة المدينة القائمة' },
-    module: { en: 'Accounts Receivable', fr: 'Comptes clients', ar: 'الحسابات المدينة' },
+    title: { en: 'Receivable Outstanding Summary', fr: 'Synthèse des soldes clients', ar: 'ملخص الأرصدة المدينة القائمة', es: 'Resumen de pendientes de cuentas por cobrar' },
+    module: { en: 'Accounts Receivable', fr: 'Comptes clients', ar: 'الحسابات المدينة', es: 'Cuentas por cobrar' },
     caption: {
       en: 'Open receivable balances highlighted for focused collection action.',
       fr: 'Mise en évidence des soldes ouverts pour un recouvrement ciblé.',
@@ -361,8 +363,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/83-receivable-aging-summary.PNG': {
-    title: { en: 'Receivable Aging Summary', fr: 'Analyse d’ancienneté clients', ar: 'تحليل أعمار الحسابات المدينة' },
-    module: { en: 'Accounts Receivable', fr: 'Comptes clients', ar: 'الحسابات المدينة' },
+    title: { en: 'Receivable Aging Summary', fr: 'Analyse d’ancienneté clients', ar: 'تحليل أعمار الحسابات المدينة', es: 'Resumen de antigüedad de cuentas por cobrar' },
+    module: { en: 'Accounts Receivable', fr: 'Comptes clients', ar: 'الحسابات المدينة', es: 'Cuentas por cobrar' },
     caption: {
       en: 'Collection risk segmentation to improve DSO and cash predictability.',
       fr: 'Segmentation du risque de recouvrement pour améliorer DSO et prévisibilité cash.',
@@ -370,7 +372,7 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/881-eta-top-customers.PNG': {
-    title: { en: 'Top Customers Insights', fr: 'Insights meilleurs clients', ar: 'رؤى أفضل العملاء' },
+    title: { en: 'Top Customers Insights', fr: 'Insights meilleurs clients', ar: 'رؤى أفضل العملاء', es: 'Insights de clientes principales' },
     module: { en: 'eTax And Sales Intelligence', fr: 'eTax et intelligence commerciale', ar: 'الضريبة الإلكترونية وذكاء المبيعات' },
     caption: {
       en: 'Customer concentration visibility for account strategy and growth planning.',
@@ -415,8 +417,8 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
     },
   },
   '/screenshots/93-HR_Dashboard_2026-05-03.png': {
-    title: { en: 'HR Executive Dashboard', fr: 'Tableau RH exécutif', ar: 'لوحة تنفيذية للموارد البشرية' },
-    module: { en: 'HR And Payroll', fr: 'RH et paie', ar: 'الموارد البشرية والرواتب' },
+    title: { en: 'HR Executive Dashboard', fr: 'Tableau RH exécutif', ar: 'لوحة تنفيذية للموارد البشرية', es: 'Panel ejecutivo de RR. HH.' },
+    module: { en: 'HR And Payroll', fr: 'RH et paie', ar: 'الموارد البشرية والرواتب', es: 'RR. HH. y nómina' },
     caption: {
       en: 'People analytics view across workforce activity and payroll outcomes.',
       fr: 'Vue analytique RH sur l’activité des effectifs et les résultats de paie.',
@@ -426,52 +428,56 @@ const screenshotLocalized: Record<string, { title: LocalizedText; module: Locali
 }
 
 const stats: StatItem[] = [
-  { label: { en: 'Enterprise Modules', fr: 'Modules ERP', ar: 'وحدات النظام' }, value: 12, suffix: '+' },
-  { label: { en: 'Workflow Automations', fr: 'Automatisations', ar: 'أتمتة العمليات' }, value: 100, suffix: '+' },
-  { label: { en: 'Faster Cycle Times', fr: 'Gain de temps', ar: 'تسريع الدورات' }, value: 37, suffix: '%' },
-  { label: { en: 'Connected Integrations', fr: 'Intégrations', ar: 'تكاملات متصلة' }, value: 40, suffix: '+' },
+  { label: { en: 'Enterprise Modules', fr: 'Modules ERP', ar: 'وحدات النظام', es: 'Módulos empresariales' }, value: 12, suffix: '+' },
+  { label: { en: 'Workflow Automations', fr: 'Automatisations', ar: 'أتمتة العمليات', es: 'Automatizaciones de flujo de trabajo' }, value: 100, suffix: '+' },
+  { label: { en: 'Faster Cycle Times', fr: 'Gain de temps', ar: 'تسريع الدورات', es: 'Ciclos más rápidos' }, value: 37, suffix: '%' },
+  { label: { en: 'Connected Integrations', fr: 'Intégrations', ar: 'تكاملات متصلة', es: 'Integraciones conectadas' }, value: 40, suffix: '+' },
 ]
 
 const industries: IndustryItem[] = [
   {
-    title: { en: 'Manufacturing', fr: 'Industrie', ar: 'التصنيع' },
+    title: { en: 'Manufacturing', fr: 'Industrie', ar: 'التصنيع', es: 'Manufactura' },
     icon: Factory,
     text: {
       en: 'Control production, quality, and inventory in one execution layer.',
       fr: 'Pilotez production, qualité et stock dans une seule couche opérationnelle.',
       ar: 'تحكم في الإنتاج والجودة والمخزون ضمن طبقة تنفيذ موحدة.',
+      es: 'Controle producción, calidad e inventario en una sola capa operativa.',
     },
   },
   {
-    title: { en: 'Retail And Distribution', fr: 'Retail Et Distribution', ar: 'التجزئة والتوزيع' },
+    title: { en: 'Retail And Distribution', fr: 'Retail Et Distribution', ar: 'التجزئة والتوزيع', es: 'Retail y distribución' },
     icon: Globe2,
     text: {
       en: 'Manage purchasing, pricing, and order fulfillment at scale.',
       fr: 'Gérez achats, tarification et exécution des commandes à grande échelle.',
       ar: 'أدر المشتريات والتسعير وتنفيذ الطلبات على نطاق واسع.',
+      es: 'Gestione compras, precios y cumplimiento de pedidos a escala.',
     },
   },
   {
-    title: { en: 'Healthcare', fr: 'Santé', ar: 'الرعاية الصحية' },
+    title: { en: 'Healthcare', fr: 'Santé', ar: 'الرعاية الصحية', es: 'Salud' },
     icon: ShieldCheck,
     text: {
       en: 'Govern sensitive operations with audit-ready controls and approvals.',
       fr: 'Gérez les opérations sensibles avec contrôles et validations auditables.',
       ar: 'أدر العمليات الحساسة بضوابط وموافقات جاهزة للتدقيق.',
+      es: 'Gobierne operaciones sensibles con controles y aprobaciones listos para auditoría.',
     },
   },
   {
-    title: { en: 'Professional Services', fr: 'Services Professionnels', ar: 'الخدمات المهنية' },
+    title: { en: 'Professional Services', fr: 'Services Professionnels', ar: 'الخدمات المهنية', es: 'Servicios profesionales' },
     icon: Building2,
     text: {
       en: 'Track project costs, billability, and margin performance in real time.',
       fr: 'Suivez en temps réel coûts projets, facturabilité et marges.',
       ar: 'تابع تكاليف المشاريع وقابلية الفوترة وهوامش الربح في الوقت الفعلي.',
+      es: 'Siga costos de proyectos, facturabilidad y desempeño de márgenes en tiempo real.',
     },
   },
 ]
 
-const flowSectionCopy: Record<Lang, { eyebrow: string; title: string; subtitle: string; openShot: string }> = {
+const flowSectionCopy: Record<ContentLang, { eyebrow: string; title: string; subtitle: string; openShot: string }> = {
   en: {
     eyebrow: 'Smart Visual Flows',
     title: 'See Real End-To-End Business Execution',
@@ -492,171 +498,193 @@ const flowSectionCopy: Record<Lang, { eyebrow: string; title: string; subtitle: 
   },
 }
 
+const flowSectionCopyEs = {
+  eyebrow: 'Flujos visuales inteligentes',
+  title: 'Visualiza la ejecución real de negocio de punta a punta',
+  subtitle: 'Los flujos interactivos conectan cada etapa del ERP con capturas reales para mostrar valor y puntos de control con claridad.',
+  openShot: 'Abrir captura relacionada',
+}
+
 const smartFlows: SmartFlow[] = [
   {
     id: 'p2p',
-    title: { en: 'Procure To Pay', fr: 'Procure To Pay', ar: 'الشراء إلى السداد' },
-    subtitle: { en: 'Supplier Liability Control', fr: 'Controle des engagements fournisseurs', ar: 'التحكم في التزامات الموردين' },
+    title: { en: 'Procure To Pay', fr: 'Procure To Pay', ar: 'الشراء إلى السداد', es: 'De compra a pago' },
+    subtitle: { en: 'Supplier Liability Control', fr: 'Controle des engagements fournisseurs', ar: 'التحكم في التزامات الموردين', es: 'Control de pasivos de proveedores' },
     headline: {
       en: 'From supplier invoices to posting and cash discipline in one governed execution path.',
       fr: 'De la facture fournisseur a la comptabilisation avec une discipline de tresorerie gouvernee.',
       ar: 'من فاتورة المورد حتى الترحيل والانضباط النقدي ضمن مسار تنفيذي محكوم.',
+      es: 'Desde facturas de proveedor hasta contabilización y disciplina de caja en un único flujo gobernado.',
     },
     steps: [
       {
         id: 'p2p-1',
         screenshotSrc: '/screenshots/71-payable-volume-summary.PNG',
         kpi: 'AP Volume',
-        title: { en: 'Capture Payables Volume', fr: 'Capturer le volume AP', ar: 'التقاط حجم الحسابات الدائنة' },
+        title: { en: 'Capture Payables Volume', fr: 'Capturer le volume AP', ar: 'التقاط حجم الحسابات الدائنة', es: 'Capturar volumen de cuentas por pagar' },
         detail: {
           en: 'Finance leaders monitor invoice throughput and payment workload.',
           fr: 'Les equipes finance suivent le debit des factures et la charge de paiement.',
           ar: 'تتابع الإدارة المالية تدفق الفواتير وحجم عمليات السداد.',
+          es: 'Los equipos financieros monitorean el flujo de facturas y la carga de pagos.',
         },
       },
       {
         id: 'p2p-2',
         screenshotSrc: '/screenshots/72-payable-outstanding-summary.PNG',
         kpi: 'Outstanding',
-        title: { en: 'Prioritize Open Liabilities', fr: 'Prioriser les passifs ouverts', ar: 'ترتيب أولويات الالتزامات القائمة' },
+        title: { en: 'Prioritize Open Liabilities', fr: 'Prioriser les passifs ouverts', ar: 'ترتيب أولويات الالتزامات القائمة', es: 'Priorizar pasivos abiertos' },
         detail: {
           en: 'Outstanding commitments are grouped for treasury and supplier planning.',
           fr: 'Les engagements ouverts sont regroupes pour la tresorerie et les fournisseurs.',
           ar: 'تُجمع الالتزامات المفتوحة لدعم التخطيط النقدي والتعامل مع الموردين.',
+          es: 'Los compromisos pendientes se agrupan para la planificación de tesorería y proveedores.',
         },
       },
       {
         id: 'p2p-3',
         screenshotSrc: '/screenshots/73-payable-aging-summary.PNG',
         kpi: 'Aging Risk',
-        title: { en: 'Control Aging Exposure', fr: 'Maitriser le risque d anciennete', ar: 'ضبط مخاطر الأعمار' },
+        title: { en: 'Control Aging Exposure', fr: 'Maitriser le risque d anciennete', ar: 'ضبط مخاطر الأعمار', es: 'Controlar exposición por antigüedad' },
         detail: {
           en: 'Aging insights drive due-date discipline and supplier confidence.',
           fr: 'L analyse d anciennete renforce la discipline des echeances fournisseurs.',
           ar: 'تحليلات الأعمار تعزز الالتزام بالمواعيد وثقة الموردين.',
+          es: 'La analítica de antigüedad refuerza la disciplina de vencimientos y la confianza de proveedores.',
         },
       },
       {
         id: 'p2p-4',
         screenshotSrc: '/screenshots/9-cash-manag-statement-upload.PNG',
         kpi: 'Cash Match',
-        title: { en: 'Match Bank Activity', fr: 'Rapprocher l activite bancaire', ar: 'مطابقة حركة البنوك' },
+        title: { en: 'Match Bank Activity', fr: 'Rapprocher l activite bancaire', ar: 'مطابقة حركة البنوك', es: 'Conciliar actividad bancaria' },
         detail: {
           en: 'Bank statement processing confirms payment execution and reconciliation speed.',
           fr: 'Le traitement des releves confirme l execution des paiements et le rapprochement.',
           ar: 'تؤكد معالجة كشوف البنوك تنفيذ المدفوعات وسرعة التسويات.',
+          es: 'El procesamiento de extractos confirma la ejecución de pagos y acelera la conciliación.',
         },
       },
       {
         id: 'p2p-5',
         screenshotSrc: '/screenshots/9-GL-Journals.PNG',
         kpi: 'Audit Trail',
-        title: { en: 'Post To General Ledger', fr: 'Comptabiliser au grand livre', ar: 'الترحيل إلى دفتر الأستاذ' },
+        title: { en: 'Post To General Ledger', fr: 'Comptabiliser au grand livre', ar: 'الترحيل إلى دفتر الأستاذ', es: 'Registrar en libro mayor' },
         detail: {
           en: 'Controlled posting closes the loop with full accounting traceability.',
           fr: 'La comptabilisation gouvernee boucle le cycle avec une tracabilite complete.',
           ar: 'يغلق الترحيل المحكوم الدورة مع أثر محاسبي قابل للتدقيق.',
+          es: 'El registro controlado cierra el ciclo con trazabilidad contable completa.',
         },
       },
     ],
   },
   {
     id: 'o2c',
-    title: { en: 'Order To Cash', fr: 'Order To Cash', ar: 'الطلب إلى التحصيل' },
-    subtitle: { en: 'Receivable Performance', fr: 'Performance des creances', ar: 'أداء الحسابات المدينة' },
+    title: { en: 'Order To Cash', fr: 'Order To Cash', ar: 'الطلب إلى التحصيل', es: 'De pedido a cobro' },
+    subtitle: { en: 'Receivable Performance', fr: 'Performance des creances', ar: 'أداء الحسابات المدينة', es: 'Rendimiento de cuentas por cobrar' },
     headline: {
       en: 'Monitor receivable growth, prioritize collections, and reduce cash-cycle friction.',
       fr: 'Piloter la croissance des creances, prioriser le recouvrement et accelerer le cycle cash.',
       ar: 'راقب نمو الذمم المدينة وحدد أولويات التحصيل وخفّض احتكاك دورة النقد.',
+      es: 'Monitoree el crecimiento de cuentas por cobrar, priorice cobros y reduzca fricciones del ciclo de caja.',
     },
     steps: [
       {
         id: 'o2c-1',
         screenshotSrc: '/screenshots/81-receivable-volume-summary.PNG',
         kpi: 'AR Volume',
-        title: { en: 'Track Receivable Throughput', fr: 'Suivre le debit client', ar: 'متابعة تدفق الحسابات المدينة' },
+        title: { en: 'Track Receivable Throughput', fr: 'Suivre le debit client', ar: 'متابعة تدفق الحسابات المدينة', es: 'Seguimiento del volumen de cuentas por cobrar' },
         detail: {
           en: 'Executive view of invoicing momentum across customer portfolios.',
           fr: 'Vue executive de la dynamique de facturation sur le portefeuille clients.',
           ar: 'رؤية تنفيذية لزخم الفوترة عبر شرائح العملاء.',
+          es: 'Vista ejecutiva del impulso de facturación a través de carteras de clientes.',
         },
       },
       {
         id: 'o2c-2',
         screenshotSrc: '/screenshots/82-receivable-outstanding-summary.PNG',
         kpi: 'Open AR',
-        title: { en: 'Focus On Open Balances', fr: 'Cibler les soldes ouverts', ar: 'التركيز على الأرصدة المفتوحة' },
+        title: { en: 'Focus On Open Balances', fr: 'Cibler les soldes ouverts', ar: 'التركيز على الأرصدة المفتوحة', es: 'Enfocarse en saldos abiertos' },
         detail: {
           en: 'Teams segment open balances and launch focused follow-up actions.',
           fr: 'Les equipes segmentent les soldes ouverts pour des actions ciblees.',
           ar: 'تقوم الفرق بتجزئة الأرصدة المفتوحة لتنفيذ إجراءات متابعة مركزة.',
+          es: 'Los equipos segmentan saldos abiertos y ejecutan acciones de seguimiento focalizadas.',
         },
       },
       {
         id: 'o2c-3',
         screenshotSrc: '/screenshots/83-receivable-aging-summary.PNG',
         kpi: 'DSO Risk',
-        title: { en: 'Control Aging Buckets', fr: 'Maitriser les tranches d anciennete', ar: 'التحكم في شرائح الأعمار' },
+        title: { en: 'Control Aging Buckets', fr: 'Maitriser les tranches d anciennete', ar: 'التحكم في شرائح الأعمار', es: 'Controlar tramos de antigüedad' },
         detail: {
           en: 'Aging buckets reveal collection risk and protect cash predictability.',
           fr: 'Les tranches d anciennete revelent le risque de recouvrement et la prevision cash.',
           ar: 'تُظهر شرائح الأعمار مخاطر التحصيل وتحسّن توقعات التدفق النقدي.',
+          es: 'Los tramos de antigüedad revelan riesgo de cobro y mejoran la previsibilidad de caja.',
         },
       },
       {
         id: 'o2c-4',
         screenshotSrc: '/screenshots/881-eta-top-customers.PNG',
         kpi: 'Top Customers',
-        title: { en: 'Prioritize Key Accounts', fr: 'Prioriser les comptes cles', ar: 'ترتيب أولويات الحسابات الكبرى' },
+        title: { en: 'Prioritize Key Accounts', fr: 'Prioriser les comptes cles', ar: 'ترتيب أولويات الحسابات الكبرى', es: 'Priorizar cuentas clave' },
         detail: {
           en: 'Customer concentration insights align collections with account strategy.',
           fr: 'Les insights clients alignent recouvrement et strategie commerciale.',
           ar: 'رؤى تركز العملاء تربط التحصيل باستراتيجية إدارة الحسابات.',
+          es: 'La concentración de clientes alinea la cobranza con la estrategia de cuentas.',
         },
       },
     ],
   },
   {
     id: 'h2r',
-    title: { en: 'Hire To Retire', fr: 'Hire To Retire', ar: 'التوظيف إلى نهاية الخدمة' },
-    subtitle: { en: 'HR And Payroll Governance', fr: 'Gouvernance RH et paie', ar: 'حوكمة الموارد البشرية والرواتب' },
+    title: { en: 'Hire To Retire', fr: 'Hire To Retire', ar: 'التوظيف إلى نهاية الخدمة', es: 'De contratación a retiro' },
+    subtitle: { en: 'HR And Payroll Governance', fr: 'Gouvernance RH et paie', ar: 'حوكمة الموارد البشرية والرواتب', es: 'Gobernanza de RR. HH. y nómina' },
     headline: {
       en: 'Connect workforce analytics, payroll execution, and finance posting in one lifecycle.',
       fr: 'Relier analytics RH, execution paie et comptabilisation finance dans un cycle unique.',
       ar: 'ربط تحليلات القوى العاملة وتشغيل الرواتب والترحيل المالي ضمن دورة موحدة.',
+      es: 'Conecte analítica de personal, ejecución de nómina y contabilización financiera en un solo ciclo.',
     },
     steps: [
       {
         id: 'h2r-1',
         screenshotSrc: '/screenshots/93-HR_Dashboard_2026-05-03.png',
         kpi: 'Workforce View',
-        title: { en: 'Monitor Workforce Health', fr: 'Suivre la sante des effectifs', ar: 'مراقبة صحة القوى العاملة' },
+        title: { en: 'Monitor Workforce Health', fr: 'Suivre la sante des effectifs', ar: 'مراقبة صحة القوى العاملة', es: 'Monitorear salud de la plantilla' },
         detail: {
           en: 'Leadership tracks people performance and payroll readiness from one dashboard.',
           fr: 'La direction suit la performance RH et la preparation paie en un seul ecran.',
           ar: 'تتابع الإدارة أداء الموارد البشرية وجاهزية الرواتب من لوحة واحدة.',
+          es: 'La dirección monitorea desempeño del personal y preparación de nómina desde un único tablero.',
         },
       },
       {
         id: 'h2r-2',
         screenshotSrc: '/screenshots/6-petty-cash.PNG',
         kpi: 'Employee Claims',
-        title: { en: 'Settle Claims And Advances', fr: 'Regler les avances et frais', ar: 'تسوية السلف والمطالبات' },
+        title: { en: 'Settle Claims And Advances', fr: 'Regler les avances et frais', ar: 'تسوية السلف والمطالبات', es: 'Liquidar reclamaciones y anticipos' },
         detail: {
           en: 'Employee expenses and petty cash flows are settled with policy controls.',
           fr: 'Les frais collaborateurs sont regles avec des controles de politique.',
           ar: 'تُسوّى مصروفات الموظفين والعهد النقدية وفق ضوابط السياسات.',
+          es: 'Los gastos de empleados y flujos de caja chica se liquidan con controles de política.',
         },
       },
       {
         id: 'h2r-3',
         screenshotSrc: '/screenshots/9-GL-Journals.PNG',
         kpi: 'Payroll Posting',
-        title: { en: 'Post Payroll To GL', fr: 'Comptabiliser la paie', ar: 'ترحيل الرواتب إلى الأستاذ' },
+        title: { en: 'Post Payroll To GL', fr: 'Comptabiliser la paie', ar: 'ترحيل الرواتب إلى الأستاذ', es: 'Registrar nómina en libro mayor' },
         detail: {
           en: 'Payroll journals are posted with clear traceability for compliance and audit.',
           fr: 'Les journaux de paie sont comptabilises avec une tracabilite claire.',
           ar: 'يتم ترحيل قيود الرواتب بأثر واضح يدعم الالتزام والتدقيق.',
+          es: 'Los asientos de nómina se registran con trazabilidad clara para cumplimiento y auditoría.',
         },
       },
     ],
@@ -739,6 +767,10 @@ const copy = {
     contactCta: 'Request Consultation',
     close: 'Close',
     footer: 'Enterprise grade platform',
+    sending: 'Sending...',
+    messageSuccess: 'Message sent successfully! We will be in touch soon.',
+    messageError: 'Something went wrong. Please try again or email us directly.',
+    rightsReserved: 'All rights reserved.',
   },
   fr: {
     headerCta: 'Démarrer une consultation',
@@ -815,6 +847,10 @@ const copy = {
     contactCta: 'Demander une consultation',
     close: 'Fermer',
     footer: 'Plateforme de niveau entreprise',
+    sending: 'Envoi en cours...',
+    messageSuccess: 'Message envoye avec succes! Nous vous contacterons bientot.',
+    messageError: 'Une erreur est survenue. Veuillez reessayer ou nous ecrire directement.',
+    rightsReserved: 'Tous droits reserves.',
   },
   ar: {
     headerCta: 'ابدأ استشارة مجانية',
@@ -891,7 +927,92 @@ const copy = {
     contactCta: 'اطلب استشارة',
     close: 'إغلاق',
     footer: 'منصة بمعايير مؤسسية',
+    sending: 'جاري الإرسال...',
+    messageSuccess: 'تم إرسال الرسالة بنجاح! سنتواصل معك قريباً.',
+    messageError: 'حدث خطأ ما. يرجى المحاولة مرة أخرى أو مراسلتنا مباشرة.',
+    rightsReserved: 'جميع الحقوق محفوظة.',
   },
+}
+
+const copyEs: typeof copy.en = {
+  headerCta: 'Iniciar consulta gratis',
+  heroBadge: 'Plataforma ERP para el crecimiento de PYMES',
+  heroTitle: 'Una plataforma profesional para finanzas, operaciones, RR. HH. y crecimiento.',
+  heroDesc:
+    'EPIX unifica contabilidad, inventario, nómina, manufactura e inteligencia de negocio en un solo entorno profesional para empresas en crecimiento.',
+  heroPrimary: 'Reservar demo en vivo',
+  heroSecondary: 'Explorar recorrido del producto',
+  heroPills: ['Implementación rápida', 'Multiempresa', 'Cumplimiento de auditoría'],
+  navMenu: 'Abrir menú',
+  aboutEyebrow: 'Sobre EPIX',
+  aboutTitle: 'Un sistema empresarial para equipos profesionales',
+  aboutSubtitle:
+    'EPIX conecta todas las áreas con un modelo de datos unificado y un motor de flujos seguro para reducir el caos operativo.',
+  aboutPanelTag: 'Por qué elegir EPIX',
+  aboutPanelTitle: 'Simple para adoptar rápido, sólido para control empresarial.',
+  aboutPanelText:
+    'EPIX da a finanzas, operaciones y RR. HH. un modelo compartido para ejecutar con velocidad y claridad.',
+  aboutMetrics: [
+    { label: 'Despliegue', value: 'Semanas' },
+    { label: 'Datos unificados', value: 'Una fuente' },
+    { label: 'Control de procesos', value: 'Punta a punta' },
+  ],
+  aboutCards: [
+    { title: 'Disciplina de procesos', text: 'Aprobaciones, permisos y controles en cada transacción.' },
+    { title: 'Arquitectura escalable', text: 'Diseñada para multiempresa y alto volumen transaccional.' },
+    { title: 'Claridad de decisión', text: 'Tableros integrados para seguimiento del desempeño en tiempo real.' },
+    { title: 'Optimizado para PYMES', text: 'Flujos claros que facilitan la ejecución diaria.' },
+  ],
+  modulesEyebrow: 'Módulos clave',
+  modulesTitle: 'Todo su ERP en una suite conectada',
+  modulesSubtitle: 'Resultados ejecutivos y capacidades operativas en cada función del negocio.',
+  moduleTag: 'Módulo',
+  keyCapabilities: 'Capacidades clave',
+  modulePageCta: 'Abrir página del módulo',
+  screensEyebrow: 'Capturas del producto',
+  screensTitle: 'Pantallas reales de EPIX por capacidad de negocio',
+  screensSubtitle: 'Visuales reales para mostrar profundidad funcional y claridad operativa.',
+  screensText:
+    'Desde diarios financieros y tesorería hasta RR. HH., inventario y planificación, las capturas muestran flujos de trabajo claros.',
+  aiTag: 'IA y analítica',
+  aiTitle: 'Inteligencia práctica en el flujo diario',
+  aiText: 'EPIX agrega IA accionable: detección de anomalías, inteligencia de procesos y recomendaciones con auditoría.',
+  aiCta: 'Descubrir capacidades de IA',
+  aiCards: [
+    { title: 'Inteligencia de procesos', text: 'Recomendaciones contextuales basadas en patrones transaccionales.' },
+    { title: 'Tableros ejecutivos', text: 'Visibilidad KPI en vivo con detalle hasta la transacción.' },
+    { title: 'Automatización gobernada', text: 'Ejecución basada en reglas, roles y aprobaciones.' },
+  ],
+  industriesEyebrow: 'Soluciones por industria',
+  industriesTitle: 'Configurado para operaciones sectoriales',
+  industriesSubtitle: 'EPIX se adapta al modelo de negocio manteniendo gobernanza y consistencia de datos.',
+  previewEyebrow: 'Vista de plataforma',
+  previewTitle: 'Interfaz profesional para decisiones rápidas',
+  previewSubtitle: 'Jerarquía clara con KPIs, flujos por tiempo y espacios por rol.',
+  boardTitle: 'Panel de rendimiento',
+  boardMetrics: ['Ingresos', 'COGS', 'EBITDA'],
+  timelineTitle: 'Línea de tiempo de flujo',
+  timelineItems: ['Solicitud de compra aprobada', 'Asignación de inventario completada', 'Nómina contabilizada al mayor'],
+  whyEyebrow: 'Por qué EPIX',
+  whyTitle: 'Impacto de negocio medible',
+  whySubtitle: 'Un sistema diseñado para mejorar resultados, no solo ejecutar transacciones.',
+  contactEyebrow: 'Contacto',
+  contactTitle: 'Programe su consulta EPIX',
+  contactSubtitle: 'Comparta sus prioridades y le mostraremos una ruta adaptada a su negocio.',
+  placeholders: {
+    fullName: 'Nombre completo',
+    workEmail: 'Correo corporativo',
+    phone: 'Teléfono',
+    company: 'Empresa',
+    priorities: 'Cuéntenos sus prioridades actuales de ERP',
+  },
+  contactCta: 'Solicitar consulta',
+  close: 'Cerrar',
+  footer: 'Plataforma de nivel empresarial',
+  sending: 'Enviando...',
+  messageSuccess: 'Mensaje enviado correctamente. Nos pondremos en contacto pronto.',
+  messageError: 'Se produjo un error. Intente nuevamente o escríbanos directamente.',
+  rightsReserved: 'Todos los derechos reservados.',
 }
 
 function SectionTitle({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
@@ -906,38 +1027,41 @@ function SectionTitle({ eyebrow, title, subtitle }: { eyebrow: string; title: st
 
 function resolveInitialLang(): Lang {
   const queryLang = new URLSearchParams(window.location.search).get('lang')
-  if (queryLang === 'en' || queryLang === 'fr' || queryLang === 'ar') {
+  if (queryLang === 'en' || queryLang === 'fr' || queryLang === 'ar' || queryLang === 'es') {
     return queryLang
   }
   const savedLang = localStorage.getItem('epix-lang')
-  if (savedLang === 'en' || savedLang === 'fr' || savedLang === 'ar') {
+  if (savedLang === 'en' || savedLang === 'fr' || savedLang === 'ar' || savedLang === 'es') {
     return savedLang
   }
   return 'en'
 }
 
-function renderLazyPage(node: ReactNode) {
-  return <Suspense fallback={<RouteLoadingState />}>{node}</Suspense>
-}
+
 
 function App() {
   const [lang, setLang] = useState<Lang>(resolveInitialLang)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState('home')
+  const [activeSection, setActiveSection] = useState('')
   const [selectedShot, setSelectedShot] = useState<(typeof screenshotItems)[number] | null>(null)
   const [activeFlowId, setActiveFlowId] = useState(smartFlows[0].id)
   const [activeShotIndex, setActiveShotIndex] = useState(0)
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const formRef = useRef<HTMLFormElement>(null)
   const sectionIds = useMemo(() => navItems.map((item) => item.id), [])
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? copyEs : copy[contentLang]
   const isRtl = lang === 'ar'
-  const flowText = flowSectionCopy[lang]
+  const flowText =
+    lang === 'es' ? flowSectionCopyEs : flowSectionCopy[contentLang]
   const activeFlow = smartFlows.find((flow) => flow.id === activeFlowId) ?? smartFlows[0]
   const localizedShot = (shot: ScreenshotItem) => screenshotLocalized[shot.src]
   const featuredScreens = useMemo(() => screenshotItems.slice(0, 6), [])
   const activeShot = featuredScreens[activeShotIndex % featuredScreens.length]
   const activeShotI18n = localizedShot(activeShot)
+  const navLabel = (label: LocalizedText) => (lang === 'es' ? (label.es ?? label.en) : label[contentLang])
+  const tr = (value: string) => (lang === 'es' ? moduleSpanishText(value) : value)
+  const pick = (value: LocalizedText) => (lang === 'es' ? (value.es ?? moduleSpanishText(value.en)) : value[contentLang])
 
 
   const openFlowScreenshot = (screenshotSrc: string) => {
@@ -975,6 +1099,9 @@ function App() {
   }, [])
 
   useEffect(() => {
+    const currentPath = window.location.pathname.toLowerCase()
+    if (currentPath !== '/' && currentPath !== '') return
+
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -984,7 +1111,7 @@ function App() {
           setActiveSection(visible[0].target.id)
         }
       },
-      { threshold: [0.35, 0.55], rootMargin: '-20% 0px -40% 0px' },
+      { threshold: [0.15, 0.3, 0.5], rootMargin: '-10% 0px -30% 0px' },
     )
 
     sectionIds.forEach((id) => {
@@ -992,7 +1119,26 @@ function App() {
       if (section) observer.observe(section)
     })
 
-    return () => observer.disconnect()
+    // Set 'home' as active when scrolled to top
+    const onScroll = () => {
+      if (window.scrollY < 100) setActiveSection('home')
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    // Handle hash-based scrolling on page load
+    const hash = window.location.hash.replace('#', '')
+    if (hash && sectionIds.includes(hash)) {
+      setTimeout(() => {
+        document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    } else {
+      setActiveSection('home')
+    }
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [sectionIds])
 
   useEffect(() => {
@@ -1019,6 +1165,11 @@ function App() {
 
   const scrollTo = (id: string) => {
     setMenuOpen(false)
+    const isSubPage = window.location.pathname !== '/' && window.location.pathname !== ''
+    if (isSubPage) {
+      window.location.href = `/?lang=${lang}#${id}`
+      return
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -1033,7 +1184,7 @@ function App() {
     }
 
     event.preventDefault()
-    const order: Lang[] = ['en', 'fr', 'ar']
+    const order: Lang[] = ['en', 'fr', 'ar', 'es']
     const currentIndex = order.indexOf(lang)
 
     if (event.key === 'Home') {
@@ -1069,50 +1220,126 @@ function App() {
   }
 
   const path = window.location.pathname.toLowerCase()
+
+  // Determine which sub-page to render (null = homepage)
+  let subPageContent: ReactNode | null = null
   if (path === '/tour' || path === '/product-tour') {
-    return renderLazyPage(<ProductTourPage lang={lang} />)
+    subPageContent = <ProductTourPage lang={lang} />
+  } else if (path === '/ai' || path === '/ai-capabilities') {
+    subPageContent = <AICapabilitiesPage lang={lang} />
+  } else if (path === '/modules/business-masters' || path === '/modules/common-masters') {
+    subPageContent = <BusinessMastersPage lang={lang} />
+  } else if (path === '/modules/general-ledger') {
+    subPageContent = <GeneralLedgerPage lang={lang} />
+  } else if (path === '/modules/inventory-management') {
+    subPageContent = <InventoryManagementPage lang={lang} />
+  } else if (path === '/modules/human-resources') {
+    subPageContent = <HumanResourcesPage lang={lang} />
+  } else if (path === '/modules/cash-management') {
+    subPageContent = <CashManagementPage lang={lang} />
+  } else if (path === '/modules/petty-cash') {
+    subPageContent = <PettyCashPage lang={lang} />
+  } else if (path === '/modules/procure-to-pay') {
+    subPageContent = <ProcureToPayPage lang={lang} />
+  } else if (path === '/modules/accounts-payable') {
+    subPageContent = <AccountsPayablePage lang={lang} />
+  } else if (path === '/modules/accounts-receivable') {
+    subPageContent = <AccountsReceivablePage lang={lang} />
+  } else if (path === '/modules/shipment-management') {
+    subPageContent = <ShipmentManagementPage lang={lang} />
+  } else if (path === '/modules/discrete-manufacturing') {
+    subPageContent = <DiscreteManufacturingPage lang={lang} />
+  } else if (path === '/modules/fixed-assets') {
+    subPageContent = <FixedAssetsPage lang={lang} />
+  } else if (path === '/modules/car-inspection') {
+    subPageContent = <CarInspectionPage lang={lang} />
   }
-  if (path === '/ai' || path === '/ai-capabilities') {
-    return renderLazyPage(<AICapabilitiesPage lang={lang} />)
-  }
-  if (path === '/modules/business-masters' || path === '/modules/common-masters') {
-    return renderLazyPage(<BusinessMastersPage lang={lang} />)
-  }
-  if (path === '/modules/general-ledger') {
-    return renderLazyPage(<GeneralLedgerPage lang={lang} />)
-  }
-  if (path === '/modules/inventory-management') {
-    return renderLazyPage(<InventoryManagementPage lang={lang} />)
-  }
-  if (path === '/modules/human-resources') {
-    return renderLazyPage(<HumanResourcesPage lang={lang} />)
-  }
-  if (path === '/modules/cash-management') {
-    return renderLazyPage(<CashManagementPage lang={lang} />)
-  }
-  if (path === '/modules/petty-cash') {
-    return renderLazyPage(<PettyCashPage lang={lang} />)
-  }
-  if (path === '/modules/procure-to-pay') {
-    return renderLazyPage(<ProcureToPayPage lang={lang} />)
-  }
-  if (path === '/modules/accounts-payable') {
-    return renderLazyPage(<AccountsPayablePage lang={lang} />)
-  }
-  if (path === '/modules/accounts-receivable') {
-    return renderLazyPage(<AccountsReceivablePage lang={lang} />)
-  }
-  if (path === '/modules/shipment-management') {
-    return renderLazyPage(<ShipmentManagementPage lang={lang} />)
-  }
-  if (path === '/modules/discrete-manufacturing') {
-    return renderLazyPage(<DiscreteManufacturingPage lang={lang} />)
-  }
-  if (path === '/modules/fixed-assets') {
-    return renderLazyPage(<FixedAssetsPage lang={lang} />)
-  }
-  if (path === '/modules/car-inspection') {
-    return renderLazyPage(<CarInspectionPage lang={lang} />)
+
+  if (subPageContent) {
+    return (
+      <div className={`relative overflow-hidden ${isRtl ? 'lang-ar' : ''}`}>
+        <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
+            <a href={`/?lang=${lang}`} className="flex items-center gap-2" aria-label="EPIX home">
+              <img src="/EPIX.png" alt="EPIX" className="h-28 w-auto md:h-32 drop-shadow-md" />
+            </a>
+
+            <nav className="hidden items-center gap-6 lg:flex">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollTo(item.id)}
+                  className="relative rounded-lg px-3 py-1.5 text-sm font-semibold text-[var(--text-muted)] transition-all duration-200 hover:bg-[var(--brand)]/5 hover:text-[var(--text)]"
+                >
+                  {navLabel(item.label)}
+                </button>
+              ))}
+            </nav>
+
+            <div className="flex items-center gap-2">
+              <div className="hidden items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1 md:flex" role="tablist" aria-label="Language" onKeyDown={onLangTabsKeyDown}>
+                {(['en', 'fr', 'ar', 'es'] as Lang[]).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLanguage(l)}
+                    role="tab"
+                    aria-selected={lang === l}
+                    tabIndex={lang === l ? 0 : -1}
+                    className={`rounded-lg px-2 py-1 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => scrollTo('contact')} className="hidden rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
+                {t.headerCta}
+              </button>
+              <button
+                onClick={() => setMenuOpen((prev) => !prev)}
+                className="rounded-xl border border-[var(--line)] p-2 lg:hidden"
+                aria-label={t.navMenu}
+              >
+                {menuOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+            </div>
+          </div>
+
+          {menuOpen && (
+            <div className="border-t border-[var(--line)] bg-white px-5 py-3 lg:hidden">
+              <div className="mb-3 flex items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1" role="tablist" aria-label="Language" onKeyDown={onLangTabsKeyDown}>
+                {(['en', 'fr', 'ar', 'es'] as Lang[]).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLanguage(l)}
+                    role="tab"
+                    aria-selected={lang === l}
+                    tabIndex={lang === l ? 0 : -1}
+                    className={`rounded-lg px-2 py-1 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollTo(item.id)}
+                    className="rounded-lg border border-[var(--line)] px-3 py-2 text-left text-sm font-medium text-[var(--text-muted)] transition-all hover:border-[var(--brand)] hover:text-[var(--text)]"
+                  >
+                    {navLabel(item.label)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </header>
+
+        <div className="pt-28 md:pt-32">
+          <Suspense fallback={<RouteLoadingState />}>{subPageContent}</Suspense>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -1134,7 +1361,7 @@ function App() {
                     : 'text-[var(--text-muted)] hover:bg-[var(--brand)]/5 hover:text-[var(--text)]'
                 }`}
               >
-                {item.label[lang]}
+                {navLabel(item.label)}
                 {activeSection === item.id && (
                   <span className="absolute -bottom-2.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-[var(--brand)]" />
                 )}
@@ -1144,7 +1371,7 @@ function App() {
 
           <div className="flex items-center gap-2">
             <div className="hidden items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1 md:flex" role="tablist" aria-label="Language" onKeyDown={onLangTabsKeyDown}>
-              {(['en', 'fr', 'ar'] as Lang[]).map((l) => (
+              {(['en', 'fr', 'ar', 'es'] as Lang[]).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLanguage(l)}
@@ -1173,7 +1400,7 @@ function App() {
         {menuOpen && (
           <div className="border-t border-[var(--line)] bg-white px-5 py-3 lg:hidden">
             <div className="mb-3 flex items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1" role="tablist" aria-label="Language" onKeyDown={onLangTabsKeyDown}>
-              {(['en', 'fr', 'ar'] as Lang[]).map((l) => (
+              {(['en', 'fr', 'ar', 'es'] as Lang[]).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLanguage(l)}
@@ -1197,7 +1424,7 @@ function App() {
                       : 'border-[var(--line)] text-[var(--text-muted)]'
                   }`}
                 >
-                  {item.label[lang]}
+                  {navLabel(item.label)}
                 </button>
               ))}
             </div>
@@ -1249,15 +1476,15 @@ function App() {
               <div className="hero-trust-strip mt-10 grid grid-cols-3 gap-4 px-5 py-4 text-center">
                 <div>
                   <p className="font-display text-2xl font-extrabold text-[var(--text)]">13+</p>
-                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">Modules</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">{lang === 'ar' ? 'وحدات' : lang === 'fr' ? 'Modules' : lang === 'es' ? 'Módulos' : 'Modules'}</p>
                 </div>
                 <div className="border-x border-[rgba(29,93,242,0.12)]">
                   <p className="font-display text-2xl font-extrabold text-[var(--text)]">3</p>
-                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">Languages</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">{lang === 'ar' ? 'لغات' : lang === 'fr' ? 'Langues' : lang === 'es' ? 'Idiomas' : 'Languages'}</p>
                 </div>
                 <div>
                   <p className="font-display text-2xl font-extrabold text-[var(--text)]">99.9%</p>
-                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">Uptime SLA</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-[var(--text-muted)]">{lang === 'ar' ? 'اتفاقية التوافر' : lang === 'fr' ? 'SLA disponibilité' : lang === 'es' ? 'SLA de disponibilidad' : 'Uptime SLA'}</p>
                 </div>
               </div>
             </motion.div>
@@ -1276,7 +1503,7 @@ function App() {
                     <span className="hero-window-dot" style={{ background: '#59d6b8' }} />
                   </div>
                   <p className="truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-[#4f6ea4]">
-                    epix.app / {activeShotI18n.module[lang]}
+                    epix.app / {pick(activeShotI18n.module)}
                   </p>
                   <span className="text-[11px] font-semibold text-[#0a8f6b]">● LIVE</span>
                 </div>
@@ -1285,7 +1512,7 @@ function App() {
                   <img
                     key={activeShot.src}
                     src={activeShot.src}
-                    alt={`${activeShotI18n.title[lang]} - ${activeShotI18n.module[lang]}`}
+                    alt={`${pick(activeShotI18n.title)} - ${pick(activeShotI18n.module)}`}
                     loading="eager"
                     decoding="async"
                     className="h-[300px] w-full object-cover object-top md:h-[360px]"
@@ -1293,10 +1520,10 @@ function App() {
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0f2345]/45 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
-                      {activeShotI18n.module[lang]}
+                      {pick(activeShotI18n.module)}
                     </p>
                     <p className="mt-0.5 font-display text-base font-bold text-white md:text-lg">
-                      {activeShotI18n.title[lang]}
+                      {pick(activeShotI18n.title)}
                     </p>
                   </div>
                 </div>
@@ -1310,7 +1537,7 @@ function App() {
                           key={shot.src}
                           type="button"
                           onClick={() => setActiveShotIndex(index)}
-                          aria-label={`Show ${shotI18n.title[lang]}`}
+                          aria-label={lang === 'es' ? `Mostrar ${pick(shotI18n.title)}` : `Show ${pick(shotI18n.title)}`}
                           className={`h-2.5 rounded-full transition-all ${
                             index === activeShotIndex
                               ? 'w-8 bg-gradient-to-r from-[#1d5df2] to-[#0ea5a8]'
@@ -1332,7 +1559,7 @@ function App() {
                     <BarChart3 size={18} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#5f7cb0]">Revenue</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#5f7cb0]">{lang === 'ar' ? 'الإيرادات' : lang === 'fr' ? 'Revenus' : lang === 'es' ? 'Ingresos' : 'Revenue'}</p>
                     <p className="font-display text-lg font-extrabold text-[var(--text)]">$8.4M</p>
                   </div>
                   <span className="rounded-full bg-[#dff5ec] px-2 py-0.5 text-[11px] font-bold text-[#0a8f6b]">+18.4%</span>
@@ -1345,8 +1572,8 @@ function App() {
                     <Bot size={18} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#5f7cb0]">AI Insight</p>
-                    <p className="text-sm font-semibold text-[var(--text)]">Anomaly cleared</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#5f7cb0]">{lang === 'ar' ? 'رؤية ذكية' : lang === 'fr' ? 'Insight IA' : lang === 'es' ? 'Insight IA' : 'AI Insight'}</p>
+                    <p className="text-sm font-semibold text-[var(--text)]">{lang === 'ar' ? 'تمت معالجة الشذوذ' : lang === 'fr' ? 'Anomalie resolue' : lang === 'es' ? 'Anomalía resuelta' : 'Anomaly cleared'}</p>
                   </div>
                 </div>
               </div>
@@ -1354,7 +1581,7 @@ function App() {
               <div className="hero-float pointer-events-none absolute -top-4 right-6 hidden rounded-full border border-[rgba(29,93,242,0.18)] bg-white/90 px-3 py-1.5 shadow-lg backdrop-blur md:inline-flex">
                 <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[var(--text)]">
                   <ShieldCheck size={14} className="text-[#0ea5a8]" />
-                  Audit Ready
+                  {lang === 'ar' ? 'جاهز للتدقيق' : lang === 'fr' ? 'Pret pour audit' : lang === 'es' ? 'Listo para auditoría' : 'Audit Ready'}
                 </span>
               </div>
             </motion.div>
@@ -1384,7 +1611,7 @@ function App() {
               <div className="mt-8 overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white">
                 <img
                   src="/screenshots/2-home-page.PNG"
-                  alt="EPIX Unified Home Dashboard"
+                  alt={lang === 'es' ? 'Panel principal unificado de EPIX' : 'EPIX Unified Home Dashboard'}
                   loading="lazy"
                   decoding="async"
                   className="h-48 w-full object-cover object-top md:h-56"
@@ -1428,15 +1655,15 @@ function App() {
                       : 'border-[#cfe0ff] bg-white text-[#46689c] hover:border-[#9ebeff]'
                   }`}
                 >
-                  {flow.title[lang]}
+                  {pick(flow.title)}
                 </button>
               ))}
             </div>
 
             <div className="mt-5 rounded-2xl border border-[#d7e5ff] bg-white/90 p-5 md:p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#4067a8]">{activeFlow.subtitle[lang]}</p>
-              <h3 className="mt-2 font-display text-2xl font-bold text-[var(--text)] md:text-3xl">{activeFlow.title[lang]}</h3>
-              <p className="mt-3 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{activeFlow.headline[lang]}</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#4067a8]">{pick(activeFlow.subtitle)}</p>
+              <h3 className="mt-2 font-display text-2xl font-bold text-[var(--text)] md:text-3xl">{pick(activeFlow.title)}</h3>
+              <p className="mt-3 max-w-4xl text-sm leading-relaxed text-[var(--text-muted)] md:text-base">{pick(activeFlow.headline)}</p>
 
               <div className="mt-6 mb-8 flow-diagram">
                 {activeFlow.steps.map((step, index) => (
@@ -1445,8 +1672,8 @@ function App() {
                       <span className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#1d5df2] to-[#0ea5a8] text-xs font-bold text-white shadow-sm">
                         {index + 1}
                       </span>
-                      <p className="text-xs font-semibold text-[var(--text)] md:text-sm">{step.title[lang]}</p>
-                      <p className="mt-1 hidden text-[10px] text-[var(--text-muted)] md:block">{step.kpi}</p>
+                      <p className="text-xs font-semibold text-[var(--text)] md:text-sm">{pick(step.title)}</p>
+                      <p className="mt-1 hidden text-[10px] text-[var(--text-muted)] md:block">{tr(step.kpi)}</p>
                     </div>
                     {index < activeFlow.steps.length - 1 && (
                       <div className="flow-diagram-connector">
@@ -1474,15 +1701,15 @@ function App() {
                       <div className="mb-3 flex items-center justify-between gap-3">
                         <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#edf3ff] text-xs font-bold text-[#355da8]">{index + 1}</span>
                         <span className="rounded-full border border-[#d8e6ff] bg-[#f7fbff] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#5678b3]">
-                          {step.kpi}
+                          {tr(step.kpi)}
                         </span>
                       </div>
-                      <h4 className="font-display text-lg font-semibold text-[var(--text)]">{step.title[lang]}</h4>
-                      <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{step.detail[lang]}</p>
+                      <h4 className="font-display text-lg font-semibold text-[var(--text)]">{pick(step.title)}</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{pick(step.detail)}</p>
                       <div className="mt-4 overflow-hidden rounded-xl border border-[#dce8ff] bg-[#edf4ff]">
                         <img
                           src={step.screenshotSrc}
-                          alt={`${step.title[lang]} - ${shotI18n.title[lang]}`}
+                          alt={`${pick(step.title)} - ${pick(shotI18n.title)}`}
                           loading="lazy"
                           decoding="async"
                           className="h-40 w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]"
@@ -1513,7 +1740,7 @@ function App() {
               <div className="mt-6 overflow-hidden rounded-xl border border-[#d7e5ff]">
                 <img
                   src="/screenshots/4-chart-builder.PNG"
-                  alt="EPIX Analytics Chart Builder"
+                  alt={lang === 'es' ? 'Constructor analítico de gráficos de EPIX' : 'EPIX Analytics Chart Builder'}
                   loading="lazy"
                   decoding="async"
                   className="h-44 w-full object-cover object-top"
@@ -1553,8 +1780,8 @@ function App() {
                 <div className="inline-flex rounded-xl bg-gradient-to-br from-[#eef4ff] to-[#e6fbf7] p-3 text-[#2f62d8] shadow-sm">
                   <Icon size={22} />
                 </div>
-                <h3 className="mt-3 font-display text-2xl font-semibold text-[var(--text)]">{title[lang]}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{text[lang]}</p>
+                <h3 className="mt-3 font-display text-2xl font-semibold text-[var(--text)]">{pick(title)}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{pick(text)}</p>
               </motion.div>
             ))}
           </div>
@@ -1571,7 +1798,7 @@ function App() {
                       {inView ? <CountUp end={item.value} duration={2.1} /> : 0}
                       {item.suffix}
                     </p>
-                    <p className="mt-2 text-sm text-[var(--text-muted)]">{item.label[lang]}</p>
+                    <p className="mt-2 text-sm text-[var(--text-muted)]">{pick(item.label)}</p>
                   </div>
                 )}
               </InView>
@@ -1596,7 +1823,7 @@ function App() {
                 {formStatus === 'sending' ? (
                   <span className="inline-flex items-center gap-2">
                     <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
-                    Sending...
+                    {t.sending}
                   </span>
                 ) : (
                   <>
@@ -1607,12 +1834,12 @@ function App() {
               </button>
               {formStatus === 'success' && (
                 <p className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 md:col-span-2">
-                  <CheckCircle2 size={16} /> Message sent successfully! We will be in touch soon.
+                  <CheckCircle2 size={16} /> {t.messageSuccess}
                 </p>
               )}
               {formStatus === 'error' && (
                 <p className="flex items-center justify-center gap-2 text-sm font-medium text-red-500 md:col-span-2">
-                  Something went wrong. Please try again or email us directly.
+                  {t.messageError}
                 </p>
               )}
             </form>
@@ -1627,10 +1854,10 @@ function App() {
             <AccessibleImageModal
               open={Boolean(selectedShot)}
               onClose={() => setSelectedShot(null)}
-              title={selectedI18n.title[lang]}
-              subtitle={selectedI18n.module[lang]}
+              title={pick(selectedI18n.title)}
+              subtitle={pick(selectedI18n.module)}
               imageSrc={selectedShot.src}
-              imageAlt={selectedI18n.title[lang]}
+              imageAlt={pick(selectedI18n.title)}
               closeLabel={t.close}
             />
           )
@@ -1640,7 +1867,7 @@ function App() {
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-5 py-10 md:flex-row md:px-8">
           <div className="flex flex-col items-center gap-3 md:items-start">
             <img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" />
-            <p className="text-sm text-[var(--text-muted)]">© {new Date().getFullYear()} EPIX ERP. All rights reserved.</p>
+            <p className="text-sm text-[var(--text-muted)]">© {new Date().getFullYear()} EPIX ERP. {t.rightsReserved}</p>
           </div>
           <p className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)]">
             {t.footer}

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { moduleEsObject, moduleEsText } from './moduleEs'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
 import { ArrowRight, Boxes, CheckCircle2 } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'ar'
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 type Localized = { en: string; fr: string; ar: string }
 type Shot = { src: string; title: Localized; caption: Localized }
 
@@ -47,47 +49,49 @@ const copy = {
     close: 'Fermer',
   },
   ar: {
-    backToHome: 'ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ط±ط¦ظٹط³ظٹط©',
-    title: 'ط¥ط¯ط§ط±ط© ظ…ط®ط²ظˆظ† ظ„ط­ط¸ظٹط© ظ„ظ„طھط­ظƒظ… ط§ظ„ظƒط§ظ…ظ„ ظپظٹ ط§ظ„ظ…ط®ط§ط²ظ† ظˆط§ظ„طھظˆط±ظٹط¯',
-    desc: 'طھظ†ط³ظ‚ ط¥ط¯ط§ط±ط© ط§ظ„ظ…ط®ط²ظˆظ† ظپظٹ EPIX ط§ظ„ظ…ط³طھظˆط¯ط¹ط§طھ ظˆط§ظ„ط§ط³طھظ„ط§ظ…ط§طھ ظˆط§ظ„طµط±ظپ ظˆط§ظ„ظ…ط±طھط¬ط¹ط§طھ ظˆط±ط¤ظٹط© ط§ظ„ظƒظ…ظٹط§طھ ط§ظ„ظ…طھط§ط­ط© ط¶ظ…ظ† ط·ط¨ظ‚ط© طھط´ط؛ظٹظ„ ظ…ظˆط­ط¯ط©.',
-    capabilitiesTitle: 'ظ‚ط¯ط±ط§طھ ط¥ط¯ط§ط±ط© ط§ظ„ظ…ط®ط²ظˆظ†',
+    backToHome: 'العودة للرئيسية',
+    title: 'إدارة مخزون لحظية للتحكم الكامل في المخازن والتوريد',
+    desc: 'تنسق إدارة المخزون في EPIX المستودعات والاستلامات والصرف والمرتجعات ورؤية الكميات المتاحة ضمن طبقة تشغيل موحدة.',
+    capabilitiesTitle: 'قدرات إدارة المخزون',
     capabilities: [
-      'ط­ظˆظƒظ…ط© ط§ظ„ظ…ط³طھظˆط¯ط¹ط§طھ ظˆط§ظ„ظ…ظˆط§ط¯ ط¹ط¨ط± ط§ظ„ظ…ظˆط§ظ‚ط¹ ط§ظ„ظ…ط®طھظ„ظپط©.',
-      'طھط¯ظپظ‚ط§طھ ط§ط³طھظ„ط§ظ… ط§ظ„ظ…ط´طھط±ظٹط§طھ ظˆط§ظ„طھط³ظ„ظٹظ… ظˆط§ظ„ظ…ط±طھط¬ط¹ ظ„ظ„ظ…ظˆط±ط¯.',
-      'ظ…ط¹ط§ظ„ط¬ط© طµط±ظپ ط§ظ„ظ…ظˆط§ط¯ ظˆظ…ط±طھط¬ط¹ط§طھ ط§ظ„طھط´ط؛ظٹظ„ ط§ظ„ط¯ط§ط®ظ„ظٹ.',
-      'ظ…ظ„ط®طµ طھظ†ظپظٹط°ظٹ ظ„ظ„ظ…ط®ط²ظˆظ† ظ…ط¹ ط±ط¤ظٹط© ط§ظ„ط­ط±ظƒط© ظˆط§ظ„طھظ‚ظٹظٹظ….',
-      'ط¶ط¨ط· ط£ظ†ظˆط§ط¹ ط§ظ„ظ…ط¹ط§ظ…ظ„ط§طھ ظ„ط¶ظ…ط§ظ† ط­ظˆظƒظ…ط© ظ…ظˆط­ط¯ط© ظ„ظ„ظ…ط®ط²ظˆظ†.',
+      'حوكمة المستودعات والمواد عبر المواقع المختلفة.',
+      'تدفقات استلام المشتريات والتسليم والمرتجع للمورد.',
+      'معالجة صرف المواد ومرتجعات التشغيل الداخلي.',
+      'ملخص تنفيذي للمخزون مع رؤية الحركة والتقييم.',
+      'ضبط أنواع المعاملات لضمان حوكمة موحدة للمخزون.',
     ],
-    flowTitle: 'طھط¯ظپظ‚ ط§ظ„ظ…ط®ط²ظˆظ†',
-    flow: ['طھط®ط·ظٹط· ط§ظ„ط§ط­طھظٹط§ط¬ط§طھ ظˆط·ظ„ط¨ط§طھ ط§ظ„ط´ط±ط§ط،', 'ط§ط³طھظ„ط§ظ… ط§ظ„ظ…ط®ط²ظˆظ† ظˆط§ظ„طھط­ظ‚ظ‚ ظ…ظ†ظ‡', 'طھط®طµظٹطµ ط§ظ„ظ…ظˆط§ط¯ ظˆطµط±ظپظ‡ط§', 'ظ…ط¹ط§ظ„ط¬ط© ط§ظ„ظ…ط±طھط¬ط¹ط§طھ ظˆط§ظ„طھط³ظˆظٹط§طھ', 'ظ…طھط§ط¨ط¹ط© ط§ظ„ط±طµظٹط¯ ظˆظ…ط¤ط´ط±ط§طھ ط§ظ„ط£ط¯ط§ط،'],
-    galleryTitle: 'ط´ط§ط´ط§طھ ط§ظ„ظ…ط®ط²ظˆظ†',
-    outcomesTitle: 'ظ†طھط§ط¦ط¬ ط§ظ„ط£ط¹ظ…ط§ظ„',
-    outcomes: ['ط¯ظ‚ط© ط£ط¹ظ„ظ‰ ظپظٹ ط§ظ„ظ…ط®ط²ظˆظ†', 'ط®ظپط¶ ط§ظ„ظ†ظˆط§ظ‚طµ ظˆط§ظ„ظپط§ط¦ط¶', 'طھط­ط³ظٹظ† ط¥ظ†طھط§ط¬ظٹط© ط§ظ„ظ…ط³طھظˆط¯ط¹ط§طھ'],
-    close: 'ط¥ط؛ظ„ط§ظ‚',
+    flowTitle: 'تدفق المخزون',
+    flow: ['تخطيط الاحتياجات وطلبات الشراء', 'استلام المخزون والتحقق منه', 'تخصيص المواد وصرفها', 'معالجة المرتجعات والتسويات', 'متابعة الرصيد ومؤشرات الأداء'],
+    galleryTitle: 'شاشات المخزون',
+    outcomesTitle: 'نتائج الأعمال',
+    outcomes: ['دقة أعلى في المخزون', 'خفض النواقص والفائض', 'تحسين إنتاجية المستودعات'],
+    close: 'إغلاق',
   },
 } as const
 
 const shots: Shot[] = [
   {
     src: '/screenshots/91-inventory-executive-summary-1.PNG',
-    title: { en: 'Inventory Executive Summary', fr: 'Synthese executive inventaire', ar: 'ط§ظ„ظ…ظ„ط®طµ ط§ظ„طھظ†ظپظٹط°ظٹ ظ„ظ„ظ…ط®ط²ظˆظ†' },
-    caption: { en: 'Operational view of stock health and movement.', fr: 'Vue operationnelle de la sante et des mouvements du stock.', ar: 'ط¹ط±ط¶ طھط´ط؛ظٹظ„ظٹ ظ„طµط­ط© ط§ظ„ظ…ط®ط²ظˆظ† ظˆط­ط±ظƒطھظ‡.' },
+    title: { en: 'Inventory Executive Summary', fr: 'Synthese executive inventaire', ar: 'الملخص التنفيذي للمخزون' },
+    caption: { en: 'Operational view of stock health and movement.', fr: 'Vue operationnelle de la sante et des mouvements du stock.', ar: 'عرض تشغيلي لصحة المخزون وحركته.' },
   },
   {
     src: '/screenshots/91-inventory-executive-summary-2.PNG',
-    title: { en: 'Extended Inventory Summary', fr: 'Synthese inventaire etendue', ar: 'ظ…ظ„ط®طµ ظ…ط®ط²ظˆظ† ظ…ظˆط³ط¹' },
-    caption: { en: 'Extended metrics for valuation and supply performance.', fr: 'Mesures etendues pour valorisation et performance supply.', ar: 'ظ…ط¤ط´ط±ط§طھ ظ…ظˆط³ط¹ط© ظ„ظ„طھظ‚ظٹظٹظ… ظˆط£ط¯ط§ط، ط³ظ„ط³ظ„ط© ط§ظ„ط¥ظ…ط¯ط§ط¯.' },
+    title: { en: 'Extended Inventory Summary', fr: 'Synthese inventaire etendue', ar: 'ملخص مخزون موسع' },
+    caption: { en: 'Extended metrics for valuation and supply performance.', fr: 'Mesures etendues pour valorisation et performance supply.', ar: 'مؤشرات موسعة للتقييم وأداء سلسلة الإمداد.' },
   },
   {
     src: '/screenshots/3-grid-data.PNG',
-    title: { en: 'Inventory Transaction Grid', fr: 'Grille transactions inventaire', ar: 'ط¬ط¯ظˆظ„ ظ…ط¹ط§ظ…ظ„ط§طھ ط§ظ„ظ…ط®ط²ظˆظ†' },
-    caption: { en: 'Detailed line-level tracking for receipts and issues.', fr: 'Suivi detaille par ligne pour receptions et sorties.', ar: 'ظ…طھط§ط¨ط¹ط© طھظپطµظٹظ„ظٹط© ط¹ظ„ظ‰ ظ…ط³طھظˆظ‰ ط§ظ„ط¨ظ†ظˆط¯ ظ„ظ„ط§ط³طھظ„ط§ظ…ط§طھ ظˆط§ظ„طµط±ظپ.' },
+    title: { en: 'Inventory Transaction Grid', fr: 'Grille transactions inventaire', ar: 'جدول معاملات المخزون' },
+    caption: { en: 'Detailed line-level tracking for receipts and issues.', fr: 'Suivi detaille par ligne pour receptions et sorties.', ar: 'متابعة تفصيلية على مستوى البنود للاستلامات والصرف.' },
   },
 ]
 
 export function InventoryManagementPage({ lang = 'en' }: { lang?: Lang }) {
   const [selected, setSelected] = useState<Shot | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? moduleEsObject(copy.en) : copy[contentLang]
+  const text = (value: string) => (lang === 'es' ? moduleEsText(value) : value)
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
@@ -148,9 +152,9 @@ export function InventoryManagementPage({ lang = 'en' }: { lang?: Lang }) {
             {shots.map((shot, index) => (
               <motion.article key={shot.src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
                 <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left">
-                  <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={shot.title[lang]} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">INV</span></div>
+                  <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={text(shot.title[contentLang])} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">INV</span></div>
                 </button>
-                <div className="p-4"><h3 className="font-display text-lg font-semibold">{shot.title[lang]}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{shot.caption[lang]}</p></div>
+                <div className="p-4"><h3 className="font-display text-lg font-semibold">{text(shot.title[contentLang])}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{text(shot.caption[contentLang])}</p></div>
               </motion.article>
             ))}
           </div>
@@ -165,11 +169,11 @@ export function InventoryManagementPage({ lang = 'en' }: { lang?: Lang }) {
         <AccessibleImageModal
           open={Boolean(selected)}
           onClose={() => setSelected(null)}
-          title={selected.title[lang]}
+          title={text(selected.title[contentLang])}
           imageSrc={selected.src}
-          imageAlt={selected.title[lang]}
+          imageAlt={text(selected.title[contentLang])}
           closeLabel={t.close}
-          subtitle={selected.caption[lang]}
+          subtitle={text(selected.caption[contentLang])}
         />
       )}
     </div>

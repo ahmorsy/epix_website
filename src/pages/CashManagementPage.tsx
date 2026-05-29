@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { moduleEsObject, moduleEsText } from './moduleEs'
 import { AccessibleImageModal } from '../components/AccessibleImageModal'
 import { ArrowRight, CheckCircle2, Wallet } from 'lucide-react'
 
-type Lang = 'en' | 'fr' | 'ar'
+type ContentLang = 'en' | 'fr' | 'ar'
+type Lang = ContentLang | 'es'
 type Localized = { en: string; fr: string; ar: string }
 type Shot = { src: string; title: Localized; caption: Localized }
 
@@ -47,47 +49,49 @@ const copy = {
     close: 'Fermer',
   },
   ar: {
-    backToHome: 'ط§ظ„ط¹ظˆط¯ط© ظ„ظ„ط±ط¦ظٹط³ظٹط©',
-    title: 'ط¥ط¯ط§ط±ط© ظ†ظ‚ط¯ ظ„ظ„طھط­ظƒظ… ط§ظ„ط¨ظ†ظƒظٹ ظˆطھط³ط±ظٹط¹ ط§ظ„طھط³ظˆظٹط§طھ',
-    desc: 'طھظˆط­ظ‘ط¯ ط¥ط¯ط§ط±ط© ط§ظ„ظ†ظ‚ط¯ ظپظٹ EPIX ط§ظ„ط­ط³ط§ط¨ط§طھ ط§ظ„ط¨ظ†ظƒظٹط© ظˆط±ظپط¹ ط§ظ„ظƒط´ظˆظپ ظˆط§ظ„ظ…ط·ط§ط¨ظ‚ط© ظˆط§ظ„طھط³ظˆظٹط§طھ ظˆط§ط­طھط³ط§ط¨ ط§ظ„ظپظˆط§ط¦ط¯ ط¶ظ…ظ† ظ…ظ†طµط© ظˆط§ط­ط¯ط© ظ„ظ„ط®ط²ظٹظ†ط©.',
-    capabilitiesTitle: 'ظ‚ط¯ط±ط§طھ ط¥ط¯ط§ط±ط© ط§ظ„ظ†ظ‚ط¯',
+    backToHome: 'العودة للرئيسية',
+    title: 'إدارة نقد للتحكم البنكي وتسريع التسويات',
+    desc: 'توحّد إدارة النقد في EPIX الحسابات البنكية ورفع الكشوف والمطابقة والتسويات واحتساب الفوائد ضمن منصة واحدة للخزينة.',
+    capabilitiesTitle: 'قدرات إدارة النقد',
     capabilities: [
-      'ط­ظˆظƒظ…ط© ط§ظ„ط¨ظ†ظˆظƒ ظˆط§ظ„ظپط±ظˆط¹ ظˆط§ظ„ط­ط³ط§ط¨ط§طھ ظˆط§ظ„ط§طھظپط§ظ‚ظٹط§طھ ط§ظ„ط¨ظ†ظƒظٹط©.',
-      'ط±ظپط¹ ظƒط´ظˆظپ ط§ظ„ط­ط³ط§ط¨ ط§ظ„ط¨ظ†ظƒظٹط© ظˆظ…ط¹ط§ظ„ط¬ط© ط¨ظ†ظˆط¯ظ‡ط§ طھظپطµظٹظ„ظٹط§.',
-      'ظ…ط·ط§ط¨ظ‚ط© ط§ظ„ط¨ظ†ظƒظٹ ظ…ط¹ ط§ظ„ط¯ظپط§طھط± ظˆط³ظٹط± ط¹ظ…ظ„ ط§ظ„طھط³ظˆظٹط§طھ.',
-      'ط¥ط¹ط¯ط§ط¯ ظ…ط¤ط´ط±ط§طھ ط§ظ„ظپط§ط¦ط¯ط© ظˆطھط´ط؛ظٹظ„ ط§ط­طھط³ط§ط¨ ط§ظ„ظپظˆط§ط¦ط¯ ط¢ظ„ظٹط§.',
-      'طھط±ط­ظٹظ„ ظ†طھط§ط¦ط¬ ط§ظ„طھط³ظˆظٹط© ط¥ظ„ظ‰ GL ظˆطھظ‚ط§ط±ظٹط± ط£ط±طµط¯ط© ط§ظ„ظ†ظ‚ط¯.',
+      'حوكمة البنوك والفروع والحسابات والاتفاقيات البنكية.',
+      'رفع كشوف الحساب البنكية ومعالجة بنودها تفصيليا.',
+      'مطابقة البنكي مع الدفاتر وسير عمل التسويات.',
+      'إعداد مؤشرات الفائدة وتشغيل احتساب الفوائد آليا.',
+      'ترحيل نتائج التسوية إلى GL وتقارير أرصدة النقد.',
     ],
-    flowTitle: 'طھط¯ظپظ‚ ط§ظ„ظ†ظ‚ط¯ ظˆط§ظ„طھط³ظˆظٹط©',
-    flow: ['طھظ‡ظٹط¦ط© ط§ظ„ط¨ظٹط§ظ†ط§طھ ط§ظ„ط¨ظ†ظƒظٹط©', 'طھط­ظ…ظٹظ„ ط±ط¤ظˆط³ ط§ظ„ظƒط´ظˆظپ ظˆط§ظ„ط¨ظ†ظˆط¯', 'ظ…ط·ط§ط¨ظ‚ط© ط§ظ„ط¨ظ†ظƒظٹ ظ…ط¹ ط§ظ„ط¯ظپط§طھط±', 'طھظ†ظپظٹط° ط§ظ„طھط³ظˆظٹط§طھ ظˆط§ط¹طھظ…ط§ط¯ظ‡ط§', 'طھط±ط­ظٹظ„ ط§ظ„ظ†طھط§ط¦ط¬ ط¥ظ„ظ‰ GL ظˆط¥طµط¯ط§ط± ط§ظ„طھظ‚ط§ط±ظٹط±'],
-    galleryTitle: 'ط´ط§ط´ط§طھ ط¥ط¯ط§ط±ط© ط§ظ„ظ†ظ‚ط¯',
-    outcomesTitle: 'ظ†طھط§ط¦ط¬ ط§ظ„ط£ط¹ظ…ط§ظ„',
-    outcomes: ['طھط³ظˆظٹط§طھ ط£ط³ط±ط¹', 'ط±ط¤ظٹط© ط£ط¹ظ„ظ‰ ظ„ظ„ط³ظٹظˆظ„ط©', 'طھظ‚ظ„ظٹظ„ ط§ظ„ط¬ظ‡ط¯ ط§ظ„ظٹط¯ظˆظٹ ظپظٹ ط§ظ„ط®ط²ظٹظ†ط©'],
-    close: 'ط¥ط؛ظ„ط§ظ‚',
+    flowTitle: 'تدفق النقد والتسوية',
+    flow: ['تهيئة البيانات البنكية', 'تحميل رؤوس الكشوف والبنود', 'مطابقة البنكي مع الدفاتر', 'تنفيذ التسويات واعتمادها', 'ترحيل النتائج إلى GL وإصدار التقارير'],
+    galleryTitle: 'شاشات إدارة النقد',
+    outcomesTitle: 'نتائج الأعمال',
+    outcomes: ['تسويات أسرع', 'رؤية أعلى للسيولة', 'تقليل الجهد اليدوي في الخزينة'],
+    close: 'إغلاق',
   },
 } as const
 
 const shots: Shot[] = [
   {
     src: '/screenshots/9-cash-manag-statement-upload.PNG',
-    title: { en: 'Bank Statement Upload', fr: 'Import releve bancaire', ar: 'ط±ظپط¹ ظƒط´ظپ ط§ظ„ط­ط³ط§ط¨ ط§ظ„ط¨ظ†ظƒظٹ' },
-    caption: { en: 'Fast ingestion of statement files for reconciliation.', fr: 'Chargement rapide des releves pour rapprochement.', ar: 'طھط­ظ…ظٹظ„ ط³ط±ظٹط¹ ظ„ظƒط´ظˆظپ ط§ظ„ط¨ظ†ظƒ ظ„ط¨ط¯ط، ط§ظ„طھط³ظˆظٹط§طھ.' },
+    title: { en: 'Bank Statement Upload', fr: 'Import releve bancaire', ar: 'رفع كشف الحساب البنكي' },
+    caption: { en: 'Fast ingestion of statement files for reconciliation.', fr: 'Chargement rapide des releves pour rapprochement.', ar: 'تحميل سريع لكشوف البنك لبدء التسويات.' },
   },
   {
     src: '/screenshots/6-petty-cash.PNG',
-    title: { en: 'Cash Operations Control', fr: 'Controle operations cash', ar: 'ط§ظ„طھط­ظƒظ… ظپظٹ ط§ظ„ط¹ظ…ظ„ظٹط§طھ ط§ظ„ظ†ظ‚ط¯ظٹط©' },
-    caption: { en: 'Operational oversight for disbursement and cash activity.', fr: 'Pilotage operationnel des decaissements et activites cash.', ar: 'ط¥ط´ط±ط§ظپ طھط´ط؛ظٹظ„ظٹ ط¹ظ„ظ‰ ط§ظ„طµط±ظپ ظˆط§ظ„ط¹ظ…ظ„ظٹط§طھ ط§ظ„ظ†ظ‚ط¯ظٹط©.' },
+    title: { en: 'Cash Operations Control', fr: 'Controle operations cash', ar: 'التحكم في العمليات النقدية' },
+    caption: { en: 'Operational oversight for disbursement and cash activity.', fr: 'Pilotage operationnel des decaissements et activites cash.', ar: 'إشراف تشغيلي على الصرف والعمليات النقدية.' },
   },
   {
     src: '/screenshots/7-outstanding-pays.PNG',
-    title: { en: 'Liability And Cash Alignment', fr: 'Alignement passifs et cash', ar: 'ظ…ظˆط§ط،ظ…ط© ط§ظ„ط§ظ„طھط²ط§ظ…ط§طھ ظ…ط¹ ط§ظ„ظ†ظ‚ط¯' },
-    caption: { en: 'Visibility to coordinate payable commitments with cash plans.', fr: 'Visibilite pour aligner engagements fournisseurs et plans cash.', ar: 'ط±ط¤ظٹط© ظ„ظ…ظˆط§ط،ظ…ط© ط§ظ„ط§ظ„طھط²ط§ظ…ط§طھ ظ…ط¹ ط®ط·ط· ط§ظ„ط³ظٹظˆظ„ط©.' },
+    title: { en: 'Liability And Cash Alignment', fr: 'Alignement passifs et cash', ar: 'مواءمة الالتزامات مع النقد' },
+    caption: { en: 'Visibility to coordinate payable commitments with cash plans.', fr: 'Visibilite pour aligner engagements fournisseurs et plans cash.', ar: 'رؤية لمواءمة الالتزامات مع خطط السيولة.' },
   },
 ]
 
 export function CashManagementPage({ lang = 'en' }: { lang?: Lang }) {
   const [selected, setSelected] = useState<Shot | null>(null)
-  const t = copy[lang]
+  const contentLang: ContentLang = lang === 'es' ? 'en' : lang
+  const t = lang === 'es' ? moduleEsObject(copy.en) : copy[contentLang]
+  const text = (value: string) => (lang === 'es' ? moduleEsText(value) : value)
 
   return (
     <div className={`min-h-screen bg-[var(--bg)] text-[var(--text)] ${lang === 'ar' ? 'lang-ar' : ''}`}>
@@ -114,8 +118,8 @@ export function CashManagementPage({ lang = 'en' }: { lang?: Lang }) {
 
         <section className="mt-8"><h2 className="font-display text-2xl font-bold">{t.galleryTitle}</h2><div className="mt-4 grid gap-4 md:grid-cols-3">{shots.map((shot, index) => (
           <motion.article key={shot.src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="screenshot-card group overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
-            <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left"><div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={shot.title[lang]} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">CASH</span></div></button>
-            <div className="p-4"><h3 className="font-display text-lg font-semibold">{shot.title[lang]}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{shot.caption[lang]}</p></div>
+            <button type="button" onClick={() => setSelected(shot)} className="block w-full text-left"><div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]"><img src={shot.src} alt={text(shot.title[contentLang])} loading="lazy" decoding="async" className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.04]" /><div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0f2345]/60 to-transparent" /><span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-[#21457d]">CASH</span></div></button>
+            <div className="p-4"><h3 className="font-display text-lg font-semibold">{text(shot.title[contentLang])}</h3><p className="mt-2 text-sm text-[var(--text-muted)]">{text(shot.caption[contentLang])}</p></div>
           </motion.article>
         ))}</div></section>
 
@@ -126,11 +130,11 @@ export function CashManagementPage({ lang = 'en' }: { lang?: Lang }) {
         <AccessibleImageModal
           open={Boolean(selected)}
           onClose={() => setSelected(null)}
-          title={selected.title[lang]}
+          title={text(selected.title[contentLang])}
           imageSrc={selected.src}
-          imageAlt={selected.title[lang]}
+          imageAlt={text(selected.title[contentLang])}
           closeLabel={t.close}
-          subtitle={selected.caption[lang]}
+          subtitle={text(selected.caption[contentLang])}
         />
       )}
     </div>
