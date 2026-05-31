@@ -2,6 +2,8 @@ type SmartImageProps = {
   src: string
   alt: string
   className?: string
+  width?: number
+  height?: number
   loading?: 'eager' | 'lazy'
   decoding?: 'sync' | 'async' | 'auto'
   fetchPriority?: 'high' | 'low' | 'auto'
@@ -23,10 +25,12 @@ export function SmartImage({
   src,
   alt,
   className,
+  width = 1600,
+  height = 900,
   loading = 'lazy',
   decoding = 'async',
   fetchPriority = 'auto',
-  sizes = '(max-width: 768px) 100vw, 1200px',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 960px',
 }: SmartImageProps) {
   const avif1280 = buildOptimizedPath(src, 1280, 'avif')
   const avif1920 = buildOptimizedPath(src, 1920, 'avif')
@@ -34,7 +38,18 @@ export function SmartImage({
   const webp1920 = buildOptimizedPath(src, 1920, 'webp')
 
   if (!avif1280 || !avif1920 || !webp1280 || !webp1920) {
-    return <img src={src} alt={alt} loading={loading} decoding={decoding} fetchPriority={fetchPriority} className={className} />
+    return (
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding={decoding}
+        fetchPriority={fetchPriority}
+        className={className}
+      />
+    )
   }
 
   return (
@@ -49,7 +64,16 @@ export function SmartImage({
         srcSet={`${webp1280} 1280w, ${webp1920} 1920w`}
         sizes={sizes}
       />
-      <img src={src} alt={alt} loading={loading} decoding={decoding} fetchPriority={fetchPriority} className={className} />
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding={decoding}
+        fetchPriority={fetchPriority}
+        className={className}
+      />
     </picture>
   )
 }

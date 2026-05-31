@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,7 +6,7 @@
   --bg: #f7faff;
   --bg-soft: #eef4ff;
   --text: #0f2345;
-  --text-muted: #5f7391;
+  --text-muted: #455f82;
   --line: #d8e2f1;
   --brand: #1d5df2;
 }
@@ -153,17 +151,13 @@ textarea:focus {
   background: linear-gradient(135deg, #6d28d9, #4f46e5, #1d5df2);
   color: #fff;
   border: none;
-  box-shadow:
-    0 0 0 0 rgba(109, 40, 217, 0.5),
-    0 4px 14px -3px rgba(109, 40, 217, 0.4);
-  animation: tourPulseGlow 2.2s ease-in-out infinite;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 14px -3px rgba(109, 40, 217, 0.4);
+  animation: tourPulseFloat 2.2s ease-in-out infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
 }
 .tour-cta-pulse:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow:
-    0 0 0 0 rgba(109, 40, 217, 0),
-    0 8px 24px -4px rgba(109, 40, 217, 0.5);
+  box-shadow: 0 8px 24px -4px rgba(109, 40, 217, 0.5);
   animation: none;
 }
 .tour-cta-dot {
@@ -173,16 +167,14 @@ textarea:focus {
   background: #fff;
   animation: tourDotBlink 1.4s ease-in-out infinite;
 }
-@keyframes tourPulseGlow {
+@keyframes tourPulseFloat {
   0%, 100% {
-    box-shadow:
-      0 0 0 0 rgba(109, 40, 217, 0.4),
-      0 4px 14px -3px rgba(109, 40, 217, 0.4);
+    transform: translateZ(0) scale(1);
+    opacity: 1;
   }
   50% {
-    box-shadow:
-      0 0 0 8px rgba(109, 40, 217, 0),
-      0 6px 20px -2px rgba(109, 40, 217, 0.55);
+    transform: translateZ(0) scale(1.02);
+    opacity: 0.94;
   }
 }
 @keyframes tourDotBlink {
@@ -236,17 +228,16 @@ textarea:focus {
 
 .hero-badge-pulse-dot {
   display: inline-block; width: 8px; height: 8px; border-radius: 9999px; background: #0ea5a8;
-  box-shadow: 0 0 0 0 rgba(14,165,168,.55);
   animation: hero-badge-pulse 2s ease-out infinite;
 }
 @keyframes hero-badge-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(14,165,168,.55); }
-  70%  { box-shadow: 0 0 0 10px rgba(14,165,168,0); }
-  100% { box-shadow: 0 0 0 0 rgba(14,165,168,0); }
+  0%   { transform: scale(1); opacity: 1; }
+  70%  { transform: scale(1.45); opacity: 0.35; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-orb, .hero-float, .hero-badge-pulse-dot { animation: none !important; }
+  .hero-orb, .hero-float, .hero-badge-pulse-dot, .tour-cta-pulse, .tour-cta-dot { animation: none !important; }
 }
 
 .lang-ar {
@@ -291,6 +282,11 @@ textarea:focus {
 
 main > section {
   animation: section-enter 0.55s ease both;
+}
+
+main > section:not(#home) {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
 }
 
 main > section:nth-of-type(2) {

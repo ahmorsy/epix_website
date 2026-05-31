@@ -4,6 +4,24 @@
   ],
   "headers": [
     {
+      "source": "/screenshots/**",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/EPIX.png",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/epix-mark.svg",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
       "source": "/assets/**",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }

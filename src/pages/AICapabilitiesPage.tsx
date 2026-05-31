@@ -206,7 +206,7 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="mt-8 max-w-5xl"
           >
-            <img src="/EPIX.png" alt="EPIX" className="mb-6 h-32 w-auto md:h-36 drop-shadow-md" />
+            <img src="/EPIX.png" alt="EPIX" width={640} height={225} className="mb-6 h-32 w-auto md:h-36 drop-shadow-md" />
             <span className="inline-flex items-center gap-2 rounded-full border border-[#c5d8ff] bg-gradient-to-r from-[#edf3ff] to-[#f0e8ff] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#6d28d9]">
               <BarChart3 size={12} />
               {t.heroEyebrow}
@@ -355,11 +355,14 @@ export function AICapabilitiesPage({ lang = 'en' }: { lang?: Lang }) {
                       className={`ai-capability-card group overflow-hidden rounded-2xl border border-[#d7e5ff] bg-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-xl ${sIdx === 0 && pillar.screenshots.length > 3 ? 'col-span-2' : ''}`}
                     >
                       <div className="relative aspect-[16/10] overflow-hidden">
-                        <img
+                        <SmartImage
                           src={shot.src}
                           alt={shot.title}
+                          width={1600}
+                          height={1000}
                           loading="lazy"
                           decoding="async"
+                          sizes="(max-width: 768px) 94vw, (max-width: 1200px) 48vw, 420px"
                           className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                         />
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

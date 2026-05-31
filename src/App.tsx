@@ -1335,7 +1335,7 @@ function App() {
         <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
           <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 md:px-8">
             <a href={`/?lang=${lang}`} className="flex items-center gap-2" aria-label="EPIX home">
-              <img src="/EPIX.png" alt="EPIX" className="h-14 w-auto md:h-16 drop-shadow-md" />
+              <img src="/EPIX.png" alt="EPIX" width={640} height={225} className="h-14 w-auto md:h-16 drop-shadow-md" />
             </a>
 
             <nav aria-label="Primary navigation" className="hidden items-center gap-6 lg:flex">
@@ -1360,19 +1360,19 @@ function App() {
                     role="tab"
                     aria-selected={lang === l}
                     tabIndex={lang === l ? 0 : -1}
-                    className={`rounded-lg px-2 py-1 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
+                    className={`min-h-9 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
                   >
                     {l}
                   </button>
                 ))}
               </div>
-              <button onClick={() => scrollTo('contact')} className="hidden rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
+              <button onClick={() => scrollTo('contact')} className="hidden min-h-10 rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
                 {t.headerCta}
               </button>
               <button
                 type="button"
                 onClick={() => setMenuOpen((prev) => !prev)}
-                className="rounded-xl border border-[var(--line)] p-2 lg:hidden"
+                className="min-h-10 min-w-10 rounded-xl border border-[var(--line)] p-2.5 lg:hidden"
                 aria-label={t.navMenu}
                 aria-controls={mobileMenuId}
                 aria-expanded={menuOpen}
@@ -1393,7 +1393,7 @@ function App() {
                     role="tab"
                     aria-selected={lang === l}
                     tabIndex={lang === l ? 0 : -1}
-                    className={`rounded-lg px-2 py-1 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
+                    className={`min-h-9 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
                   >
                     {l}
                   </button>
@@ -1434,7 +1434,7 @@ function App() {
       <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--line)] bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 md:px-8">
           <button type="button" onClick={() => scrollTo('home')} className="flex items-center gap-2" aria-label="EPIX home">
-            <img src="/EPIX.png" alt="EPIX" className="h-14 w-auto md:h-16 drop-shadow-md" />
+            <img src="/EPIX.png" alt="EPIX" width={640} height={225} className="h-14 w-auto md:h-16 drop-shadow-md" />
           </button>
 
           <nav aria-label="Primary navigation" className="hidden items-center gap-6 lg:flex">
@@ -1467,19 +1467,19 @@ function App() {
                   role="tab"
                   aria-selected={lang === l}
                   tabIndex={lang === l ? 0 : -1}
-                  className={`rounded-lg px-2 py-1 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
+                  className={`min-h-9 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
                 >
                   {l}
                 </button>
               ))}
             </div>
-            <button onClick={() => scrollTo('contact')} className="hidden rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
+            <button onClick={() => scrollTo('contact')} className="hidden min-h-10 rounded-xl bg-[var(--brand)] px-4 py-2 text-sm font-semibold text-white shadow-sm md:block">
               {t.headerCta}
             </button>
             <button
               type="button"
               onClick={() => setMenuOpen((prev) => !prev)}
-              className="rounded-xl border border-[var(--line)] p-2 lg:hidden"
+              className="min-h-10 min-w-10 rounded-xl border border-[var(--line)] p-2.5 lg:hidden"
               aria-label={t.navMenu}
               aria-controls={mobileMenuId}
               aria-expanded={menuOpen}
@@ -1500,7 +1500,7 @@ function App() {
                   role="tab"
                   aria-selected={lang === l}
                   tabIndex={lang === l ? 0 : -1}
-                  className={`rounded-lg px-2 py-1 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
+                  className={`min-h-9 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase ${lang === l ? 'bg-[var(--brand)] text-white' : 'text-[var(--text-muted)]'}`}
                 >
                   {l}
                 </button>
@@ -1610,6 +1610,7 @@ function App() {
                     key={activeShot.src}
                     src={activeShot.src}
                     alt={`${pick(activeShotI18n.title)} - ${pick(activeShotI18n.module)}`}
+                    sizes="(max-width: 768px) 92vw, (max-width: 1200px) 52vw, 640px"
                     loading="eager"
                     decoding="async"
                     fetchPriority="high"
@@ -1636,10 +1637,10 @@ function App() {
                           type="button"
                           onClick={() => setActiveShotIndex(index)}
                           aria-label={lang === 'es' ? `Mostrar ${pick(shotI18n.title)}` : `Show ${pick(shotI18n.title)}`}
-                          className={`h-2.5 rounded-full transition-all ${
+                          className={`inline-flex min-h-8 min-w-8 items-center justify-center rounded-full transition-all ${
                             index === activeShotIndex
                               ? 'w-8 bg-gradient-to-r from-[#1d5df2] to-[#0ea5a8]'
-                              : 'w-2.5 bg-[#bcd0f2] hover:bg-[#8eafeb]'
+                              : 'w-8 bg-[#bcd0f2] hover:bg-[#8eafeb]'
                           }`}
                         />
                       )
@@ -1995,7 +1996,7 @@ function App() {
       <footer className="border-t border-[var(--line)] bg-white">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-5 py-10 md:flex-row md:px-8">
           <div className="flex flex-col items-center gap-3 md:items-start">
-            <img src="/EPIX.png" alt="EPIX" className="h-20 w-auto drop-shadow-sm" />
+            <img src="/EPIX.png" alt="EPIX" width={640} height={225} className="h-20 w-auto drop-shadow-sm" />
             <p className="text-sm text-[var(--text-muted)]">© {new Date().getFullYear()} EPIX ERP. {t.rightsReserved}</p>
             <div className="flex flex-wrap items-center gap-3 text-sm">
               <a href={lang === 'en' ? '/blog' : `/blog?lang=${lang}`} className="font-semibold text-[var(--brand)] hover:underline">

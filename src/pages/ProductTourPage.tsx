@@ -501,7 +501,7 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="mt-8 max-w-5xl"
           >
-            <img src="/EPIX.png" alt="EPIX" className="mb-6 h-32 w-auto md:h-36 drop-shadow-md" />
+            <img src="/EPIX.png" alt="EPIX" width={640} height={225} className="mb-6 h-32 w-auto md:h-36 drop-shadow-md" />
             <span className="tour-eyebrow inline-flex items-center gap-2 rounded-full border border-[#c5d8ff] bg-gradient-to-r from-[#edf3ff] to-[#e8f8f8] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#1d5df2]">
               <Play size={12} fill="currentColor" />
               {t.heroEyebrow}
@@ -857,11 +857,14 @@ export function ProductTourPage({ lang = 'en' }: { lang?: Lang }) {
                 transition={{ delay: idx * 0.03, duration: 0.4 }}
                 className="tour-gallery-item group relative w-full break-inside-avoid overflow-hidden rounded-2xl border border-[var(--line)] bg-white shadow-sm transition-all duration-300 hover:border-[#a8c4ff] hover:shadow-xl"
               >
-                <img
+                <SmartImage
                   src={shot.src}
                   alt={pick(shot.title)}
+                  width={1600}
+                  height={1000}
                   loading="lazy"
                   decoding="async"
+                  sizes="(max-width: 768px) 94vw, (max-width: 1200px) 46vw, 360px"
                   className="w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a1e3d]/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
